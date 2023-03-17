@@ -1,0 +1,19 @@
+{
+  "name": "mailingservice",
+  "version": "1.0.0",
+  "description": "Mailing Service for WelHome app",
+  "main": "app/index.js",
+  "scripts": {
+    "test": "test",
+    "start": "node",
+    "dev": "nodemon app/index.js"
+  },
+  "keywords": [
+    "mail"
+  ],
+  "author": "Viet, Meryem",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.21"
+  }
+}
