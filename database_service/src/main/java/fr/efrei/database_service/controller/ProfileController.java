@@ -25,6 +25,18 @@ public class ProfileController {
 		return this.profileService.findByEmail(email).orElse(null);
 	}
 
+	@GetMapping("/lastName/{lastName}")
+	public List<Profile> getUserByLastName(@PathVariable String lastName) {
+		return this.profileService.findByLastName(lastName);
+	}
+
+	@GetMapping("/firstName/{firstName}")
+	public List<Profile> getUserByFirstName(@PathVariable String firstName) {
+		return this.profileService.findByFirstName(firstName);
+	}
+
+
+
 	@PostMapping
 	public Profile createUser(@RequestBody Profile user) {
 		return this.profileService.save(user);
@@ -37,9 +49,9 @@ public class ProfileController {
 
 	@PutMapping("/{email}")
 	public Profile updateUser(@PathVariable String email, @RequestBody Profile user) {
-		user.setEmail(email);
-		return this.profileService.save(user);
+		return profileService.update(email, user);
 	}
+
 
 
 }

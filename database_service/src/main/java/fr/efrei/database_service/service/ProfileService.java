@@ -35,5 +35,13 @@ public class ProfileService {
         profile.setEmail(email);
         return profileRepository.save(profile);
     }
+
+    public List<Profile> findByLastName(String lastName) {
+        return profileRepository.findByLastName(lastName);
+    }
+
+    public List<Profile> findByFirstName(String firstName) {
+        return profileRepository.findByFirstName(firstName);
+    }
 }
 
