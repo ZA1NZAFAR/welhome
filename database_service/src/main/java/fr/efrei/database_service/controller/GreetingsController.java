@@ -1,10 +1,11 @@
-package fr.efrei.database_service.controllers;
+package fr.efrei.database_service.controller;
+
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class Greetings {
+public class GreetingsController {
 
     @GetMapping("/greetings")
     public String getGreetings() {
