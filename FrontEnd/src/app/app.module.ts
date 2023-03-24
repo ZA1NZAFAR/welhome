@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FooterComponent } from './commons/footer/footer.component';
 import { NavbarComponent } from './commons/navbar/navbar.component';
+import { HostsModule } from './hosts/hosts.module'
 import { HomepageModule } from './homepage/homepage.module'
 
 @NgModule({
@@ -17,7 +18,9 @@ import { HomepageModule } from './homepage/homepage.module'
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgbModule
+    NgbModule,
+    HostsModule,
+    HomepageModule
   ],
   providers: [],
   bootstrap: [AppComponent]
