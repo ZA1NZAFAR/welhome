@@ -8,6 +8,7 @@ import { FooterComponent } from './commons/footer/footer.component';
 import { NavbarComponent } from './commons/navbar/navbar.component';
 import { HostsModule } from './hosts/hosts.module'
 import { HomepageModule } from './homepage/homepage.module'
+import { CoreModule } from './core/core.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { HomepageModule } from './homepage/homepage.module'
     AppRoutingModule,
     NgbModule,
     HostsModule,
-    HomepageModule
+    HomepageModule,
+    CoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]
