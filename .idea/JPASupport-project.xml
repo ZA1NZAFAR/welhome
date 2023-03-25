@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoGeneratorSettingsState">
+    <option name="moduleName" value="welhome" />
+    <option name="moduleNameToSettings">
+      <map>
+        <entry key="welhome">
+          <value>
+            <ModuleSettings />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="DatabaseSettingsState">
+    <option name="database" value="welhome_dev" />
+    <option name="driverClass" value="org.postgresql.Driver" />
+    <option name="driverPath" value="$USER_HOME$/Downloads/postgresql-42.6.0.jar" />
+    <option name="host" value="zain.ovh" />
+    <option name="port" value="5432" />
+    <option name="schema" value="public" />
+    <option name="url" value="jdbc:postgresql://{host}:{port}/{database}" />
+    <option name="username" value="welhome_service" />
+  </component>
+</project>

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -42,6 +43,30 @@ public class ProfileService {
 
     public List<Profile> findByFirstName(String firstName) {
         return profileRepository.findByFirstName(firstName);
+    }
+
+    public void delete(String id) {
+        profileRepository.deleteById(id);
+    }
+
+    public ProfileDTO getById(String id) {
+        Profile original = requireOne(id);
+        return toDTO(original);
+    }
+
+    public Page<ProfileDTO> query(ProfileQueryVO vO) {
+        throw new UnsupportedOperationException();
+    }
+
+    private ProfileDTO toDTO(Profile original) {
+        ProfileDTO bean = new ProfileDTO();
+        BeanUtils.copyProperties(original, bean);
+        return bean;
+    }
+
+    private Profile requireOne(String id) {
+        return profileRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Resource not found: " + id));
     }
 }
 

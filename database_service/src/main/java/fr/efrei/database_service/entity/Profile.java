@@ -7,12 +7,17 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Data;
 
+
+import java.io.Serializable;
 import java.time.LocalDate;
 
+@Data
 @Entity
 @Table(name = "profile")
-public class Profile {
+public class Profile implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "email", nullable = false, unique = true)
@@ -32,6 +37,8 @@ public class Profile {
 
     @Column(name = "gender")
     private String gender;
+    @Column(name = "is_owner")
+    private Boolean owner;
 
     @Column(name = "registration_date")
     private LocalDate registrationDate;

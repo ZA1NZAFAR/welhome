@@ -1,17 +1,22 @@
 package fr.efrei.database_service.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+@Data
 @Entity
 @Table(name = "property")
 @Getter
 @Setter
-public class Property {
+public class Property implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,18 +31,26 @@ public class Property {
 
     @Column(name = "description", length = 500)
     private String description;
+    @Column(name = "image_url")
+    private String imageUrl;
 
     @Column(name = "price")
     private Double price;
 
     @Column(name = "city", length = 100)
     private String city;
+    @Column(name = "state_province")
+    private String stateProvince;
 
     @Column(name = "zip_code")
     private Integer zipCode;
 
     @Column(name = "country", length = 100)
     private String country;
+    @Column(name = "latitude")
+    private BigDecimal latitude;
+    @Column(name = "longitude")
+    private BigDecimal longitude;
 
     @Column(name = "construction_date")
     private LocalDate constructionDate;
@@ -56,6 +69,8 @@ public class Property {
 
     @Column(name = "publish_date")
     private LocalDate publishDate;
+    @Column(name = "email", nullable = false)
+    private String email;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "email")
