@@ -1,54 +1,33 @@
-package main.java.fr.efrei.database_service.service;
+package fr.efrei.database_service.service;
 
-import main.java.fr.efrei.database_service.entity.Reservation;
-import main.java.fr.efrei.database_service.repository.ReservationRepository;
-import org.springframework.beans.BeanUtils;
+import fr.efrei.database_service.entity.ReservationEntity;
+import fr.efrei.database_service.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.util.NoSuchElementException;
-
 @Service
-public class ReservationService {
+public class ReservationService implements CRUD<ReservationEntity, Long> {
 
     @Autowired
     private ReservationRepository reservationRepository;
 
-    public Long save(ReservationVO vO) {
-        Reservation bean = new Reservation();
-        BeanUtils.copyProperties(vO, bean);
-        bean = reservationRepository.save(bean);
-        return bean.getReservationId();
+    @Override
+    public ReservationEntity save(ReservationEntity object) {
+        return null;
     }
 
-    public void delete(Long id) {
-        reservationRepository.deleteById(id);
+    @Override
+    public ReservationEntity findById(Long id) {
+        return null;
     }
 
-    public void update(Long id, ReservationUpdateVO vO) {
-        Reservation bean = requireOne(id);
-        BeanUtils.copyProperties(vO, bean);
-        reservationRepository.save(bean);
+    @Override
+    public ReservationEntity update(Long id, ReservationEntity object) {
+        return null;
     }
 
-    public ReservationDTO getById(Long id) {
-        Reservation original = requireOne(id);
-        return toDTO(original);
-    }
+    @Override
+    public void deleteById(Long id) {
 
-    public Page<ReservationDTO> query(ReservationQueryVO vO) {
-        throw new UnsupportedOperationException();
-    }
-
-    private ReservationDTO toDTO(Reservation original) {
-        ReservationDTO bean = new ReservationDTO();
-        BeanUtils.copyProperties(original, bean);
-        return bean;
-    }
-
-    private Reservation requireOne(Long id) {
-        return reservationRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Resource not found: " + id));
     }
 }

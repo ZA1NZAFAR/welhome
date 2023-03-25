@@ -1,54 +1,33 @@
-package main.java.fr.efrei.database_service.service;
+package fr.efrei.database_service.service;
 
-import main.java.fr.efrei.database_service.entity.Property;
-import main.java.fr.efrei.database_service.repository.PropertyRepository;
-import org.springframework.beans.BeanUtils;
+import fr.efrei.database_service.entity.PropertyEntity;
+import fr.efrei.database_service.repository.PropertyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.util.NoSuchElementException;
-
 @Service
-public class PropertyService {
+public class PropertyService implements CRUD<PropertyEntity, Long>{
 
     @Autowired
     private PropertyRepository propertyRepository;
 
-    public Long save(PropertyVO vO) {
-        Property bean = new Property();
-        BeanUtils.copyProperties(vO, bean);
-        bean = propertyRepository.save(bean);
-        return bean.getPropertyId();
+    @Override
+    public PropertyEntity save(PropertyEntity object) {
+        return null;
     }
 
-    public void delete(Long id) {
-        propertyRepository.deleteById(id);
+    @Override
+    public PropertyEntity findById(Long id) {
+        return null;
     }
 
-    public void update(Long id, PropertyUpdateVO vO) {
-        Property bean = requireOne(id);
-        BeanUtils.copyProperties(vO, bean);
-        propertyRepository.save(bean);
+    @Override
+    public PropertyEntity update(Long id, PropertyEntity object) {
+        return null;
     }
 
-    public PropertyDTO getById(Long id) {
-        Property original = requireOne(id);
-        return toDTO(original);
-    }
+    @Override
+    public void deleteById(Long id) {
 
-    public Page<PropertyDTO> query(PropertyQueryVO vO) {
-        throw new UnsupportedOperationException();
-    }
-
-    private PropertyDTO toDTO(Property original) {
-        PropertyDTO bean = new PropertyDTO();
-        BeanUtils.copyProperties(original, bean);
-        return bean;
-    }
-
-    private Property requireOne(Long id) {
-        return propertyRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Resource not found: " + id));
     }
 }

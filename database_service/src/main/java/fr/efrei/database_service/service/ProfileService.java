@@ -1,72 +1,71 @@
 package fr.efrei.database_service.service;
 
 
-import fr.efrei.database_service.entity.Profile;
+import fr.efrei.database_service.entity.ProfileEntity;
 import fr.efrei.database_service.repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
-public class ProfileService {
+public class ProfileService implements CRUD<ProfileEntity, String> {
 
+    //CRUD
     @Autowired
     private ProfileRepository profileRepository;
 
-    public List<Profile> findAll() {
-        return profileRepository.findAll();
-    }
-
-    public Optional<Profile> findByEmail(String email) {
-        return profileRepository.findById(email);
-    }
-
-    public Profile save(Profile profile) {
+    @Override
+    public ProfileEntity save(ProfileEntity profile) {
         return profileRepository.save(profile);
     }
 
-    public void deleteByEmail(String email) {
-        profileRepository.deleteById(email);
+    @Override
+    public ProfileEntity findById(String id) {
+        return profileRepository.findById(id).orElse(null);
     }
 
-    public Profile update(String email, Profile profile) {
+
+    @Override
+    public ProfileEntity update(String email, ProfileEntity profile) {
         profile.setEmail(email);
         return profileRepository.save(profile);
     }
 
-    public List<Profile> findByLastName(String lastName) {
-        return profileRepository.findByLastName(lastName);
-    }
-
-    public List<Profile> findByFirstName(String firstName) {
-        return profileRepository.findByFirstName(firstName);
-    }
-
-    public void delete(String id) {
+    @Override
+    public void deleteById(String id) {
         profileRepository.deleteById(id);
     }
 
-    public ProfileDTO getById(String id) {
-        Profile original = requireOne(id);
-        return toDTO(original);
+
+    public List<ProfileEntity> findAll() {
+        return profileRepository.findAll();
     }
 
-    public Page<ProfileDTO> query(ProfileQueryVO vO) {
-        throw new UnsupportedOperationException();
+    public List<ProfileEntity> findByLastName(String lastName) {
+        return profileRepository.findByLastName(lastName);
     }
 
-    private ProfileDTO toDTO(Profile original) {
-        ProfileDTO bean = new ProfileDTO();
-        BeanUtils.copyProperties(original, bean);
-        return bean;
+    public List<ProfileEntity> findByFirstName(String firstName) {
+        return profileRepository.findByFirstName(firstName);
     }
 
-    private Profile requireOne(String id) {
-        return profileRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Resource not found: " + id));
+    public List<ProfileEntity> findByPhoneNumber(String phoneNumber) {
+        return profileRepository.findByPhoneNumber(phoneNumber);
     }
+
+    public List<ProfileEntity> findByBirthDate(Date birthDate) {
+        return profileRepository.findByBirthDate(birthDate);
+    }
+
+    public List<ProfileEntity> findByBirthDateBetween(Date birthDate1, Date birthDate2) {
+        return profileRepository.findByBirthDateBetween(birthDate1, birthDate2);
+    }
+
+    public List<ProfileEntity> findByGender(String gender) {
+        return profileRepository.findByGender(gender);
+    }
+
 }
 
