@@ -1,47 +1,71 @@
 package fr.efrei.database_service.service;
 
 
-import fr.efrei.database_service.entity.Profile;
+import fr.efrei.database_service.entity.ProfileEntity;
 import fr.efrei.database_service.repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class ProfileService {
+public class ProfileService implements CRUD<ProfileEntity, String> {
 
+    //CRUD
     @Autowired
     private ProfileRepository profileRepository;
 
-    public List<Profile> findAll() {
-        return profileRepository.findAll();
-    }
-
-    public Optional<Profile> findByEmail(String email) {
-        return profileRepository.findById(email);
-    }
-
-    public Profile save(Profile profile) {
+    @Override
+    public ProfileEntity save(ProfileEntity profile) {
         return profileRepository.save(profile);
     }
 
-    public void deleteByEmail(String email) {
-        profileRepository.deleteById(email);
+    @Override
+    public ProfileEntity findById(String id) {
+        return profileRepository.findById(id).orElse(null);
     }
 
-    public Profile update(String email, Profile profile) {
+
+    @Override
+    public ProfileEntity update(String email, ProfileEntity profile) {
         profile.setEmail(email);
         return profileRepository.save(profile);
     }
 
-    public List<Profile> findByLastName(String lastName) {
+    @Override
+    public void deleteById(String id) {
+        profileRepository.deleteById(id);
+    }
+
+
+    public List<ProfileEntity> findAll() {
+        return profileRepository.findAll();
+    }
+
+    public List<ProfileEntity> findByLastName(String lastName) {
         return profileRepository.findByLastName(lastName);
     }
 
-    public List<Profile> findByFirstName(String firstName) {
+    public List<ProfileEntity> findByFirstName(String firstName) {
         return profileRepository.findByFirstName(firstName);
     }
+
+    public List<ProfileEntity> findByPhoneNumber(String phoneNumber) {
+        return profileRepository.findByPhoneNumber(phoneNumber);
+    }
+
+    public List<ProfileEntity> findByBirthDate(Date birthDate) {
+        return profileRepository.findByBirthDate(birthDate);
+    }
+
+    public List<ProfileEntity> findByBirthDateBetween(Date birthDate1, Date birthDate2) {
+        return profileRepository.findByBirthDateBetween(birthDate1, birthDate2);
+    }
+
+    public List<ProfileEntity> findByGender(String gender) {
+        return profileRepository.findByGender(gender);
+    }
+
 }
 
