@@ -29,12 +29,19 @@ app.get(
   "/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/login" }),
   (req, res) => {
-    // Generate a JWT token and send it to the frontend
+    // Generate a JWT token
     const token = jwt.sign({ user: req.user }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
-    const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:4200";
-    res.redirect(`${FRONTEND_URL}/login?token=${token}`);
+
+    // Send the JWT token to the frontend using a postMessage
+    const script = `
+      <script>
+        window.opener.postMessage('${token}', '*');
+        window.close();
+      </script>
+    `;
+    res.send(script);
   }
 );
 
