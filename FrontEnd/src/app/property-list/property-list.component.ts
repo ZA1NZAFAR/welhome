@@ -1,34 +1,25 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { AuthService } from '../core/auth/auth.service';
+import { IProperty } from '../core/property/property.model';
+import { PropertyService } from '../core/property/property.service';
 
-interface IProperty {
-  location: string,
-  prix: number,
-  area: number
-}
 @Component({
   selector: 'app-property-list',
   templateUrl: './property-list.component.html',
   styleUrls: ['./property-list.component.scss']
 })
 export class PropertyListComponent implements OnInit {
-  public properties: IProperty[] = [
-    {
-      location: 'Paris',
-      prix: 100,
-      area: 100
-    },
-    {
-      location: 'Lyon',
-      prix: 200,
-      area: 50
-    }
-  ];
+  properties: IProperty[] = [];
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private propertyService: PropertyService
   ) { }
 
   ngOnInit(): void {
+    this.propertyService.getProperties().subscribe((properties: IProperty[]) => {
+      this.properties = properties;
+    });
   }
 
   get isLoggedIn(): boolean {
