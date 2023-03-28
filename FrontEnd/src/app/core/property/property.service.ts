@@ -38,6 +38,6 @@ export class PropertyService {
   }
 
   getProperties(): BehaviorSubject<IProperty[]> {
-    return this.getMockProperty();
+    return this.getMockProperty(); // should use http client to get data from server
   }
 }
