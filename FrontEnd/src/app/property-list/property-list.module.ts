@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SearchBarComponent } from './search-bar/search-bar.component';
-import { HomepageComponent } from './homepage.component';
+import { PropertyListComponent } from './property-list.component';
 import { PropertyCardComponent } from './property-card/property-card.component';
 
 @NgModule({
   declarations: [
     SearchBarComponent,
-    HomepageComponent,
+    PropertyListComponent,
     PropertyCardComponent
   ],
   imports: [
     CommonModule
   ]
 })
-export class HomepageModule { }
+export class PropertyListModule { }

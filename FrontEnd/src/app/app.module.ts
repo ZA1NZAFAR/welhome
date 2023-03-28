@@ -5,8 +5,7 @@ import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FooterComponent } from './commons/footer/footer.component';
 import { NavbarComponent } from './commons/navbar/navbar.component';
-import { HostsModule } from './hosts/hosts.module';
-import { HomepageModule } from './homepage/homepage.module';
+import { PropertyListModule } from './property-list/property-list.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthComponent } from './core/auth/auth.component';
 
@@ -21,8 +20,7 @@ import { AuthComponent } from './core/auth/auth.component';
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-    HostsModule,
-    HomepageModule,
+    PropertyListModule,
     BrowserAnimationsModule
   ],
   providers: [],

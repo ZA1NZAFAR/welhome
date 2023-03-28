@@ -7,11 +7,11 @@ interface IProperty {
   area: number
 }
 @Component({
-  selector: 'app-homepage',
-  templateUrl: './homepage.component.html',
-  styleUrls: ['./homepage.component.scss']
+  selector: 'app-property-list',
+  templateUrl: './property-list.component.html',
+  styleUrls: ['./property-list.component.scss']
 })
-export class HomepageComponent implements OnInit {
+export class PropertyListComponent implements OnInit {
   public properties: IProperty[] = [
     {
       location: 'Paris',
