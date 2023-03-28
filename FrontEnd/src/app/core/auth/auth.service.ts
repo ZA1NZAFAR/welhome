@@ -3,7 +3,7 @@ import jwtDecode, { JwtPayload } from 'jwt-decode';
 
 // This is the interface for the payload of the token (temp)
 interface ITokenPayload extends JwtPayload {
-  user_type?: string;
+  user_type?: 'user' | 'host';
   email?: string;
   name?: string;
 }
@@ -81,6 +81,10 @@ export class AuthService implements OnInit {
       return undefined;
     }
     return this._payload.user_type;
+  }
+
+  get isHost(): boolean {
+    return this.userType === 'host';
   }
 
   get isExpired(): boolean {
