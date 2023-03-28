@@ -1,64 +1,12 @@
 <div class='main-body'>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
-  <div>homepage works!</div>
+  <div>{{this.isLoggedIn}}</div>
+  <app-search-bar></app-search-bar>
+  
+  <div *ngFor="let property of properties; index as i">
+    <app-property-card
+      [location]="property.location"
+      [prix]="property.prix"
+      [area]="property.area">
+    </app-property-card>
+  </div>
 </div>
