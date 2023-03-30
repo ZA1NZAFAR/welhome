@@ -1,8 +1,10 @@
 <div>
-  <button type="button" class="btn btn-primary">Add</button>
-  <div *ngFor="let property of properties; index as i">
-    <app-host-property-card
-      [property]="property">
-    </app-host-property-card>
+  <button type='button' class='btn btn-primary'>Add</button>
+  <div class='d-flex flex-column mb-3'>
+    <div class='p-2' *ngFor='let property of properties; index as i'>
+      <app-host-property-card
+        [property]='property'>
+      </app-host-property-card>
+    </div>
   </div>
 </div>

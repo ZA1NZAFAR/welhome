@@ -1,5 +1,13 @@
-<div>
-  <div>{{property.city}}</div>
-  <div>{{property.surface_area}}</div>
-  <div>{{property.price}}</div>
+<div class='row'>
+  <div class='col-md-3'>
+    <img src='{{property.image_url}}' alt='property image' class='img-thumbnail photo-thumbnail'>
+  </div>
+  <div class='col-md-7'>
+    <div>{{property.city}}</div>
+    <div>{{property.surface_area}}</div>
+    <div>{{property.price}}</div>
+  </div>
+  <div class='col-md-2'>
+    <button class='' type='button' class='btn btn-primary'>Details</button>
+  </div>
 </div>
