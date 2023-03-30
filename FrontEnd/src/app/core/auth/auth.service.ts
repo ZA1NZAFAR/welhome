@@ -1,13 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
 import jwtDecode, { JwtPayload } from 'jwt-decode';
-
-// This is the interface for the payload of the token (temp)
-interface ITokenPayload extends JwtPayload {
-  user_type?: 'user' | 'host';
-  email?: string;
-  name?: string;
-}
+import { IProfile, ITokenPayload } from './auth.model'
 
 @Injectable({
   providedIn: 'root'
@@ -23,13 +17,17 @@ export class AuthService implements OnInit {
     }
    * payload:
     {
-      "user_type": "user",
-      "name": "Zain Zafar",
+      "email": "zain.zafar@gmail.com",
+      "first_name": "Zain",
+      "last_name": "Zafar",
+      "birth_date": "01/01/2000",
+      "phone_number": "0123456789",
+      "gender": "Male",
       "iat": 1675239022,
       "exp": 1716239022
     }
    */
-  private _token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3R5cGUiOiJ1c2VyIiwibmFtZSI6IlphaW4gWmFmYXIiLCJpYXQiOjE2NzUyMzkwMjIsImV4cCI6MTcxNjIzOTAyMn0.h7bOzdxURNU0qHWlAc0ufMcY7yY3rOcA_AnMjVGWwvo';
+  private _token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InphaW4uemFmYXJAZ21haWwuY29tIiwiZmlyc3RfbmFtZSI6IlphaW4iLCJsYXN0X25hbWUiOiJaYWZhciIsImJpcnRoX2RhdGUiOiIwMS8wMS8yMDAwIiwicGhvbmVfbnVtYmVyIjoiMDEyMzQ1Njc4OSIsImdlbmRlciI6Ik1hbGUiLCJpYXQiOjE2NzUyMzkwMjIsImV4cCI6MTcxNjIzOTAyMn0.IW6M5wQBx9iaYlMp1463W8KUMrn965H75mNVuX7Xptk';
   private async _mockLogin(): Promise<string> {
     return this._token;
   }
@@ -53,7 +51,7 @@ export class AuthService implements OnInit {
   async login(): Promise<void> {
     try {
       const token = await this._mockLogin();
-      this._payload = jwtDecode<JwtPayload>(token);
+      this._payload = jwtDecode<ITokenPayload>(token);
       if (!this.isValid(this._payload)) {
         throw new Error('Invalid token');
       }
@@ -61,6 +59,20 @@ export class AuthService implements OnInit {
     } catch (err) {
       this.logout();
       console.error(err);
+    }
+  }
+
+  get profile(): IProfile | null {
+    if (!this._payload) {
+      return null;
+    }
+    return {
+      email: this._payload.email,
+      first_name: this._payload.first_name,
+      last_name: this._payload.last_name,
+      birth_date: new Date(this._payload.birth_date),
+      phone_number: this._payload.phone_number,
+      gender: this._payload.gender
     }
   }
 
@@ -74,23 +86,6 @@ export class AuthService implements OnInit {
     return !!this._payload;
   }
 
-  get userName(): string | undefined {
-    if (!this._payload) {
-      return undefined;
-    }
-    return this._payload.name;
-  }
-
-  get userType(): string | undefined {
-    if (!this._payload) {
-      return undefined;
-    }
-    return this._payload.user_type;
-  }
-
-  get isHost(): boolean {
-    return this.userType === 'host';
-  }
 
   get isExpired(): boolean {
     if (!this.isValid(this._payload)) {
