@@ -8,7 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class PropertyCardComponent implements OnInit {
 
   @Input() location: string = '';
-  @Input() prix: number = 0;
+  @Input() price: number = 0;
   @Input() area: number = 0;
 
   constructor() { }

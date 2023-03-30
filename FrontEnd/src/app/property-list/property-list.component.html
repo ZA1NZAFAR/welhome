@@ -4,9 +4,9 @@
   
   <div *ngFor="let property of properties; index as i">
     <app-property-card
-      [location]="property.location"
-      [prix]="property.prix"
-      [area]="property.area">
+      [city]="property.city"
+      [price]="property.price"
+      [surface_area]="property.surface_area">
     </app-property-card>
   </div>
 </div>
