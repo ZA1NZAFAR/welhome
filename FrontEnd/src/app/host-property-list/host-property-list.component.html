@@ -1,1 +1,8 @@
-<p>host-property-list works!</p>
+<div>
+  <button type="button" class="btn btn-primary">Add</button>
+  <div *ngFor="let property of properties; index as i">
+    <app-host-property-card
+      [property]="property">
+    </app-host-property-card>
+  </div>
+</div>
