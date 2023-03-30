@@ -8,6 +8,8 @@ import { NavbarComponent } from './commons/navbar/navbar.component';
 import { PropertyListModule } from './property-list/property-list.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
+import { HostPropertyListModule } from './host-property-list/host-property-list.module'
+import { ReservationListModule } from './reservation-list/reservation-list.module'
 
 @NgModule({
   declarations: [
@@ -21,6 +23,8 @@ import { HttpClientModule } from '@angular/common/http';
     NgbModule,
     PropertyListModule,
     BrowserAnimationsModule,
+    HostPropertyListModule,
+    ReservationListModule,
     HttpClientModule
   ],
   providers: [],
