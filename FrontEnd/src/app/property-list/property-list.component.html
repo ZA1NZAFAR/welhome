@@ -1,12 +1,9 @@
 <div class='main-body'>
-  <div>{{this.isLoggedIn}}</div>
   <app-search-bar></app-search-bar>
   
   <div *ngFor="let property of properties; index as i">
     <app-property-card
-      [city]="property.city"
-      [price]="property.price"
-      [surface_area]="property.surface_area">
+      [property]="property">
     </app-property-card>
   </div>
 </div>
