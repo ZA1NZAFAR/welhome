@@ -15,8 +15,8 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  get isHost(): boolean {
-    return this.authService.isHost;
+  get isLoggedIn(): boolean {
+    return this.authService.isLoggedIn;
   }
 
   async login(): Promise<void> {

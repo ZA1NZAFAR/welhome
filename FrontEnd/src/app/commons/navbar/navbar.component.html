@@ -1,7 +1,6 @@
 <div>
-  <p>navbar works!</p>
-  <button type="button" class="btn btn-primary" (click)="this.login()">Login</button>
-  <button type="button" class="btn btn-danger" (click)="this.logout()">Logout</button>
+  <button type="button" class="btn btn-primary" (click)="this.login()" *ngIf="!this.isLoggedIn">Login</button>
+  <button type="button" class="btn btn-danger" (click)="this.logout()" *ngIf="this.isLoggedIn">Logout</button>
   <button type="button" class="btn btn-primary" routerLink="/myreservations" routerLinkActive="active" ariaCurrentWhenActive="page">My Reservations</button>
   <button type="button" class="btn btn-primary" routerLink="/myproperties" routerLinkActive="active" ariaCurrentWhenActive="page">My Properties</button>
 </div>
