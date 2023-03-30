@@ -19,4 +19,12 @@ export class NavbarComponent implements OnInit {
     return this.authService.isHost;
   }
 
+  async login(): Promise<void> {
+    await this.authService.login();
+  }
+
+  logout(): void {
+    this.authService.logout();
+  }
+
 }
