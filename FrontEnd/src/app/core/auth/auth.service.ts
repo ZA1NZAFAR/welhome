@@ -1,4 +1,5 @@
 import { Injectable, OnInit } from '@angular/core';
+import { Router } from '@angular/router'
 import jwtDecode, { JwtPayload } from 'jwt-decode';
 
 // This is the interface for the payload of the token (temp)
@@ -24,17 +25,20 @@ export class AuthService implements OnInit {
     {
       "user_type": "user",
       "name": "Zain Zafar",
-      "iat": 1716239022
+      "iat": 1675239022,
+      "exp": 1716239022
     }
    */
-  private _token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3R5cGUiOiJ1c2VyIiwibmFtZSI6IlphaW4gWmFmYXIiLCJpYXQiOjE3MTYyMzkwMjJ9.UmOOc4Qinh8TWmKTiA2BQIZimOwJnL3O2qL0OAEIPto';
+  private _token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3R5cGUiOiJ1c2VyIiwibmFtZSI6IlphaW4gWmFmYXIiLCJpYXQiOjE2NzUyMzkwMjIsImV4cCI6MTcxNjIzOTAyMn0.h7bOzdxURNU0qHWlAc0ufMcY7yY3rOcA_AnMjVGWwvo';
   private async _mockLogin(): Promise<string> {
     return this._token;
   }
 
   private _payload: ITokenPayload | null = null;
 
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
   ngOnInit(): void {
     const token = localStorage.getItem('token');
     if (token) {
@@ -63,6 +67,7 @@ export class AuthService implements OnInit {
   logout(): void {
     localStorage.removeItem('token');
     this._payload = null;
+    this.router.navigate(['/']);
   }
 
   get isLoggedIn(): boolean {
