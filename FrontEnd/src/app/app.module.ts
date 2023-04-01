@@ -10,6 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { HostPropertyListModule } from './host-property-list/host-property-list.module'
 import { ReservationListModule } from './reservation-list/reservation-list.module'
+import { PropertiesModule } from './properties/properties.module';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ReservationListModule } from './reservation-list/reservation-list.modul
     BrowserAnimationsModule,
     HostPropertyListModule,
     ReservationListModule,
-    HttpClientModule
+    HttpClientModule,
+    PropertiesModule
   ],
   providers: [],
   bootstrap: [AppComponent]
