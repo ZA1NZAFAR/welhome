@@ -9,7 +9,7 @@ import java.sql.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/reservation")
+@RequestMapping("/api/reservations")
 public class ReservationController {
 
     @Autowired
@@ -23,7 +23,7 @@ public class ReservationController {
     public ReservationEntity createReservation(@RequestBody ReservationEntity reservation) {
         return this.reservationService.save(reservation);
     }
-    @GetMapping("/id/{reservationId}")
+    @GetMapping("/{reservationId}")
     public ReservationEntity getReservationId(@PathVariable long reservationId) {
         return this.reservationService.findById(reservationId);
     }
@@ -51,15 +51,11 @@ public class ReservationController {
     public List<ReservationEntity> getConfirmedRenter(@PathVariable boolean confirmedRenter) {
         return this.reservationService.findByConfirmedRenter(confirmedRenter);
     }
-    @GetMapping("/totalPrice/{totalPrice}")
-    public List<ReservationEntity> getTotalPricer(@PathVariable float totalPrice) {
-        return this.reservationService.findByTotalPrice(totalPrice);
-    }
-    @PutMapping("/id/{reservationId}")
+    @PutMapping("/{reservationId}")
     public ReservationEntity updateReservation(@PathVariable long reservationId, @RequestBody ReservationEntity reservation) {
         return reservationService.update(reservationId, reservation);
     }
-    @DeleteMapping("/id/{reservationId}")
+    @DeleteMapping("/{reservationId}")
     public void deleteReservation(@PathVariable long reservationId) {
         this.reservationService.deleteById(reservationId);
     }

@@ -36,7 +36,6 @@ public class ProfileEntity {
     private Date registrationDate;
     @OneToMany(mappedBy = "ownerEmail")
     private List<PropertyEntity> properties;
-
     @OneToMany(mappedBy = "renterEmail")
     private List<ReservationEntity> reservations;
     @OneToMany(mappedBy = "reviewerEmail")
