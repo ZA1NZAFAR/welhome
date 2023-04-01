@@ -1,6 +1,7 @@
 <div>
+  <button type="button" class="btn btn-primary" routerLink="/homepage" routerLinkActive="active" ariaCurrentWhenActive="page">All Properties</button>
+  <button type="button" class="btn btn-primary" routerLink="/myreservations" routerLinkActive="active" ariaCurrentWhenActive="page" *ngIf="this.isLoggedIn">My Reservations</button>
+  <button type="button" class="btn btn-primary" routerLink="/myproperties" routerLinkActive="active" ariaCurrentWhenActive="page" *ngIf="this.isLoggedIn">My Properties</button>
   <button type="button" class="btn btn-primary" (click)="this.login()" *ngIf="!this.isLoggedIn">Login</button>
   <button type="button" class="btn btn-danger" (click)="this.logout()" *ngIf="this.isLoggedIn">Logout</button>
-  <button type="button" class="btn btn-primary" routerLink="/myreservations" routerLinkActive="active" ariaCurrentWhenActive="page">My Reservations</button>
-  <button type="button" class="btn btn-primary" routerLink="/myproperties" routerLinkActive="active" ariaCurrentWhenActive="page">My Properties</button>
 </div>
