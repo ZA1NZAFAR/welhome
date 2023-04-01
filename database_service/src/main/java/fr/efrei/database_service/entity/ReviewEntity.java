@@ -34,20 +34,17 @@ public class ReviewEntity {
     @Basic
     @Column(name = "reviewer_email")
     private String reviewerEmail;
-    @Basic
-    @Column(name = "comment")
-    private String comment;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ReviewEntity that = (ReviewEntity) o;
-        return id == that.id && Float.compare(that.rating, rating) == 0 && propertyId == that.propertyId && Objects.equals(reviewText, that.reviewText) && Objects.equals(publishDate, that.publishDate) && Objects.equals(image, that.image) && Objects.equals(reviewerEmail, that.reviewerEmail) && Objects.equals(comment, that.comment);
+        return id == that.id && Float.compare(that.rating, rating) == 0 && propertyId == that.propertyId && Objects.equals(reviewText, that.reviewText) && Objects.equals(publishDate, that.publishDate) && Objects.equals(image, that.image) && Objects.equals(reviewerEmail, that.reviewerEmail);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, rating, reviewText, publishDate, image, propertyId, reviewerEmail, comment);
+        return Objects.hash(id, rating, reviewText, publishDate, image, propertyId, reviewerEmail);
     }
 }

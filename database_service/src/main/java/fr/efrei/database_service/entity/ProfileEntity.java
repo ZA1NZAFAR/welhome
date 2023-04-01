@@ -1,5 +1,6 @@
 package fr.efrei.database_service.entity;
 
+import fr.efrei.database_service.dto.ProfileDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -55,4 +56,17 @@ public class ProfileEntity {
     public int hashCode() {
         return Objects.hash(email, firstName, lastName, birthDate, phoneNumber, gender, registrationDate);
     }
+
+    public ProfileDTO toDTO() {
+        ProfileDTO dto = new ProfileDTO();
+        dto.setEmail(this.email);
+        dto.setFirstName(this.firstName);
+        dto.setLastName(this.lastName);
+        dto.setBirthDate(this.birthDate);
+        dto.setPhoneNumber(this.phoneNumber);
+        dto.setGender(this.gender);
+        dto.setRegistrationDate(this.registrationDate);
+        return dto;
+    }
+
 }

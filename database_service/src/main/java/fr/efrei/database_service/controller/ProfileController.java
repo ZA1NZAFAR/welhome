@@ -1,5 +1,7 @@
 package fr.efrei.database_service.controller;
 
+import fr.efrei.database_service.dto.ProfileDTO;
+import fr.efrei.database_service.tools.Mapper;
 import fr.efrei.database_service.entity.ProfileEntity;
 import fr.efrei.database_service.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +22,8 @@ public class ProfileController {
         return this.profileService.save(user);
     }
     @GetMapping("/{email}")
-    public ProfileEntity getUser(@PathVariable String email) {
-        return this.profileService.findById(email);
+    public ProfileDTO getUser(@PathVariable String email) {
+        return Mapper.convertToDto(this.profileService.findById(email), ProfileDTO.class);
     }
 
     @PutMapping("/{email}")

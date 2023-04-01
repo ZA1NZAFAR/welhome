@@ -30,13 +30,6 @@ public interface PropertyRepository extends JpaRepository<PropertyEntity, Long> 
     List<PropertyEntity> findByConstructionDate(Date construction_date);
 
     List<PropertyEntity> findByPublishDate(Date publish_date);
-
-    List<PropertyEntity> findByArea(float area);
-
-    List<PropertyEntity> findByEmail(String email);
-
-    List<PropertyEntity> findByPropertyType(String property_type);
-
     List<PropertyEntity> findByZipCode(int zip_code);
 
 }

@@ -91,24 +91,4 @@ public class PropertyController {
         return this.propertyService.findByPublishDate(publish_date);
     }
 
-    @GetMapping({"/area/{area}"})
-    public List<PropertyEntity> getPropertyByArea(@PathVariable float area){
-        return this.propertyService.findByArea(area);
-    }
-
-    @GetMapping({"/email/{email}"})
-    public List<PropertyEntity> getPropertyByEmail(@PathVariable String email){
-        return this.propertyService.findByEmail(email);
-    }
-
-    @GetMapping({"/property_type/{property_type}"})
-    public List<PropertyEntity> getPropertyByPropertyType(@PathVariable String property_type){
-        return this.propertyService.findByEmail(property_type);
-    }
-
-    @GetMapping({"/zip_code/{zip_code}"})
-    public List<PropertyEntity> getPropertyByZipCode(@PathVariable String zip_code){
-        return this.propertyService.findByEmail(zip_code);
-    }
-
 }
