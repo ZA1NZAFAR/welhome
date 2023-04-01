@@ -1,15 +1,11 @@
 package fr.efrei.database_service.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.sql.Date;
 import java.util.Objects;
 
 @Entity
-@Getter
-@Setter
 @Table(name = "reservation", schema = "public", catalog = "welhome_dev")
 public class ReservationEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,6 +33,70 @@ public class ReservationEntity {
     @Basic
     @Column(name = "total_price")
     private Float totalPrice;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getPropertyId() {
+        return propertyId;
+    }
+
+    public void setPropertyId(long propertyId) {
+        this.propertyId = propertyId;
+    }
+
+    public String getRenterEmail() {
+        return renterEmail;
+    }
+
+    public void setRenterEmail(String renterEmail) {
+        this.renterEmail = renterEmail;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public boolean isConfirmedOwner() {
+        return confirmedOwner;
+    }
+
+    public void setConfirmedOwner(boolean confirmedOwner) {
+        this.confirmedOwner = confirmedOwner;
+    }
+
+    public boolean isConfirmedRenter() {
+        return confirmedRenter;
+    }
+
+    public void setConfirmedRenter(boolean confirmedRenter) {
+        this.confirmedRenter = confirmedRenter;
+    }
+
+    public Float getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Float totalPrice) {
+        this.totalPrice = totalPrice;
+    }
 
     @Override
     public boolean equals(Object o) {

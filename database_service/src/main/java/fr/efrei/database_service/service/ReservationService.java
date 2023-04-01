@@ -5,6 +5,7 @@ import fr.efrei.database_service.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 
 @Service
@@ -35,6 +36,28 @@ public class ReservationService implements CRUD<ReservationEntity, Long> {
     public List<ReservationEntity> findByPropertyId (long propertyId) {
         return this.reservationRepository.findByPropertyId(propertyId);
     }
+    public List<ReservationEntity> findByRenterEmail (String renterEmail) {
+        return this.reservationRepository.findByRenterEmail(renterEmail);
+    }
+
+    public List<ReservationEntity> findByStartDate (Date startDate) {
+        return this.reservationRepository.findByStartDate(startDate);
+    }
+    public List<ReservationEntity> findByEndDate (Date endDate) {
+        return this.reservationRepository.findByEndDate(endDate);
+    }
+    public List<ReservationEntity> findByConfirmedOwner (boolean confirmedOwner) {
+        return this.reservationRepository.findByConfirmedOwner(confirmedOwner);
+    }
+
+    public List<ReservationEntity> findByConfirmedRenter (boolean confirmedRenter) {
+        return this.reservationRepository.findByConfirmedRenter(confirmedRenter);
+    }
+
+    public List<ReservationEntity> findByTotalPrice (float totalPrice) {
+        return this.reservationRepository.findByTotalPrice(totalPrice);
+    }
+
     @Override
     public void deleteById(Long id) {
         reservationRepository.deleteById(id);
