@@ -11,7 +11,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name = "property", schema = "public", catalog = "welhome_dev")
+@Table(name = "property")
 public class PropertyEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

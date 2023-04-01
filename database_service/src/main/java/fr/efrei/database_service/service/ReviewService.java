@@ -14,21 +14,22 @@ public class ReviewService implements CRUD<ReviewEntity, Long> {
 
     @Override
     public ReviewEntity save(ReviewEntity object) {
-        return null;
+        return reviewRepository.save(object);
     }
 
     @Override
     public ReviewEntity findById(Long id) {
-        return null;
+        return reviewRepository.findById(id).orElse(null);
     }
 
     @Override
     public ReviewEntity update(Long id, ReviewEntity object) {
-        return null;
+        object.setId(id);
+        return reviewRepository.save(object);
     }
 
     @Override
     public void deleteById(Long id) {
-
+        reviewRepository.deleteById(id);
     }
 }
