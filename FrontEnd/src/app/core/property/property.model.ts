@@ -1,10 +1,11 @@
 export interface IProperty {
+  id:number,
   title: string,
   description: string,
   property_catergory: 'House' | 'Apartment' | 'Room',
   address: string,
   city: string,
-  state?: string,
+  region?: string,
   country: string,
   price: number,
   surface_area: number,

@@ -1,13 +1,16 @@
-<div class='row'>
-  <div class='col-md-3'>
-    <img src='{{property.image_url}}' alt='property image' class='img-thumbnail photo-thumbnail'>
-  </div>
-  <div class='col-md-7'>
-    <div>{{property.city}}</div>
-    <div>{{property.surface_area}}</div>
-    <div>{{property.price}}</div>
-  </div>
-  <div class='col-md-2'>
-    <button class='' type='button' class='btn btn-primary'>Details</button>
+<div class="border p-3">
+  <div class="row">
+    <div class="col-md-3">
+      <img src="{{property.image_url}}" alt="Property image" class="img-thumbnail photo-thumbnail">
+    </div>
+    <div class="col-md-7 d-flex align-items-start flex-column">
+      <h3>{{property.title}}</h3>
+      <p class="mb-1">{{property.description}}</p>
+      <p class="mb-1"><strong>Lieu :</strong> {{property.city}}</p>
+      <p class="mb-1"><strong>Surface :</strong> {{property.surface_area}} m²</p>
+      <p class="mb-1"><strong>Capacité:</strong> {{property.capacity}} personne(s)</p>
+      <p class="mb-1"><strong>Prix :</strong> {{property.price}} €</p>
+      <button class="btn btn-primary">Details</button>
+    </div>
   </div>
 </div>
