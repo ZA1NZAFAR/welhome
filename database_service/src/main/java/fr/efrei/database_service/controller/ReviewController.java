@@ -1,11 +1,14 @@
 package fr.efrei.database_service.controller;
 
+import fr.efrei.database_service.dto.ReviewDTO;
 import fr.efrei.database_service.entity.ReviewEntity;
 import fr.efrei.database_service.service.ReviewService;
+import fr.efrei.database_service.tools.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/reviews")
@@ -15,17 +18,17 @@ public class ReviewController {
     private ReviewService reviewService;
 
     @PostMapping
-    public ReviewEntity createReview(@RequestBody ReviewEntity reviewEntity) {
-        return this.reviewService.save(reviewEntity);
+    public ReviewDTO createReview(@RequestBody ReviewEntity reviewEntity) {
+        return Mapper.convertToDto(reviewService.save(reviewEntity), ReviewDTO.class);
     }
     @GetMapping("/{id}")
-    public ReviewEntity getReview(@PathVariable long id) {
-        return this.reviewService.findById(id);
+    public ReviewDTO getReview(@PathVariable long id) {
+        return Mapper.convertToDto(reviewService.findById(id), ReviewDTO.class);
     }
 
     @PutMapping("/{id}")
-    public ReviewEntity updateReview(@PathVariable long id, @RequestBody ReviewEntity reviewEntity) {
-        return reviewService.update(id, reviewEntity);
+    public ReviewDTO updateReview(@PathVariable long id, @RequestBody ReviewEntity reviewEntity) {
+        return Mapper.convertToDto(reviewService.update(id, reviewEntity), ReviewDTO.class);
     }
 
     @DeleteMapping("/{id}")
@@ -34,8 +37,8 @@ public class ReviewController {
     }
 
     @GetMapping
-    public List<ReviewEntity> getAllUsers() {
-        return this.reviewService.findAll();
+    public List<ReviewDTO> getAllUsers() {
+        return this.reviewService.findAll().stream().map(reviewEntity -> Mapper.convertToDto(reviewEntity, ReviewDTO.class)).collect(Collectors.toList());
     }
 
 }
