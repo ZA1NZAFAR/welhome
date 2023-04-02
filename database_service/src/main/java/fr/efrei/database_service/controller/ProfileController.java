@@ -24,8 +24,12 @@ public class ProfileController {
 
     @PostMapping
     @Operation(summary = "This endpoint will create a new user profile")
-    public ProfileDTO createUser(@RequestBody ProfileEntity user) {
-        return Mapper.convertToDto(this.profileService.save(user), ProfileDTO.class);
+    public ResponseEntity<ProfileDTO> createUser(@RequestBody ProfileEntity user) {
+        ProfileEntity userToCreate = profileService.save(user);
+        if (userToCreate == null)
+            return ResponseEntity.badRequest().build();
+        else
+            return ResponseEntity.ok(Mapper.convertToDto(userToCreate, ProfileDTO.class));
     }
 
     @GetMapping("/{email}")
@@ -40,14 +44,22 @@ public class ProfileController {
 
     @PutMapping("/{email}")
     @Operation(summary = "This endpoint will allow to update a user profile based on email")
-    public ProfileDTO updateUser(@PathVariable String email, @RequestBody ProfileEntity user) {
-        return Mapper.convertToDto(profileService.update(email, user), ProfileDTO.class);
+    public ResponseEntity<ProfileDTO> updateUser(@PathVariable String email, @RequestBody ProfileEntity user) {
+        ProfileEntity tmp = profileService.update(email, user);
+        if (tmp == null)
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(Mapper.convertToDto(tmp, ProfileDTO.class));
     }
 
     @DeleteMapping("/{email}")
     @Operation(summary = "This endpoint will allow to delete a user profile based on email")
-    public void deleteUser(@PathVariable String email) {
-        this.profileService.deleteById(email);
+    public ResponseEntity deleteUser(@PathVariable String email) {
+        try {
+            this.profileService.deleteById(email);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping
