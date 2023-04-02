@@ -81,6 +81,10 @@ public class PropertyService implements CRUD<PropertyEntity, Long>{
     public List<PropertyEntity> findByPublishDate(Date publishDate){
         return propertyRepository.findByPublishDate(publishDate);
     }
+
+    public List<PropertyEntity> findByOwnerEmail(String email){
+        return propertyRepository.findByOwnerEmail(email);
+    }
     public List<PropertyEntity> findByZipCode(int zip_code){
         return propertyRepository.findByZipCode(zip_code);
     }

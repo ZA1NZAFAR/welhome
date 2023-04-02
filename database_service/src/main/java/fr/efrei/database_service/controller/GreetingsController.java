@@ -9,7 +9,7 @@ public class GreetingsController {
 
     @GetMapping("/greetings")
     public String getGreetings() {
-        return "Hello, world!";
+        return "Hiiiii \uD83E\uDEF6 \uD83E\uDEF0 !";
     }
 }
 
