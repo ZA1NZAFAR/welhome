@@ -49,22 +49,33 @@ export class AuthService implements OnInit {
     }
   }
 
-  login(token: string = ''): void {
-    if (!environment.production) {
+  login(): void {
+    if (environment.production) {
       localStorage.setItem('token', this._token);
       this._payload = jwtDecode<ITokenPayload>(this._token);
       return;
     }
-    try {
-      this._payload = jwtDecode<ITokenPayload>(token);
-      if (!this.isValid(this._payload)) {
-        throw new Error('Invalid token');
-      }
-      localStorage.setItem('token', token);
-    } catch (err) {
-      this.logout();
-      console.error(err);
+    const loginWindow = window.open(environment.authUrl, 'Authentication', 'location=yes,height=300,width=300,scrollbars=yes,status=yes');
+    if (loginWindow !== null) {
+      loginWindow.focus();
+      window.addEventListener('message', event => {
+        const data = event.data;
+        if (data.token !== undefined) {
+          try {
+            this._payload = jwtDecode<ITokenPayload>(data.token);
+            if (!this.isValid(this._payload)) {
+              throw new Error('Invalid token');
+            }
+            localStorage.setItem('token', data.token);
+          } catch (err) {
+            this.logout();
+            console.error(err);
+          }
+          loginWindow.close();
+        }
+      });
     }
+    
   }
 
   get profile(): IProfile | null {

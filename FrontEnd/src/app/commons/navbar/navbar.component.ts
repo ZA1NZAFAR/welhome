@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/auth/auth.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-navbar',
@@ -11,8 +9,7 @@ import { environment } from 'src/environments/environment';
 export class NavbarComponent implements OnInit {
 
   constructor(
-    private authService: AuthService,
-    private router: Router
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -23,22 +20,7 @@ export class NavbarComponent implements OnInit {
   }
 
   login(): void {
-    if (!environment.production) {
-      this.authService.login();
-      return;
-    }
-    const loginWindow = window.open(environment.authUrl, 'Authentication', 'location=yes,height=300,width=300,scrollbars=yes,status=yes');
-    if (loginWindow !== null) {
-      loginWindow.focus();
-      window.addEventListener('message', event => {
-        const data = event.data;
-        if (data.token !== undefined) {
-          this.authService.login(data.token);
-          loginWindow.close();
-        }
-      });
-    }
-    
+    this.authService.login();    
   }
 
   logout(): void {
