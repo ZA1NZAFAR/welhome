@@ -7,6 +7,7 @@ import fr.efrei.database_service.tools.Mapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -29,15 +30,21 @@ public class ReservationController {
     }
     @PostMapping
     @Operation(summary = "This endPoint will allow to create a new booking for a specific renter ")
-    public ReservationDTO createReservation(@RequestBody ReservationEntity reservation) {
-        return Mapper.convertToDto(this.reservationService.save(reservation), ReservationDTO.class);
-
+    public ResponseEntity<ReservationDTO> createReservation(@RequestBody ReservationEntity reservation) {
+        ReservationEntity reservationToCreate = reservationService.save(reservation);
+        if (reservationToCreate == null)
+            return ResponseEntity.badRequest().build();
+        else
+            return ResponseEntity.ok(Mapper.convertToDto(reservationToCreate, ReservationDTO.class));
     }
     @GetMapping("/{reservationId}")
     @Operation(summary = "This endPoint will allow to display one of the bookings by providing the relevant booking id ")
-    public ReservationDTO getReservationId(@PathVariable long reservationId) {
-        return Mapper.convertToDto(this.reservationService.findById(reservationId), ReservationDTO.class);
-
+    public ResponseEntity<ReservationDTO> getReservationId(@PathVariable long reservationId) {
+        ReservationEntity reservation = this.reservationService.findById(reservationId);
+        if (reservation == null)
+            return ResponseEntity.notFound().build();
+        else
+            return ResponseEntity.ok(Mapper.convertToDto(reservation, ReservationDTO.class));
     }
     @GetMapping("/propertyId/{propertyId}")
     @Operation(summary = "This endPoint will allow to display all bookings with the relevant property id ")
@@ -76,13 +83,20 @@ public class ReservationController {
     }
     @PutMapping("/{reservationId}")
     @Operation(summary = "This endPoint will allow to update a booking by providing the relevant booking id")
-    public ReservationDTO updateReservation(@PathVariable long reservationId, @RequestBody ReservationEntity reservation) {
-        return Mapper.convertToDto(reservationService.update(reservationId, reservation), ReservationDTO.class);
-
+    public ResponseEntity<ReservationDTO> updateReservation(@PathVariable long reservationId, @RequestBody ReservationEntity reservation) {
+        ReservationEntity tmp = reservationService.update(reservationId, reservation);
+        if (tmp == null)
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(Mapper.convertToDto(tmp, ReservationDTO.class));
     }
     @DeleteMapping("/{reservationId}")
     @Operation(summary = "This endPoint will allow to delete a booking by providing the relevant booking id")
-    public void deleteReservation(@PathVariable long reservationId) {
-        this.reservationService.deleteById(reservationId);
+    public ResponseEntity deleteReservation(@PathVariable long reservationId) {
+        try {
+            this.reservationService.deleteById(reservationId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
