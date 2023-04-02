@@ -39,18 +39,18 @@ export class AuthService implements OnInit {
     private router: Router
   ) { }
   ngOnInit(): void {
+  }
+
+  startupToken(): void {
     const token = localStorage.getItem('token');
+    console.log(token);
     if (token) {
-      try {
-        this._payload = jwtDecode<ITokenPayload>(token);
-      } catch {
-        localStorage.removeItem('token');
-      }
+      this._payload = jwtDecode<ITokenPayload>(token);
     }
   }
 
   login(): void {
-    if (environment.production) {
+    if (!environment.production) {
       localStorage.setItem('token', this._token);
       this._payload = jwtDecode<ITokenPayload>(this._token);
       return;
