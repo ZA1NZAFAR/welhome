@@ -81,15 +81,6 @@ app.get('/auth/google/callback', async (req, res) => {
   
 app.post('/register', async (req, res) => {
   const { email, firstName, lastName, birthDate, phoneNumber, gender } = req.body;
-  const authHeader = req.headers.authorization;
-
-  // Check if Authorization header exists
-  if (!authHeader) {
-    return res.status(401).json({ message: 'No access token provided' });
-  }
-
-  // Extract token from Authorization header
-  const accessToken = authHeader.split(' ')[1];
 
   try {
     // Send a POST request to the /profiles endpoint to create a new profile
@@ -100,15 +91,8 @@ app.post('/register', async (req, res) => {
       birthDate,
       phoneNumber,
       gender,
-      //registrationDate,
     });
 
-    // Send a success response with the new user's data
-    const message = {
-      type: 'access_token',
-      data: { accessToken },
-    };
-    //res.send(`<script>window.opener.postMessage(${JSON.stringify(message)}, '${process.env.REACT_APP_FRONTEND_URL}'); window.close();</script>`);
     res.status(201).json(result.data);
   } catch (error) {
     console.error(error);
@@ -134,10 +118,10 @@ app.post('/checkToken', async (req, res) => {
     // Verify the token signature and decode its payload
     const decodedToken = jwt.verify(token, secretKey);
 
-    // Check if the token belongs to the right user (you could check this against your database)
-    if (decodedToken.userId !== req.user.id) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
+    // // Check if the token belongs to the right user (you could check this against your database)
+    // if (decodedToken.userId !== req.user.id) {
+    //   return res.status(401).json({ message: 'Unauthorized' });
+    // }
 
     // Check if the token is still valid (i.e., has not expired)
     if (decodedToken.exp < Date.now() / 1000) {
@@ -151,23 +135,6 @@ app.post('/checkToken', async (req, res) => {
     return res.status(401).json({ message: 'Token is invalid' });
   }
 });
-
-
-  
-  // async function findUserByEmail(email) {
-  //   try {
-  //     const result = await db.query('SELECT * FROM profile WHERE email = $1', [email]);
-  
-  //     if (result.rowCount > 0) {
-  //       return result.rows[0];
-  //     } else {
-  //       return null;
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //     return null;
-  //   }
-  // }
   
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
