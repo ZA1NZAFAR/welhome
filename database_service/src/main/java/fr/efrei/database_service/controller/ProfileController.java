@@ -4,6 +4,8 @@ import fr.efrei.database_service.dto.ProfileDTO;
 import fr.efrei.database_service.entity.ProfileEntity;
 import fr.efrei.database_service.service.ProfileService;
 import fr.efrei.database_service.tools.Mapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@Tag(name = "Profiles", description = "This API will allow us to perform a set of tasks related to the user profile: renter & owner")
 @RequestMapping("/api/profiles")
 public class ProfileController {
 
@@ -20,6 +23,7 @@ public class ProfileController {
     private ProfileService profileService;
 
     @PostMapping
+    @Operation(summary = "Say hi to the world")
     public ProfileDTO createUser(@RequestBody ProfileEntity user) {
         return Mapper.convertToDto(this.profileService.save(user), ProfileDTO.class);
     }
