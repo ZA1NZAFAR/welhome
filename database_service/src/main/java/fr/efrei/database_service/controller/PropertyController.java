@@ -7,6 +7,7 @@ import fr.efrei.database_service.tools.Mapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -23,26 +24,49 @@ public class PropertyController {
 
     @PostMapping
     @Operation(summary = "This endpoint will create a new property")
-    public PropertyDTO createProperty(@RequestBody PropertyEntity property){
-        return Mapper.convertToDto(this.propertyService.save(property), PropertyDTO.class);
+    public ResponseEntity<PropertyDTO> createProperty(@RequestBody PropertyEntity property){
+        PropertyEntity propertyToCreate = propertyService.save(property);
+        if(propertyToCreate ==null){
+            return ResponseEntity.badRequest().build();
+        }
+        else{
+            return ResponseEntity.ok(Mapper.convertToDto(propertyToCreate, PropertyDTO.class));
+        }
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "This endpoint will allow to retrieve a property based on id")
-    public PropertyDTO getProperty(@PathVariable Long id){
-        return Mapper.convertToDto(this.propertyService.findById(id), PropertyDTO.class);
+    public ResponseEntity<PropertyDTO> getProperty(@PathVariable Long id){
+        PropertyEntity propertyToGet = propertyService.findById(id);
+        if(propertyToGet == null){
+            return ResponseEntity.notFound().build();
+        }
+        else {
+            return ResponseEntity.ok(Mapper.convertToDto(propertyToGet, PropertyDTO.class));
+        }
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "This endpoint will allow to update a property based on id")
-    public PropertyDTO updateProperty(@PathVariable Long id, @RequestBody PropertyEntity property){
-        return Mapper.convertToDto(propertyService.update(id, property), PropertyDTO.class);
+    public ResponseEntity<PropertyDTO> updateProperty(@PathVariable Long id, @RequestBody PropertyEntity property){
+        PropertyEntity propertyToUpdate = propertyService.update(id, property);
+        if(propertyToUpdate == null){
+            return ResponseEntity.notFound().build();
+        }
+        else {
+            return ResponseEntity.ok(Mapper.convertToDto(propertyToUpdate, PropertyDTO.class));
+        }
     }
 
     @DeleteMapping({"/{id}"})
     @Operation(summary = "This endpoint will allow to delete a property based on id")
-    public void deleteProperty(@PathVariable Long id){
-        this.propertyService.deleteById(id);
+    public ResponseEntity<PropertyDTO> deleteProperty(@PathVariable Long id){
+        try{
+            this.propertyService.deleteById(id);
+            return ResponseEntity.ok().build();
+        } catch(Exception e){
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping

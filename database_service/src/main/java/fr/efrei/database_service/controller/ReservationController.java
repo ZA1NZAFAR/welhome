@@ -91,7 +91,7 @@ public class ReservationController {
     }
     @DeleteMapping("/{reservationId}")
     @Operation(summary = "This endPoint will allow to delete a booking by providing the relevant booking id")
-    public ResponseEntity deleteReservation(@PathVariable long reservationId) {
+    public ResponseEntity<ReservationDTO> deleteReservation(@PathVariable long reservationId) {
         try {
             this.reservationService.deleteById(reservationId);
             return ResponseEntity.ok().build();

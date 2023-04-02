@@ -53,7 +53,7 @@ public class ProfileController {
 
     @DeleteMapping("/{email}")
     @Operation(summary = "This endpoint will allow to delete a user profile based on email")
-    public ResponseEntity deleteUser(@PathVariable String email) {
+    public ResponseEntity<ProfileDTO> deleteUser(@PathVariable String email) {
         try {
             this.profileService.deleteById(email);
             return ResponseEntity.ok().build();
