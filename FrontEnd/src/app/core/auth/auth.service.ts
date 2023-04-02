@@ -2,6 +2,7 @@ import { Injectable, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
 import jwtDecode, { JwtPayload } from 'jwt-decode';
 import { IProfile, ITokenPayload } from './auth.model'
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -48,9 +49,13 @@ export class AuthService implements OnInit {
     }
   }
 
-  async login(): Promise<void> {
+  login(token: string = ''): void {
+    if (!environment.production) {
+      localStorage.setItem('token', this._token);
+      this._payload = jwtDecode<ITokenPayload>(this._token);
+      return;
+    }
     try {
-      const token = await this._mockLogin();
       this._payload = jwtDecode<ITokenPayload>(token);
       if (!this.isValid(this._payload)) {
         throw new Error('Invalid token');
