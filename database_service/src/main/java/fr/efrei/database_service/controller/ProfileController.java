@@ -5,6 +5,7 @@ import fr.efrei.database_service.entity.ProfileEntity;
 import fr.efrei.database_service.service.ProfileService;
 import fr.efrei.database_service.tools.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -22,9 +23,14 @@ public class ProfileController {
     public ProfileDTO createUser(@RequestBody ProfileEntity user) {
         return Mapper.convertToDto(this.profileService.save(user), ProfileDTO.class);
     }
+
     @GetMapping("/{email}")
-    public ProfileDTO getUser(@PathVariable String email) {
-        return Mapper.convertToDto(this.profileService.findById(email), ProfileDTO.class);
+    public ResponseEntity<ProfileDTO> getUser(@PathVariable String email) {
+        ProfileEntity user = this.profileService.findById(email);
+        if (user == null)
+            return ResponseEntity.notFound().build();
+        else
+            return ResponseEntity.ok(Mapper.convertToDto(user, ProfileDTO.class));
     }
 
     @PutMapping("/{email}")
