@@ -1,0 +1,9 @@
+<div class='main-body'>
+  <app-search-bar></app-search-bar>
+  
+  <div *ngFor="let property of properties; index as i">
+    <app-property-card
+      [property]="property">
+    </app-property-card>
+  </div>
+</div>
