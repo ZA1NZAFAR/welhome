@@ -4,37 +4,47 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Date;
 import java.util.Objects;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "review", schema = "public", catalog = "welhome")
+@Table(name = "review")
 public class ReviewEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "review_id")
-    private long reviewId;
+    @Column(name = "id")
+    private long id;
     @Basic
     @Column(name = "rating")
-    private Float rating;
+    private float rating;
     @Basic
-    @Column(name = "comment")
-    private String comment;
+    @Column(name = "review_text")
+    private String reviewText;
+    @Basic
+    @Column(name = "publish_date")
+    private Date publishDate;
+    @Basic
+    @Column(name = "image")
+    private String image;
     @Basic
     @Column(name = "property_id")
-    private int propertyId;
+    private long propertyId;
+    @Basic
+    @Column(name = "reviewer_email")
+    private String reviewerEmail;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ReviewEntity that = (ReviewEntity) o;
-        return reviewId == that.reviewId && propertyId == that.propertyId && Objects.equals(rating, that.rating) && Objects.equals(comment, that.comment);
+        return id == that.id && Float.compare(that.rating, rating) == 0 && propertyId == that.propertyId && Objects.equals(reviewText, that.reviewText) && Objects.equals(publishDate, that.publishDate) && Objects.equals(image, that.image) && Objects.equals(reviewerEmail, that.reviewerEmail);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(reviewId, rating, comment, propertyId);
+        return Objects.hash(id, rating, reviewText, publishDate, image, propertyId, reviewerEmail);
     }
 }

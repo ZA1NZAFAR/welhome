@@ -18,6 +18,8 @@ public class ProfileService implements CRUD<ProfileEntity, String> {
 
     @Override
     public ProfileEntity save(ProfileEntity profile) {
+        if (profileRepository.findById(profile.getEmail()).isPresent())
+            return null;
         return profileRepository.save(profile);
     }
 
@@ -29,12 +31,16 @@ public class ProfileService implements CRUD<ProfileEntity, String> {
 
     @Override
     public ProfileEntity update(String email, ProfileEntity profile) {
+        if (profileRepository.findById(email).isEmpty())
+            return null;
         profile.setEmail(email);
         return profileRepository.save(profile);
     }
 
     @Override
     public void deleteById(String id) {
+        if (!profileRepository.findById(id).isPresent())
+            throw new RuntimeException("Profile not found");
         profileRepository.deleteById(id);
     }
 
