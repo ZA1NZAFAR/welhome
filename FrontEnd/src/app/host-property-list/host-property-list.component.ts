@@ -31,6 +31,7 @@ export class HostPropertyListComponent implements OnInit {
   }
 
   openAddForm() {
-    this.modalService.open(PropertyFormComponent);
+    const modal = this.modalService.open(PropertyFormComponent);
+    modal.componentInstance.owner_email = this.authService.profile?.email;
   }
 }

@@ -1,19 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { propertyCategory } from 'src/app/core/property/property.model';
+import { IProperty, propertyCategory } from 'src/app/core/property/property.model';
+import * as _moment from 'moment';
 @Component({
   selector: 'app-property-form',
   templateUrl: './property-form.component.html',
-  styleUrls: ['./property-form.component.scss']
+  styleUrls: ['./property-form.component.scss'],
+  providers:[ { provide: MAT_DATE_LOCALE, useValue: 'fr' } ]
 })
 export class PropertyFormComponent implements OnInit {
   propertyGroup: FormGroup;
+  @Input() owner_email: string;
+
+  @Input() selectedProperty: IProperty;
+
   constructor(
-    public activeModal: NgbActiveModal
+    public activeModal: NgbActiveModal,
+    private adapter: DateAdapter<any>
   ) { }
 
   ngOnInit(): void {
+    this.adapter.setLocale('fr');
     this.propertyGroup = new FormGroup({
       title: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required]),
