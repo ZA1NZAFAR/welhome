@@ -13,14 +13,15 @@ export class NavbarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.authService.startupToken();
   }
 
   get isLoggedIn(): boolean {
     return this.authService.isLoggedIn;
   }
 
-  async login(): Promise<void> {
-    await this.authService.login();
+  login(): void {
+    this.authService.login();    
   }
 
   logout(): void {

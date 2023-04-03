@@ -1,0 +1,39 @@
+.photos {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .main-photo {
+    max-width: 500px;
+    margin-bottom: 20px;
+  }
+  
+  .maisons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    max-width: 500px;
+  }
+  
+  .small-photo {
+    max-width: 100px;
+    cursor: pointer;
+  }
+  
+  #next-btn {
+    margin-top: 20px;
+    font-size: 18px;
+    padding: 10px 20px;
+    background-color: #4c68af;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  #next-btn:hover {
+    background-color: #4c68af;
+  }
+  

@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "ngx-slick-carousel": "^15.0.0"
+  }
+}

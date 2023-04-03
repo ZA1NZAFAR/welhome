@@ -7,10 +7,7 @@ import { PropertyListComponent } from './property-list/property-list.component';
 import { ReservationListComponent } from './reservation-list/reservation-list.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'properties', pathMatch: 'full' },
-  { path: 'properties', 
-    component: PropertyListComponent
-  },
+  { path: '', component: PropertyListComponent },
   { path: 'properties/:id', component: PropertiesComponent },
   { path: 'myproperties',
     component: HostPropertyListComponent,
@@ -19,7 +16,7 @@ const routes: Routes = [
   { path: 'myreservations',
     component: ReservationListComponent,
     canActivate: [ AppGuard ] },
-  { path: '**', redirectTo: 'properties' }
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({

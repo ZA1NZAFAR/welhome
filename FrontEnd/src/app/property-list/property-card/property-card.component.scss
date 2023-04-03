@@ -1,0 +1,9 @@
+.photo-thumbnail{
+    width: 250px;
+    height: 250px;
+}
+.photo-thumbnail:hover {
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+
+  }

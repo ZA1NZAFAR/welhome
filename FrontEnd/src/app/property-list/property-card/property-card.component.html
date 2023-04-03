@@ -1,6 +1,6 @@
 <div>
-  <div>{{property.city}}</div>
-  <div>{{property.surface_area}}</div>
-  <div>{{property.price}}</div>
-  <button type="button" class="btn btn-primary" (click)="this.openDetails()">Details</button>
+  <img src="{{ property.image_url }}" alt="Property image" class="img-thumbnail photo-thumbnail" (click)="openDetails()">
+  <div>{{property.city}}, {{property.country}}</div>
+  <div>{{property.surface_area}} m²</div>
+  <div>{{property.price}} par nuit</div>
 </div>

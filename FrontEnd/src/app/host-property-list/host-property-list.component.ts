@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../core/auth/auth.service'
 import { IProperty } from '../core/property/property.model'
 import { PropertyService } from '../core/property/property.service'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { PropertyFormComponent } from './property-form/property-form.component';
 
 @Component({
   selector: 'app-host-property-list',
@@ -13,7 +15,8 @@ export class HostPropertyListComponent implements OnInit {
 
   constructor(
     private propertyService: PropertyService,
-    private authService: AuthService
+    private authService: AuthService,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
@@ -25,5 +28,10 @@ export class HostPropertyListComponent implements OnInit {
         }
       });
     });
+  }
+
+  openAddForm() {
+    const modal = this.modalService.open(PropertyFormComponent);
+    modal.componentInstance.owner_email = this.authService.profile?.email;
   }
 }
