@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ProfilesController {
-    @Value("${databaseService.url}")
+    @Value("${databaseService.url}/profiles")
     private String URL;
 
     @GetMapping("/api/profiles")

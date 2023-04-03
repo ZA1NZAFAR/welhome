@@ -1,16 +1,19 @@
 package fr.efrei.backend.utils;
 
 import fr.efrei.backend.entities.Profile;
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 
+@Slf4j
 public class ResponseGenerator<T> {
     public ResponseEntity<T> execute(String requestUrl, HttpMethod method, Class<T> dto) {
         // Create RestTemplate instance
         RestTemplate restTemplate = new RestTemplate();
-        System.out.println(requestUrl);
+        log.info("Sending HTTP " + method.name() + " request to: " + requestUrl);
 
         // Configure HTTP headers sent upon request
         HttpHeaders headers = new HttpHeaders();
