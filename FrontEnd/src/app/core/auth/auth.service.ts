@@ -2,6 +2,7 @@ import { Injectable, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
 import jwtDecode, { JwtPayload } from 'jwt-decode';
 import { IProfile, ITokenPayload } from './auth.model'
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -38,28 +39,43 @@ export class AuthService implements OnInit {
     private router: Router
   ) { }
   ngOnInit(): void {
+  }
+
+  startupToken(): void {
     const token = localStorage.getItem('token');
+    console.log(token);
     if (token) {
-      try {
-        this._payload = jwtDecode<ITokenPayload>(token);
-      } catch {
-        localStorage.removeItem('token');
-      }
+      this._payload = jwtDecode<ITokenPayload>(token);
     }
   }
 
-  async login(): Promise<void> {
-    try {
-      const token = await this._mockLogin();
-      this._payload = jwtDecode<ITokenPayload>(token);
-      if (!this.isValid(this._payload)) {
-        throw new Error('Invalid token');
-      }
-      localStorage.setItem('token', token);
-    } catch (err) {
-      this.logout();
-      console.error(err);
+  login(): void {
+    if (!environment.production) {
+      localStorage.setItem('token', this._token);
+      this._payload = jwtDecode<ITokenPayload>(this._token);
+      return;
     }
+    const loginWindow = window.open(environment.authUrl, 'Authentication', 'location=yes,height=300,width=300,scrollbars=yes,status=yes');
+    if (loginWindow !== null) {
+      loginWindow.focus();
+      window.addEventListener('message', event => {
+        const data = event.data;
+        if (data.token !== undefined) {
+          try {
+            this._payload = jwtDecode<ITokenPayload>(data.token);
+            if (!this.isValid(this._payload)) {
+              throw new Error('Invalid token');
+            }
+            localStorage.setItem('token', data.token);
+          } catch (err) {
+            this.logout();
+            console.error(err);
+          }
+          loginWindow.close();
+        }
+      });
+    }
+    
   }
 
   get profile(): IProfile | null {
