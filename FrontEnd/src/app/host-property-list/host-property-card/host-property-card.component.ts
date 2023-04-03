@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { IProperty } from 'src/app/core/property/property.model'
 
 @Component({
@@ -10,9 +11,14 @@ export class HostPropertyCardComponent implements OnInit {
 
   @Input() property: IProperty;
 
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
   }
 
+  goToProperty() {
+    this.router.navigate(['/properties', this.property.id]);
+  }
 }
