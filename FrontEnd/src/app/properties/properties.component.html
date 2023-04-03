@@ -1,3 +1,19 @@
 <div>
-  {{ this.propertyData.description }}
+  <div>
+    <ngx-slick-carousel class="carousel" [config]="slideConfig">
+      <div class="slide" *ngFor="let slide of slides">
+        <img src="{{ slide }}" alt="Maison" />
+      </div>
+    </ngx-slick-carousel>
+    
+    
+  </div>
+  <h4> {{this.propertyData.title}}</h4>
+  <p> {{ this.propertyData.description }}</p>
+  <p><strong> Lieu : </strong>{{ this.propertyData.city}}, {{ this.propertyData.country}} </p>
+  <p> <strong> Surface : </strong>{{ this.propertyData.surface_area}}</p>
+  <p> <strong> Nombre d'étage : </strong>{{ this.propertyData.floors}}</p>
+  <p> <strong> Nombre de personne au maximum : </strong>{{ this.propertyData.capacity}}</p>
+  <p> <strong> Prix : </strong>{{ this.propertyData.price}}</p>
+
 </div>
