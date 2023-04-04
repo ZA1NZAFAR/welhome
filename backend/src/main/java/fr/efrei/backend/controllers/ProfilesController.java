@@ -20,28 +20,35 @@ public class ProfilesController {
     @GetMapping("/api/profiles")
     public ResponseEntity<Profile[]> getUsers() {
         ResponseGenerator<Profile[]> generator = new ResponseGenerator<>();
-        ResponseEntity<Profile[]> result = generator.execute(URL, HttpMethod.GET, new ParameterizedTypeReference<Profile[]>() {});
+        ResponseEntity<Profile[]> result = generator.buildRequest(URL, HttpMethod.GET, new ParameterizedTypeReference<Profile[]>() {});
         return result;
     }
 
     @GetMapping("/api/profiles/{email}")
     public ResponseEntity<Profile> getUser(@PathVariable String email) {
         ResponseGenerator<Profile> generator = new ResponseGenerator<>();
-        ResponseEntity<Profile> result = generator.execute(URL.concat("/" + email), HttpMethod.GET, new ParameterizedTypeReference<Profile>() {});
-        return result;
-    }
-
-    @PutMapping("/api/profiles/{email}")
-    public ResponseEntity<Profile> putUser(@PathVariable String email, @RequestBody Profile user) {
-        ResponseGenerator<Profile> generator = new ResponseGenerator<>();
-        ResponseEntity<Profile> result = generator.execute(URL.concat("/" + email), HttpMethod.PUT, user, new ParameterizedTypeReference<Profile>() {});
+        ResponseEntity<Profile> result = generator.buildRequest(URL.concat("/" + email), HttpMethod.GET, new ParameterizedTypeReference<Profile>() {});
         return result;
     }
 
     @PostMapping("/api/profiles")
     public ResponseEntity<Profile> postUser(@RequestBody Profile user) {
         ResponseGenerator<Profile> generator = new ResponseGenerator<>();
-        ResponseEntity<Profile> result = generator.execute(URL, HttpMethod.POST, user, new ParameterizedTypeReference<Profile>() {});
+        ResponseEntity<Profile> result = generator.buildRequest(URL, HttpMethod.POST, user, new ParameterizedTypeReference<Profile>() {});
+        return result;
+    }
+
+    @PutMapping("/api/profiles/{email}")
+    public ResponseEntity<Profile> putUser(@PathVariable String email, @RequestBody Profile user) {
+        ResponseGenerator<Profile> generator = new ResponseGenerator<>();
+        ResponseEntity<Profile> result = generator.buildRequest(URL.concat("/" + email), HttpMethod.PUT, user, new ParameterizedTypeReference<Profile>() {});
+        return result;
+    }
+
+    @DeleteMapping("/api/profiles/{email}")
+    public ResponseEntity<Profile> deleteUser(@PathVariable String email) {
+        ResponseGenerator<Profile> generator = new ResponseGenerator<>();
+        ResponseEntity<Profile> result = generator.buildRequest(URL.concat("/" + email), HttpMethod.DELETE, new ParameterizedTypeReference<Profile>() {});
         return result;
     }
 }

@@ -13,11 +13,11 @@ import java.util.Collections;
 
 @Slf4j
 public class ResponseGenerator<T> {
-    public ResponseEntity<T> execute(String requestUrl, HttpMethod method, ParameterizedTypeReference<T> responseType) {
-        return execute(requestUrl, method, null, responseType);
+    public ResponseEntity<T> buildRequest(String requestUrl, HttpMethod method, ParameterizedTypeReference<T> responseType) {
+        return buildRequest(requestUrl, method, null, responseType);
     }
 
-    public ResponseEntity<T> execute(String requestUrl, HttpMethod method, T body, ParameterizedTypeReference<T> responseType) {
+    public ResponseEntity<T> buildRequest(String requestUrl, HttpMethod method, T body, ParameterizedTypeReference<T> responseType) {
         // Create RestTemplate instance
         RestTemplate restTemplate = new RestTemplate();
 
@@ -37,11 +37,11 @@ public class ResponseGenerator<T> {
         // Create HttpEntity, execute Http Request, create ResponseEntity serialize JSON body
         ResponseEntity<T> result;
 
-        // Executes GET, DELETE requests
+        // Executes GET and DELETE requests
         if (body == null) {
             HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
             result = restTemplate.exchange(requestUrl, method, entity, responseType);
-        // Executes POST, PUT requests
+        // Executes POST and PUT requests
         } else {
             HttpEntity<T> entity = new HttpEntity<>(body, headers);
             result = restTemplate.exchange(requestUrl, method, entity, responseType);
