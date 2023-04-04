@@ -1,0 +1,10 @@
+<div>
+    <div class='d-flex flex-column mb-3'>
+      <div class='p-2' *ngFor='let reservation of reservations; index as i'>
+        <app-reservation-card
+          [reservation]='reservation'>
+        </app-reservation-card>
+      </div>
+    </div>
+  </div>
+  
