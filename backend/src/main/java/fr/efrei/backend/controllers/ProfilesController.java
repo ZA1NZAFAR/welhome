@@ -18,7 +18,7 @@ public class ProfilesController {
     private String URL;
 
     @GetMapping("/api/profiles")
-    public ResponseEntity<Profile[]> all() {
+    public ResponseEntity<Profile[]> getUsers() {
         ResponseGenerator<Profile[]> generator = new ResponseGenerator<>();
         ResponseEntity<Profile[]> result = generator.execute(URL, HttpMethod.GET, new ParameterizedTypeReference<Profile[]>() {});
         return result;
@@ -35,6 +35,13 @@ public class ProfilesController {
     public ResponseEntity<Profile> putUser(@PathVariable String email, @RequestBody Profile user) {
         ResponseGenerator<Profile> generator = new ResponseGenerator<>();
         ResponseEntity<Profile> result = generator.execute(URL.concat("/" + email), HttpMethod.PUT, user, new ParameterizedTypeReference<Profile>() {});
+        return result;
+    }
+
+    @PostMapping("/api/profiles")
+    public ResponseEntity<Profile> postUser(@RequestBody Profile user) {
+        ResponseGenerator<Profile> generator = new ResponseGenerator<>();
+        ResponseEntity<Profile> result = generator.execute(URL, HttpMethod.POST, user, new ParameterizedTypeReference<Profile>() {});
         return result;
     }
 }

@@ -3,6 +3,7 @@ package fr.efrei.backend.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import fr.efrei.backend.entities.Profile;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -42,7 +43,7 @@ public class ResponseGenerator<T> {
             result = restTemplate.exchange(requestUrl, method, entity, responseType);
         // Executes POST, PUT requests
         } else {
-            HttpEntity<T> entity = new HttpEntity<>(body);
+            HttpEntity<T> entity = new HttpEntity<>(body, headers);
             result = restTemplate.exchange(requestUrl, method, entity, responseType);
         }
 
