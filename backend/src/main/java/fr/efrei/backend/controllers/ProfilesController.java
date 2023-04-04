@@ -2,12 +2,11 @@ package fr.efrei.backend.controllers;
 
 import fr.efrei.backend.entities.Profile;
 import fr.efrei.backend.utils.ResponseGenerator;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,9 +25,16 @@ public class ProfilesController {
     }
 
     @GetMapping("/api/profiles/{email}")
-    public ResponseEntity<Profile> one(@PathVariable String email) {
+    public ResponseEntity<Profile> getUser(@PathVariable String email) {
         ResponseGenerator<Profile> generator = new ResponseGenerator<>();
         ResponseEntity<Profile> result = generator.execute(URL.concat("/" + email), HttpMethod.GET, new ParameterizedTypeReference<Profile>() {});
+        return result;
+    }
+
+    @PutMapping("/api/profiles/{email}")
+    public ResponseEntity<Profile> putUser(@PathVariable String email, @RequestBody Profile user) {
+        ResponseGenerator<Profile> generator = new ResponseGenerator<>();
+        ResponseEntity<Profile> result = generator.execute(URL.concat("/" + email), HttpMethod.PUT, user, new ParameterizedTypeReference<Profile>() {});
         return result;
     }
 }
