@@ -6,6 +6,7 @@ const axios = require('axios');
 const db = require('./db');
 const jwt = require('jsonwebtoken');
 
+
 dotenv.config();
 
 const app = express();
@@ -35,6 +36,26 @@ app.get('/auth/google/callback', async (req, res) => {
       redirect_uri: process.env.GOOGLE_REDIRECT_URI,
     });
     googleClient.setCredentials(tokens);
+
+    // Refresh the access token every 5 minutes
+    const refreshAccessToken = async () => {
+      try {
+        // Use the refresh token to get a new access token
+        const { data } = await axios.post('https://accounts.google.com/o/oauth2/token', {
+          grant_type: 'refresh_token',
+          client_id: process.env.GOOGLE_CLIENT_ID,
+          client_secret: process.env.GOOGLE_CLIENT_SECRET,
+          refresh_token: tokens.refresh_token,
+        });
+
+        // Update the access token
+        tokens.access_token = data.access_token;
+        googleClient.setCredentials(tokens);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    setInterval(refreshAccessToken, 5 * 60 * 1000);
 
     // Get user info
     const { data } = await axios.get('https://www.googleapis.com/oauth2/v1/userinfo', {
@@ -77,10 +98,8 @@ app.get('/auth/google/callback', async (req, res) => {
   }
 });
 
-
-  
 app.post('/register', async (req, res) => {
-  const { email, firstName, lastName, birthDate, phoneNumber, gender } = req.body;
+  const { email, firstName, lastName, birthDate, phoneNumber, gender, registrationDate } = req.body;
 
   try {
     // Send a POST request to the /profiles endpoint to create a new profile
@@ -91,6 +110,7 @@ app.post('/register', async (req, res) => {
       birthDate,
       phoneNumber,
       gender,
+      registrationDate
     });
 
     res.status(201).json(result.data);
@@ -100,6 +120,23 @@ app.post('/register', async (req, res) => {
   }
 });
 
+// app.post('/register', async (req, res) => {
+//   const { email, firstName, lastName, birthDate, phoneNumber, gender } = req.body;
+
+//   try {
+//     // Insert a new user record into the 'profiles' table
+//     const result = await db.query(`
+//       INSERT INTO profile(email, first_name, last_name, birth_date, phone_number, gender)
+//       VALUES($1, $2, $3, $4, $5, $6)
+//       RETURNING *
+//     `, [email, firstName, lastName, birthDate, phoneNumber, gender]);
+
+//     res.status(201).json(result.rows[0]);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: 'Registration failed' });
+//   }
+// });
 
 
 // frontend calls this endpoint with the access token in the header of the request to check token's validity
