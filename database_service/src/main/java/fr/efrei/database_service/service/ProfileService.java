@@ -20,6 +20,8 @@ public class ProfileService implements CRUD<ProfileEntity, String> {
     public ProfileEntity save(ProfileEntity profile) {
         if (profileRepository.findById(profile.getEmail()).isPresent())
             return null;
+        if (profile.getRegistrationDate()==null)
+            profile.setRegistrationDate(new Date(System.currentTimeMillis()));
         return profileRepository.save(profile);
     }
 

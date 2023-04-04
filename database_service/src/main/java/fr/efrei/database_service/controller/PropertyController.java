@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 @RestController
@@ -25,15 +24,12 @@ public class PropertyController {
 
     @PostMapping
     @Operation(summary = "This endpoint will create a new property")
-    public ResponseEntity<PropertyDTO> createProperty(@RequestBody PropertyEntity property){
-        property.setPublishDate(Date.valueOf(LocalDate.now()));
+    public ResponseEntity<PropertyDTO> createProperty(@RequestBody PropertyEntity property) {
         PropertyEntity propertyToCreate = propertyService.save(property);
-        if(propertyToCreate ==null){
+        if (propertyToCreate == null) {
             return ResponseEntity.badRequest().build();
-        }
-        else{
-            PropertyDTO propertyDTO = Mapper.convertToDto(propertyToCreate, PropertyDTO.class);
-            return ResponseEntity.ok(propertyDTO);
+        } else {
+            return ResponseEntity.ok(Mapper.convertToDto(propertyToCreate, PropertyDTO.class));
         }
     }
 

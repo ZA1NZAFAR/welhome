@@ -16,6 +16,8 @@ public class ReservationService implements CRUD<ReservationEntity, Long> {
 
     @Override
     public ReservationEntity save(ReservationEntity reservation) {
+        if (reservationRepository.findById(reservation.getId()).isPresent())
+            return null;
         return this.reservationRepository.save(reservation);  }
 
     @Override

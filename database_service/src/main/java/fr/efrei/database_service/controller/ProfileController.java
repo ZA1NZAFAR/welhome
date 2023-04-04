@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,15 +25,11 @@ public class ProfileController {
     @PostMapping
     @Operation(summary = "This endpoint will create a new user profile")
     public ResponseEntity<ProfileDTO> createUser(@RequestBody ProfileEntity user) {
-        // Définir la date d'enregistrement
-        user.setRegistrationDate(Date.valueOf(LocalDate.now()));
         ProfileEntity userToCreate = profileService.save(user);
         if (userToCreate == null) {
             return ResponseEntity.badRequest().build();
         } else {
-            // Convertir l'entité enregistrée en DTO
-            ProfileDTO profileDTO = Mapper.convertToDto(userToCreate, ProfileDTO.class);
-            return ResponseEntity.ok(profileDTO);
+            return ResponseEntity.ok(Mapper.convertToDto(userToCreate, ProfileDTO.class));
         }
     }
 

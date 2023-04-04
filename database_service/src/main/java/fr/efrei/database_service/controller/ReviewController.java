@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,13 +25,11 @@ public class ReviewController {
     @PostMapping
     @Operation(summary = "This endPoint will allow to create a specific review about a reservation")
     public ResponseEntity<ReviewDTO> createReview(@RequestBody ReviewEntity reviewEntity) {
-        reviewEntity.setPublishDate(Date.valueOf(LocalDate.now()));
         ReviewEntity reviewToCreate = reviewService.save(reviewEntity);
-        if(reviewToCreate == null){
+        if (reviewToCreate == null) {
             return ResponseEntity.badRequest().build();
         } else {
-            ReviewDTO reviewDTO = Mapper.convertToDto(reviewToCreate,ReviewDTO.class);
-            return ResponseEntity.ok(reviewDTO);
+            return ResponseEntity.ok(Mapper.convertToDto(reviewToCreate, ReviewDTO.class));
         }
     }
 

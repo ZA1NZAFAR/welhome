@@ -17,6 +17,10 @@ public class PropertyService implements CRUD<PropertyEntity, Long>{
 
     @Override
     public PropertyEntity save(PropertyEntity property) {
+        if (propertyRepository.findById(property.getId()).isPresent())
+            return null;
+        if (property.getPublishDate()==null)
+            property.setPublishDate(new Date(System.currentTimeMillis()));
         return propertyRepository.save(property);
     }
 
