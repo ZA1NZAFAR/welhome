@@ -127,9 +127,15 @@ public class PropertyController {
         return this.propertyService.findByPrice(price).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
     }
 
+    @GetMapping({"/price/{price1}/{price2}"})
+    @Operation(summary = "This endpoint will allow to retrieve a property based on price")
+    public List<PropertyDTO> getPropertyByPriceBetween(@PathVariable BigDecimal price1, @PathVariable BigDecimal price2){
+        return this.propertyService.findByPriceBetween(price1, price2).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
+    }
+
     @GetMapping({"/surface_area/{area}"})
     @Operation(summary = "This endpoint will allow to retrieve a property based on price")
-    public List<PropertyDTO> getPropertyByPrice(@PathVariable float area){
+    public List<PropertyDTO> getPropertyByArea(@PathVariable float area){
         return this.propertyService.findBySurfaceArea(area).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
     }
     @GetMapping({"/owner_email/{email}"})

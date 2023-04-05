@@ -27,8 +27,10 @@ public interface PropertyRepository extends JpaRepository<PropertyEntity, Long> 
     List<PropertyEntity> findByCountry(String description);
 
     List<PropertyEntity> findByPrice(BigDecimal description);
-    List<PropertyEntity> findBySurfaceArea(float surface_area);
 
+    List<PropertyEntity> findByPriceBetween(BigDecimal price, BigDecimal price2);
+
+    List<PropertyEntity> findBySurfaceArea(float surface_area);
 
     List<PropertyEntity> findByOwnerEmail(String email);
 

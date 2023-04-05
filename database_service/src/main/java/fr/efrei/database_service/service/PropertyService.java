@@ -78,6 +78,10 @@ public class PropertyService implements CRUD<PropertyEntity, Long>{
         return propertyRepository.findByPrice(price);
     }
 
+    public List<PropertyEntity> findByPriceBetween(BigDecimal price1, BigDecimal price2){
+        return propertyRepository.findByPriceBetween(price1, price2);
+    }
+
     public List<PropertyEntity> findBySurfaceArea(float area){
         return propertyRepository.findBySurfaceArea(area);
     }
