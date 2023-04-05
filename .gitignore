@@ -43,5 +43,5 @@ typings
 .DS_Store
 Thumbs.db
 
-MailingService
-Authentication
+MailingService/
+Authentication/
