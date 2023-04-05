@@ -31,4 +31,34 @@ public class ReviewsController {
         listGenerator = new ResponseGenerator<>();
         generator = new ResponseGenerator<>();
     }
+
+    @GetMapping
+    public ResponseEntity<List<Review>> getReviews() {
+        ResponseEntity<List<Review>> result = listGenerator.buildRequest(URL, HttpMethod.GET, new ParameterizedTypeReference<List<Review>>() {});
+        return result;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Review> getReview(@PathVariable String id) {
+        ResponseEntity<Review> result = generator.buildRequest(URL.concat("/" + id), HttpMethod.GET, new ParameterizedTypeReference<Review>() {});
+        return result;
+    }
+
+    @GetMapping("/rating/{rating}")
+    public ResponseEntity<List<Review>> getReviewByRating(@PathVariable String rating) {
+        ResponseEntity<List<Review>> result = listGenerator.buildRequest(URL.concat("/rating/" + rating), HttpMethod.GET, new ParameterizedTypeReference<List<Review>>() {});
+        return result;
+    }
+
+    @GetMapping("/comment/{text}")
+    public ResponseEntity<List<Review>> getReviewByComment(@PathVariable String text) {
+        ResponseEntity<List<Review>> result = listGenerator.buildRequest(URL.concat("/comment/" + text), HttpMethod.GET, new ParameterizedTypeReference<List<Review>>() {});
+        return result;
+    }
+
+    @GetMapping("/publish_date/{date}")
+    public ResponseEntity<List<Review>> getReviewByPublishDate(@PathVariable String date) {
+        ResponseEntity<List<Review>> result = listGenerator.buildRequest(URL.concat("/publish_date/" + date), HttpMethod.GET, new ParameterizedTypeReference<List<Review>>() {});
+        return result;
+    }
 }
