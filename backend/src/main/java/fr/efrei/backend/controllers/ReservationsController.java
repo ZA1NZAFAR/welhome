@@ -1,8 +1,6 @@
 package fr.efrei.backend.controllers;
 
-import fr.efrei.backend.entities.Property;
 import fr.efrei.backend.entities.Reservation;
-import fr.efrei.backend.entities.Review;
 import fr.efrei.backend.utils.ResponseGenerator;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,14 +60,38 @@ public class ReservationsController {
     }
 
     @GetMapping("/property_id/{propertyId}")
-    public ResponseEntity<List<Reservation>> getPropertyByPropertyId(@PathVariable String propertyId) {
+    public ResponseEntity<List<Reservation>> getReservationByPropertyId(@PathVariable String propertyId) {
         ResponseEntity<List<Reservation>> result = listGenerator.buildRequest(URL.concat("/propertyId/" + propertyId), HttpMethod.GET, new ParameterizedTypeReference<List<Reservation>>() {});
         return result;
     }
 
     @GetMapping("/renter_email/{renterEmail}")
-    public ResponseEntity<List<Reservation>> getPropertyByRenterEmail(@PathVariable String renterEmail) {
+    public ResponseEntity<List<Reservation>> getReservationByRenterEmail(@PathVariable String renterEmail) {
         ResponseEntity<List<Reservation>> result = listGenerator.buildRequest(URL.concat("/renterEmail/" + renterEmail), HttpMethod.GET, new ParameterizedTypeReference<List<Reservation>>() {});
+        return result;
+    }
+
+    @GetMapping("/start_date/{startDate}")
+    public ResponseEntity<List<Reservation>> getReservationByStartDate(@PathVariable String startDate) {
+        ResponseEntity<List<Reservation>> result = listGenerator.buildRequest(URL.concat("/startDate/" + startDate), HttpMethod.GET, new ParameterizedTypeReference<List<Reservation>>() {});
+        return result;
+    }
+
+    @GetMapping("/end_date/{endDate}")
+    public ResponseEntity<List<Reservation>> getReservationByEndDate(@PathVariable String endDate) {
+        ResponseEntity<List<Reservation>> result = listGenerator.buildRequest(URL.concat("/endDate/" + endDate), HttpMethod.GET, new ParameterizedTypeReference<List<Reservation>>() {});
+        return result;
+    }
+
+    @GetMapping("/confirmed_owner/{confirmedOwner}")
+    public ResponseEntity<List<Reservation>> getReservationByConfirmedOwner(@PathVariable String confirmedOwner) {
+        ResponseEntity<List<Reservation>> result = listGenerator.buildRequest(URL.concat("/confirmedOwner/" + confirmedOwner), HttpMethod.GET, new ParameterizedTypeReference<List<Reservation>>() {});
+        return result;
+    }
+
+    @GetMapping("/confirmed_renter/{confirmedRenter}")
+    public ResponseEntity<List<Reservation>> getReservationByConfirmedRenter(@PathVariable String confirmedRenter) {
+        ResponseEntity<List<Reservation>> result = listGenerator.buildRequest(URL.concat("/confirmedRenter/" + confirmedRenter), HttpMethod.GET, new ParameterizedTypeReference<List<Reservation>>() {});
         return result;
     }
 }
