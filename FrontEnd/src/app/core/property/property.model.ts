@@ -2,10 +2,10 @@ export interface IProperty {
   id:number,
   title: string,
   description: string,
-  property_catergory: 'House' | 'Apartment' | 'Room',
+  property_catergory: PropertyCategory,
   address: string,
   city: string,
-  region?: string,
+  state?: string,
   country: string,
   price: number,
   surface_area: number,
@@ -17,6 +17,9 @@ export interface IProperty {
   image_url?: string
 
 }
+
+export const propertyCategory = ['House', 'Apartment', 'Room'];
+export type PropertyCategory = typeof propertyCategory[number];
 
 /**
  * CREATE TABLE property

@@ -42,3 +42,6 @@ typings
 # System files
 .DS_Store
 Thumbs.db
+
+MailingService/
+Authentication/

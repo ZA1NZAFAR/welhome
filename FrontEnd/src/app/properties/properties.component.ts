@@ -36,4 +36,5 @@ export class PropertiesComponent implements OnInit {
     });
   }
 
+
 }
