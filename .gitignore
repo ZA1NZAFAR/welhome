@@ -43,5 +43,6 @@ typings
 .DS_Store
 Thumbs.db
 
-FrontEnd
-Authentication
+
+Authentication/
+FrontEnd/
