@@ -49,10 +49,10 @@ public class ProfilesController {
         return result;
     }
 
-    @GetMapping("/api/profiles/phoneNumber/{phoneNumber}")
-    public ResponseEntity<List<Profile>> getUserByPhoneNumber(@PathVariable String phoneNumber) {
+    @GetMapping("/api/profiles/firstName/{firstName}")
+    public ResponseEntity<List<Profile>> getUserByFirstName(@PathVariable String firstName) {
         ResponseGenerator<List<Profile>> generator = new ResponseGenerator<>();
-        ResponseEntity<List<Profile>> result = generator.buildRequest(URL.concat("/phoneNumber/" + phoneNumber), HttpMethod.GET, new ParameterizedTypeReference<List<Profile>>() {});
+        ResponseEntity<List<Profile>> result = generator.buildRequest(URL.concat("/firstName/" + firstName), HttpMethod.GET, new ParameterizedTypeReference<List<Profile>>() {});
         return result;
     }
 
@@ -60,6 +60,34 @@ public class ProfilesController {
     public ResponseEntity<List<Profile>> getUserByLastName(@PathVariable String lastName) {
         ResponseGenerator<List<Profile>> generator = new ResponseGenerator<>();
         ResponseEntity<List<Profile>> result = generator.buildRequest(URL.concat("/lastName/" + lastName), HttpMethod.GET, new ParameterizedTypeReference<List<Profile>>() {});
+        return result;
+    }
+
+    @GetMapping("/api/profiles/birthDate/{birthDate}")
+    public ResponseEntity<List<Profile>> getUserByBirthDate(@PathVariable String birthDate) {
+        ResponseGenerator<List<Profile>> generator = new ResponseGenerator<>();
+        ResponseEntity<List<Profile>> result = generator.buildRequest(URL.concat("/birthDate/" + birthDate), HttpMethod.GET, new ParameterizedTypeReference<List<Profile>>() {});
+        return result;
+    }
+
+    @GetMapping("/api/profiles/phoneNumber/{phoneNumber}")
+    public ResponseEntity<List<Profile>> getUserByPhoneNumber(@PathVariable String phoneNumber) {
+        ResponseGenerator<List<Profile>> generator = new ResponseGenerator<>();
+        ResponseEntity<List<Profile>> result = generator.buildRequest(URL.concat("/phoneNumber/" + phoneNumber), HttpMethod.GET, new ParameterizedTypeReference<List<Profile>>() {});
+        return result;
+    }
+
+    @GetMapping("/api/profiles/gender/{gender}")
+    public ResponseEntity<List<Profile>> getUserByGender(@PathVariable String gender) {
+        ResponseGenerator<List<Profile>> generator = new ResponseGenerator<>();
+        ResponseEntity<List<Profile>> result = generator.buildRequest(URL.concat("/gender/" + gender), HttpMethod.GET, new ParameterizedTypeReference<List<Profile>>() {});
+        return result;
+    }
+
+    @GetMapping("/api/profiles/birthDateBetween")
+    public ResponseEntity<List<Profile>> getUserByBirthDateBetween(@RequestParam("startDate") String birthDate1, @RequestParam("endDate") String birthDate2) {
+        ResponseGenerator<List<Profile>> generator = new ResponseGenerator<>();
+        ResponseEntity<List<Profile>> result = generator.buildRequest(URL.concat("/birthDateBetween/" + birthDate1 + "/" + birthDate2), HttpMethod.GET, new ParameterizedTypeReference<List<Profile>>() {});
         return result;
     }
 }
