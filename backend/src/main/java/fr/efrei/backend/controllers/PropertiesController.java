@@ -183,4 +183,19 @@ public class PropertiesController {
         ResponseEntity<List<Property>> result = new ResponseEntity<>(properties, HttpStatus.OK);
         return result;
     }
+
+    // Filters out properties based on several owner attributes. Use case: finding out properties of renters favorite owners (in case if renters want to re-rent from owners they trust the most)
+    @GetMapping("/owners")
+    public ResponseEntity<List<Property>> getPropertyBySeveralOwnerEmails(@RequestParam(value="owner") List<String> owners) {
+        List<Property> properties = new ArrayList<>();
+
+        owners.forEach(owner -> {
+            ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/owner_email/" + owner), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
+            // Make union of properties based on several city type attributes
+            properties.addAll(result.getBody());
+        });
+
+        ResponseEntity<List<Property>> result = new ResponseEntity<>(properties, HttpStatus.OK);
+        return result;
+    }
 }
