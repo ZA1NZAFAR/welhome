@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -43,6 +40,24 @@ public class ReservationsController {
     @GetMapping("/{id}")
     public ResponseEntity<Reservation> getReservation(@PathVariable String id) {
         ResponseEntity<Reservation> result = generator.buildRequest(URL.concat("/" + id), HttpMethod.GET, new ParameterizedTypeReference<Reservation>() {});
+        return result;
+    }
+
+    @PostMapping
+    public ResponseEntity<Reservation> postReservation(@RequestBody Reservation reservation) {
+        ResponseEntity<Reservation> result = generator.buildRequest(URL, HttpMethod.POST, reservation, new ParameterizedTypeReference<Reservation>() {});
+        return result;
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Reservation> putReservation(@PathVariable String id, @RequestBody Reservation reservation) {
+        ResponseEntity<Reservation> result = generator.buildRequest(URL.concat("/" + id), HttpMethod.PUT, reservation, new ParameterizedTypeReference<Reservation>() {});
+        return result;
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Reservation> deleteReservation(@PathVariable String id) {
+        ResponseEntity<Reservation> result = generator.buildRequest(URL.concat("/" + id), HttpMethod.DELETE, new ParameterizedTypeReference<Reservation>() {});
         return result;
     }
 
