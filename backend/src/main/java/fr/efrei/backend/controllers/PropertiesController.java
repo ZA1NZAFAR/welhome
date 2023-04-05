@@ -115,4 +115,41 @@ public class PropertiesController {
         ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/price/" + price), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
         return result;
     }
+
+    // DYSFUNCTIONAL: Currently does nothing, implemented for future use-case
+    @GetMapping("/surface_area/{surfaceArea}")
+    public ResponseEntity<List<Property>> getPropertyBySurfaceArea(@PathVariable String surfaceArea) {
+        ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/surface_area/" + surfaceArea), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
+        return result;
+    }
+
+    @GetMapping("/floors/{floors}")
+    public ResponseEntity<List<Property>> getPropertyByNbFloors(@PathVariable String floors) {
+        ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/floors/" + floors), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
+        return result;
+    }
+
+    @GetMapping("/capacity/{capacity}")
+    public ResponseEntity<List<Property>> getPropertyByCapacity(@PathVariable String capacity) {
+        ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/capacity/" + capacity), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
+        return result;
+    }
+
+    @GetMapping("/construction_date/{constructionDate}")
+    public ResponseEntity<List<Property>> getPropertyByConstructionDate(@PathVariable String constructionDate) {
+        ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/construction_date/" + constructionDate), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
+        return result;
+    }
+
+    @GetMapping("/publish_date/{publishDate}")
+    public ResponseEntity<List<Property>> getPropertyByPublishDate(@PathVariable String publishDate) {
+        ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/publish_date/" + publishDate), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
+        return result;
+    }
+
+    @GetMapping("/owner_email/{email}")
+    public ResponseEntity<List<Property>> getPropertyByOwnerEmail(@PathVariable String email) {
+        ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/owner_email/" + email), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
+        return result;
+    }
 }
