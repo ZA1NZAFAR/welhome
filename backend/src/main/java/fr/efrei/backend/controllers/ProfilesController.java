@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/profiles")
 public class ProfilesController {
     @Value("${databaseService.url}/profiles")
     private String URL;
@@ -27,67 +28,67 @@ public class ProfilesController {
         generator = new ResponseGenerator<>();
     }
 
-    @GetMapping("/api/profiles")
+    @GetMapping
     public ResponseEntity<List<Profile>> getUsers() {
         ResponseEntity<List<Profile>> result = listGenerator.buildRequest(URL, HttpMethod.GET, new ParameterizedTypeReference<List<Profile>>() {});
         return result;
     }
 
-    @GetMapping("/api/profiles/{email}")
+    @GetMapping("/{email}")
     public ResponseEntity<Profile> getUser(@PathVariable String email) {
         ResponseEntity<Profile> result = generator.buildRequest(URL.concat("/" + email), HttpMethod.GET, new ParameterizedTypeReference<Profile>() {});
         return result;
     }
 
-    @PostMapping("/api/profiles")
+    @PostMapping
     public ResponseEntity<Profile> postUser(@RequestBody Profile user) {
         ResponseEntity<Profile> result = generator.buildRequest(URL, HttpMethod.POST, user, new ParameterizedTypeReference<Profile>() {});
         return result;
     }
 
-    @PutMapping("/api/profiles/{email}")
+    @PutMapping("/{email}")
     public ResponseEntity<Profile> putUser(@PathVariable String email, @RequestBody Profile user) {
         ResponseEntity<Profile> result = generator.buildRequest(URL.concat("/" + email), HttpMethod.PUT, user, new ParameterizedTypeReference<Profile>() {});
         return result;
     }
 
-    @DeleteMapping("/api/profiles/{email}")
+    @DeleteMapping("/{email}")
     public ResponseEntity<Profile> deleteUser(@PathVariable String email) {
         ResponseEntity<Profile> result = generator.buildRequest(URL.concat("/" + email), HttpMethod.DELETE, new ParameterizedTypeReference<Profile>() {});
         return result;
     }
 
-    @GetMapping("/api/profiles/firstName/{firstName}")
+    @GetMapping("/firstName/{firstName}")
     public ResponseEntity<List<Profile>> getUserByFirstName(@PathVariable String firstName) {
         ResponseEntity<List<Profile>> result = listGenerator.buildRequest(URL.concat("/firstName/" + firstName), HttpMethod.GET, new ParameterizedTypeReference<List<Profile>>() {});
         return result;
     }
 
-    @GetMapping("/api/profiles/lastName/{lastName}")
+    @GetMapping("/lastName/{lastName}")
     public ResponseEntity<List<Profile>> getUserByLastName(@PathVariable String lastName) {
         ResponseEntity<List<Profile>> result = listGenerator.buildRequest(URL.concat("/lastName/" + lastName), HttpMethod.GET, new ParameterizedTypeReference<List<Profile>>() {});
         return result;
     }
 
-    @GetMapping("/api/profiles/birthDate/{birthDate}")
+    @GetMapping("/birthDate/{birthDate}")
     public ResponseEntity<List<Profile>> getUserByBirthDate(@PathVariable String birthDate) {
         ResponseEntity<List<Profile>> result = listGenerator.buildRequest(URL.concat("/birthDate/" + birthDate), HttpMethod.GET, new ParameterizedTypeReference<List<Profile>>() {});
         return result;
     }
 
-    @GetMapping("/api/profiles/phoneNumber/{phoneNumber}")
+    @GetMapping("/phoneNumber/{phoneNumber}")
     public ResponseEntity<List<Profile>> getUserByPhoneNumber(@PathVariable String phoneNumber) {
         ResponseEntity<List<Profile>> result = listGenerator.buildRequest(URL.concat("/phoneNumber/" + phoneNumber), HttpMethod.GET, new ParameterizedTypeReference<List<Profile>>() {});
         return result;
     }
 
-    @GetMapping("/api/profiles/gender/{gender}")
+    @GetMapping("/gender/{gender}")
     public ResponseEntity<List<Profile>> getUserByGender(@PathVariable String gender) {
         ResponseEntity<List<Profile>> result = listGenerator.buildRequest(URL.concat("/gender/" + gender), HttpMethod.GET, new ParameterizedTypeReference<List<Profile>>() {});
         return result;
     }
 
-    @GetMapping("/api/profiles/birthDateBetween")
+    @GetMapping("/birthDateBetween")
     public ResponseEntity<List<Profile>> getUserByBirthDateBetween(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) {
         ResponseEntity<List<Profile>> result = listGenerator.buildRequest(URL.concat("/birthDateBetween/" + startDate + "/" + endDate), HttpMethod.GET, new ParameterizedTypeReference<List<Profile>>() {});
         return result;
