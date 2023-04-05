@@ -87,6 +87,13 @@ public class PropertyController {
 
     }
 
+    @GetMapping({"/property_category/{category}"})
+    @Operation(summary = "This endpoint will allow to retrieve a property based on description")
+    public List<PropertyDTO> getPropertyByPropertyCategory(@PathVariable String category){
+        return this.propertyService.findByPropertyCategory(category).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
+
+    }
+
     @GetMapping({"/address/{address}"})
     @Operation(summary = "This endpoint will allow to retrieve a property based on address")
     public List<PropertyDTO> getPropertyByAddress(@PathVariable String address){
@@ -98,6 +105,13 @@ public class PropertyController {
     @Operation(summary = "This endpoint will allow to retrieve a property based on city name")
     public List<PropertyDTO> getPropertyByCity(@PathVariable String city){
         return this.propertyService.findByCity(city).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
+
+    }
+
+    @GetMapping({"/state/{state}"})
+    @Operation(summary = "This endpoint will allow to retrieve a property based on city name")
+    public List<PropertyDTO> getPropertyByState(@PathVariable String state){
+        return this.propertyService.findByState(state).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
 
     }
 
@@ -114,6 +128,11 @@ public class PropertyController {
         return this.propertyService.findByPrice(price).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
     }
 
+    @GetMapping({"/surface_area/{area}"})
+    @Operation(summary = "This endpoint will allow to retrieve a property based on price")
+    public List<PropertyDTO> getPropertyByPrice(@PathVariable float area){
+        return this.propertyService.findBySurfaceArea(area).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
+    }
     @GetMapping({"/owner_email/{email}"})
     @Operation(summary = "This endpoint will allow to retrieve a property based on owner email")
     public List<PropertyDTO> getPropertyByOwnerEmail(@PathVariable String email){

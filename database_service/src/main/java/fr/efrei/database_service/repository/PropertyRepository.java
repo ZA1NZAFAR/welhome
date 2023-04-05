@@ -15,13 +15,21 @@ Missing : state, owner_email
 public interface PropertyRepository extends JpaRepository<PropertyEntity, Long> {
     List<PropertyEntity> findByTitle(String title);
     List<PropertyEntity> findByDescription(String description);
+
+    List<PropertyEntity> findByPropertyCategory(String property_category);
+
     List<PropertyEntity> findByAddress(String description);
 
     List<PropertyEntity> findByCity(String City);
 
+    List<PropertyEntity> findByState(String state);
+
+
     List<PropertyEntity> findByCountry(String description);
 
     List<PropertyEntity> findByPrice(BigDecimal description);
+    List<PropertyEntity> findBySurfaceArea(float surface_area);
+
 
     List<PropertyEntity> findByOwnerEmail(String email);
 
