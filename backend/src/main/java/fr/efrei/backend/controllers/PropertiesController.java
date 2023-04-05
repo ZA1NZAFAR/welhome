@@ -1,6 +1,5 @@
 package fr.efrei.backend.controllers;
 
-import fr.efrei.backend.entities.Profile;
 import fr.efrei.backend.entities.Property;
 import fr.efrei.backend.utils.ResponseGenerator;
 import jakarta.annotation.PostConstruct;
