@@ -85,9 +85,9 @@ public class ProfilesController {
     }
 
     @GetMapping("/api/profiles/birthDateBetween")
-    public ResponseEntity<List<Profile>> getUserByBirthDateBetween(@RequestParam("startDate") String birthDate1, @RequestParam("endDate") String birthDate2) {
+    public ResponseEntity<List<Profile>> getUserByBirthDateBetween(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) {
         ResponseGenerator<List<Profile>> generator = new ResponseGenerator<>();
-        ResponseEntity<List<Profile>> result = generator.buildRequest(URL.concat("/birthDateBetween/" + birthDate1 + "/" + birthDate2), HttpMethod.GET, new ParameterizedTypeReference<List<Profile>>() {});
+        ResponseEntity<List<Profile>> result = generator.buildRequest(URL.concat("/birthDateBetween/" + startDate + "/" + endDate), HttpMethod.GET, new ParameterizedTypeReference<List<Profile>>() {});
         return result;
     }
 }
