@@ -4,6 +4,7 @@ import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { IProperty, propertyCategory } from 'src/app/core/property/property.model';
 import * as _moment from 'moment';
+import { PropertyService } from 'src/app/core/property/property.service';
 @Component({
   selector: 'app-property-form',
   templateUrl: './property-form.component.html',
@@ -18,7 +19,8 @@ export class PropertyFormComponent implements OnInit {
 
   constructor(
     public activeModal: NgbActiveModal,
-    private adapter: DateAdapter<any>
+    private adapter: DateAdapter<any>,
+    private propertyService: PropertyService
   ) { }
 
   ngOnInit(): void {
@@ -49,5 +51,24 @@ export class PropertyFormComponent implements OnInit {
 
   closeModal() {
     this.activeModal.close();
+  }
+
+  submitForm() {
+    if (this.propertyGroup.valid) {
+      const property: IProperty = {
+        ...this.propertyGroup.value,
+        owner_email: this.owner_email,
+        id: this.selectedProperty?.id
+      };
+      if (this.selectedProperty) {
+        this.propertyService.updateProperty(property).subscribe(() => {
+          this.activeModal.close();
+        });
+      } else {
+        this.propertyService.addProperty(property).subscribe(() => {
+          this.activeModal.close();
+        });
+      }
+    }
   }
 }
