@@ -54,6 +54,10 @@ public class PropertyService implements CRUD<PropertyEntity, Long>{
         return propertyRepository.findByDescription(description);
     }
 
+    public List<PropertyEntity> findByPropertyCategory(String category){
+        return propertyRepository.findByPropertyCategory(category);
+    }
+
     public List<PropertyEntity> findByAddress(String address){
         return propertyRepository.findByAddress(address);
     }
@@ -61,6 +65,10 @@ public class PropertyService implements CRUD<PropertyEntity, Long>{
     public List<PropertyEntity> findByCity(String city){
         return propertyRepository.findByCity(city);
     }
+    public List<PropertyEntity> findByState(String state){
+        return propertyRepository.findByState(state);
+    }
+
 
     public List<PropertyEntity> findByCountry(String country){
         return propertyRepository.findByCountry(country);
@@ -68,6 +76,14 @@ public class PropertyService implements CRUD<PropertyEntity, Long>{
 
     public List<PropertyEntity> findByPrice(BigDecimal price){
         return propertyRepository.findByPrice(price);
+    }
+
+    public List<PropertyEntity> findByPriceBetween(BigDecimal price1, BigDecimal price2){
+        return propertyRepository.findByPriceBetween(price1, price2);
+    }
+
+    public List<PropertyEntity> findBySurfaceArea(float area){
+        return propertyRepository.findBySurfaceArea(area);
     }
 
     public List<PropertyEntity> findByFloors(int floors){
@@ -81,7 +97,6 @@ public class PropertyService implements CRUD<PropertyEntity, Long>{
     public List<PropertyEntity> findByConstructionDate(Date contructionDate){
         return propertyRepository.findByConstructionDate(contructionDate);
     }
-
     public List<PropertyEntity> findByPublishDate(Date publishDate){
         return propertyRepository.findByPublishDate(publishDate);
     }
