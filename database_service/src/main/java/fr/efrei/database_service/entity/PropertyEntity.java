@@ -63,19 +63,25 @@ public class PropertyEntity {
     @Column(name = "owner_email")
     private String ownerEmail;
     @Basic
-    @Column(name = "image_url")
-    private String imageUrl;
+    @Column(name = "image_url_1")
+    private String imageUrl1;
+    @Basic
+    @Column(name = "image_url_2")
+    private String imageUrl2;
+    @Basic
+    @Column(name = "image_url_3")
+    private String imageUrl3;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PropertyEntity that = (PropertyEntity) o;
-        return id == that.id && Float.compare(that.surfaceArea, surfaceArea) == 0 && floors == that.floors && capacity == that.capacity && Objects.equals(title, that.title) && Objects.equals(description, that.description) && Objects.equals(propertyCategory, that.propertyCategory) && Objects.equals(address, that.address) && Objects.equals(city, that.city) && Objects.equals(state, that.state) && Objects.equals(country, that.country) && Objects.equals(price, that.price) && Objects.equals(constructionDate, that.constructionDate) && Objects.equals(publishDate, that.publishDate) && Objects.equals(ownerEmail, that.ownerEmail) && Objects.equals(imageUrl, that.imageUrl) && Objects.equals(zipCode, that.zipCode);
+        return id == that.id && Float.compare(that.surfaceArea, surfaceArea) == 0 && floors == that.floors && capacity == that.capacity && Objects.equals(title, that.title) && Objects.equals(description, that.description) && Objects.equals(propertyCategory, that.propertyCategory) && Objects.equals(address, that.address) && Objects.equals(city, that.city) && Objects.equals(state, that.state) && Objects.equals(country, that.country) && Objects.equals(price, that.price) && Objects.equals(constructionDate, that.constructionDate) && Objects.equals(publishDate, that.publishDate) && Objects.equals(ownerEmail, that.ownerEmail) && Objects.equals(imageUrl1, that.imageUrl1) && Objects.equals(imageUrl2, that.imageUrl2) && Objects.equals(imageUrl3, that.imageUrl3) && Objects.equals(zipCode, that.zipCode);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, propertyCategory, address, city, state, country, price, surfaceArea, floors, capacity, constructionDate, publishDate, ownerEmail, imageUrl, zipCode);
+        return Objects.hash(id, title, description, propertyCategory, address, city, state, country, price, surfaceArea, floors, capacity, constructionDate, publishDate, ownerEmail, imageUrl1, imageUrl2, imageUrl3, zipCode);
     }
 }

@@ -24,13 +24,12 @@ public class PropertyController {
 
     @PostMapping
     @Operation(summary = "This endpoint will create a new property")
-    public ResponseEntity<PropertyDTO> createProperty(@RequestBody PropertyEntity property){
+    public ResponseEntity<PropertyDTO> createProperty(@RequestBody PropertyEntity property) {
         PropertyEntity propertyToCreate = propertyService.save(property);
-        if(propertyToCreate ==null){
+        if (propertyToCreate == null) {
             return ResponseEntity.badRequest().build();
-        }
-        else{
-            return ResponseEntity.ok(Mapper.convertToDto(propertyToCreate, PropertyDTO.class));
+        } else {
+            return ResponseEntity.ok(Mapper.convert(propertyToCreate, PropertyDTO.class));
         }
     }
 
@@ -42,7 +41,7 @@ public class PropertyController {
             return ResponseEntity.notFound().build();
         }
         else {
-            return ResponseEntity.ok(Mapper.convertToDto(propertyToGet, PropertyDTO.class));
+            return ResponseEntity.ok(Mapper.convert(propertyToGet, PropertyDTO.class));
         }
     }
 
@@ -54,7 +53,7 @@ public class PropertyController {
             return ResponseEntity.notFound().build();
         }
         else {
-            return ResponseEntity.ok(Mapper.convertToDto(propertyToUpdate, PropertyDTO.class));
+            return ResponseEntity.ok(Mapper.convert(propertyToUpdate, PropertyDTO.class));
         }
     }
 
@@ -72,86 +71,110 @@ public class PropertyController {
     @GetMapping
     @Operation(summary = "This endpoint will allow to retrieve all properties")
     public List<PropertyDTO> getAllProperty(){
-        return this.propertyService.findAll().stream().map(property -> Mapper.convertToDto(property, PropertyDTO.class)).collect(Collectors.toList());
+        return this.propertyService.findAll().stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
     }
 
     @GetMapping({"/title/{title}"})
     @Operation(summary = "This endpoint will allow to retrieve a property based on title")
     public List<PropertyDTO> getPropertyByTitle(@PathVariable String title){
-        return this.propertyService.findByTitle(title).stream().map(property -> Mapper.convertToDto(property, PropertyDTO.class)).collect(Collectors.toList());
+        return this.propertyService.findByTitle(title).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
     }
 
     @GetMapping({"/description/{description}"})
     @Operation(summary = "This endpoint will allow to retrieve a property based on description")
     public List<PropertyDTO> getPropertyByDescription(@PathVariable String description){
-        return this.propertyService.findByDescription(description).stream().map(property -> Mapper.convertToDto(property, PropertyDTO.class)).collect(Collectors.toList());
+        return this.propertyService.findByDescription(description).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
+
+    }
+
+    @GetMapping({"/property_category/{category}"})
+    @Operation(summary = "This endpoint will allow to retrieve a property based on description")
+    public List<PropertyDTO> getPropertyByPropertyCategory(@PathVariable String category){
+        return this.propertyService.findByPropertyCategory(category).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
 
     }
 
     @GetMapping({"/address/{address}"})
     @Operation(summary = "This endpoint will allow to retrieve a property based on address")
     public List<PropertyDTO> getPropertyByAddress(@PathVariable String address){
-        return this.propertyService.findByAddress(address).stream().map(property -> Mapper.convertToDto(property, PropertyDTO.class)).collect(Collectors.toList());
+        return this.propertyService.findByAddress(address).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
 
     }
 
     @GetMapping({"/city/{city}"})
     @Operation(summary = "This endpoint will allow to retrieve a property based on city name")
     public List<PropertyDTO> getPropertyByCity(@PathVariable String city){
-        return this.propertyService.findByCity(city).stream().map(property -> Mapper.convertToDto(property, PropertyDTO.class)).collect(Collectors.toList());
+        return this.propertyService.findByCity(city).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
+
+    }
+
+    @GetMapping({"/state/{state}"})
+    @Operation(summary = "This endpoint will allow to retrieve a property based on city name")
+    public List<PropertyDTO> getPropertyByState(@PathVariable String state){
+        return this.propertyService.findByState(state).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
 
     }
 
     @GetMapping({"/country/{country}"})
     @Operation(summary = "This endpoint will allow to retrieve a property based on country name")
     public List<PropertyDTO> getPropertyByCountry(@PathVariable String country){
-        return this.propertyService.findByCountry(country).stream().map(property -> Mapper.convertToDto(property, PropertyDTO.class)).collect(Collectors.toList());
+        return this.propertyService.findByCountry(country).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
 
     }
-
     @GetMapping({"/price/{price}"})
     @Operation(summary = "This endpoint will allow to retrieve a property based on price")
     public List<PropertyDTO> getPropertyByPrice(@PathVariable BigDecimal price){
-        return this.propertyService.findByPrice(price).stream().map(property -> Mapper.convertToDto(property, PropertyDTO.class)).collect(Collectors.toList());
+        return this.propertyService.findByPrice(price).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
     }
 
+    @GetMapping({"/price/{price1}/{price2}"})
+    @Operation(summary = "This endpoint will allow to retrieve a property based on price")
+    public List<PropertyDTO> getPropertyByPriceBetween(@PathVariable BigDecimal price1, @PathVariable BigDecimal price2){
+        return this.propertyService.findByPriceBetween(price1, price2).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
+    }
+
+    @GetMapping({"/surface_area/{area}"})
+    @Operation(summary = "This endpoint will allow to retrieve a property based on price")
+    public List<PropertyDTO> getPropertyByArea(@PathVariable float area){
+        return this.propertyService.findBySurfaceArea(area).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
+    }
     @GetMapping({"/owner_email/{email}"})
     @Operation(summary = "This endpoint will allow to retrieve a property based on owner email")
     public List<PropertyDTO> getPropertyByOwnerEmail(@PathVariable String email){
-        return this.propertyService.findByOwnerEmail(email).stream().map(property -> Mapper.convertToDto(property, PropertyDTO.class)).collect(Collectors.toList());
+        return this.propertyService.findByOwnerEmail(email).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
     }
     @GetMapping({"/floors/{floors}"})
     @Operation(summary = "This endpoint will allow to retrieve a property based on number of floors")
     public List<PropertyDTO> getPropertyByFloors(@PathVariable int floors){
-        return this.propertyService.findByFloors(floors).stream().map(property -> Mapper.convertToDto(property, PropertyDTO.class)).collect(Collectors.toList());
+        return this.propertyService.findByFloors(floors).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
 
     }
 
     @GetMapping({"/capacity/{capacity}"})
     @Operation(summary = "This endpoint will allow to retrieve a property based on capacity")
     public List<PropertyDTO> getPropertyByCapacity(@PathVariable int capacity){
-        return this.propertyService.findByCapacity(capacity).stream().map(property -> Mapper.convertToDto(property, PropertyDTO.class)).collect(Collectors.toList());
+        return this.propertyService.findByCapacity(capacity).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
 
     }
 
     @GetMapping({"/construction_date/{construction_date}"})
     @Operation(summary = "This endpoint will allow to retrieve a property based on construction date")
     public List<PropertyDTO> getPropertyByConstructionDate(@PathVariable Date construction_date){
-        return this.propertyService.findByConstructionDate(construction_date).stream().map(property -> Mapper.convertToDto(property, PropertyDTO.class)).collect(Collectors.toList());
+        return this.propertyService.findByConstructionDate(construction_date).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
 
     }
 
     @GetMapping({"/publish_date/{publish_date}"})
     @Operation(summary = "This endpoint will allow to retrieve a property based on publish date")
     public List<PropertyDTO> getPropertyByPublishDate(@PathVariable Date publish_date){
-        return this.propertyService.findByPublishDate(publish_date).stream().map(property -> Mapper.convertToDto(property, PropertyDTO.class)).collect(Collectors.toList());
+        return this.propertyService.findByPublishDate(publish_date).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
 
     }
 
     @GetMapping({"/zip_code/{code}"})
     @Operation(summary = "This endpoint will allow to retrieve a property based on zip code")
     public List<PropertyDTO> getPropertyByZipCode(@PathVariable int code){
-        return this.propertyService.findByZipCode(code).stream().map(property -> Mapper.convertToDto(property, PropertyDTO.class)).collect(Collectors.toList());
+        return this.propertyService.findByZipCode(code).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
     }
 
 }

@@ -3,8 +3,10 @@ package fr.efrei.database_service.service;
 
 import fr.efrei.database_service.entity.ProfileEntity;
 import fr.efrei.database_service.repository.ProfileRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.util.List;
@@ -20,6 +22,8 @@ public class ProfileService implements CRUD<ProfileEntity, String> {
     public ProfileEntity save(ProfileEntity profile) {
         if (profileRepository.findById(profile.getEmail()).isPresent())
             return null;
+        if (profile.getRegistrationDate()==null)
+            profile.setRegistrationDate(new Date(System.currentTimeMillis()));
         return profileRepository.save(profile);
     }
 
@@ -30,11 +34,14 @@ public class ProfileService implements CRUD<ProfileEntity, String> {
 
 
     @Override
-    public ProfileEntity update(String email, ProfileEntity profile) {
-        if (profileRepository.findById(email).isEmpty())
-            return null;
-        profile.setEmail(email);
-        return profileRepository.save(profile);
+    @Transactional
+    public ProfileEntity update(String email, ProfileEntity updatedProfile) throws IllegalArgumentException, EntityNotFoundException {
+        ProfileEntity existingProfile = profileRepository.findById(email).orElseThrow(EntityNotFoundException::new);
+        if (!existingProfile.getEmail().equals(updatedProfile.getEmail()))
+            throw new IllegalArgumentException("Email cannot be changed");
+
+        updatedProfile.setEmail(email);
+        return profileRepository.save(updatedProfile);
     }
 
     @Override

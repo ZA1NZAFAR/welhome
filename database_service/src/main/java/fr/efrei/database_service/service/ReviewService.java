@@ -17,6 +17,10 @@ public class ReviewService implements CRUD<ReviewEntity, Long> {
 
     @Override
     public ReviewEntity save(ReviewEntity object) {
+        if (reviewRepository.findById(object.getId()).isPresent())
+            return null;
+        if (object.getPublishDate()==null)
+            object.setPublishDate(new Date(System.currentTimeMillis()));
         return reviewRepository.save(object);
     }
 
