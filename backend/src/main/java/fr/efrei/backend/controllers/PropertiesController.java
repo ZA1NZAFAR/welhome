@@ -156,12 +156,27 @@ public class PropertiesController {
 
     // Enhanced queries, filtering out based on several attributes
     // Filters out properties based on several category attributes: (House & Room, House & Apartment, Apartment & Room)
-    @GetMapping("/multi_category")
+    @GetMapping("/categories")
     public ResponseEntity<List<Property>> getPropertyBySeveralCategories(@RequestParam(value="category") List<String> categories) {
         List<Property> properties = new ArrayList<>();
 
         categories.forEach(category -> {
             ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/property_category/" + category), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
+            properties.addAll(result.getBody());
+        });
+
+        ResponseEntity<List<Property>> result = new ResponseEntity<>(properties, HttpStatus.OK);
+        return result;
+    }
+
+    // Filters out properties based on several city attributes. Use case: for example, retrieval of properties located in different cities (Los Angeles, Seattle, Houston, Chicago)
+    @GetMapping("/cities")
+    public ResponseEntity<List<Property>> getPropertyBySeveralCities(@RequestParam(value="city") List<String> cities) {
+        List<Property> properties = new ArrayList<>();
+
+        cities.forEach(city -> {
+            ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/city/" + city), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
+            // Make union of properties based on several city type attributes
             properties.addAll(result.getBody());
         });
 
