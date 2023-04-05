@@ -87,6 +87,13 @@ public class PropertyController {
 
     }
 
+    @GetMapping({"/property_category/{category}"})
+    @Operation(summary = "This endpoint will allow to retrieve a property based on description")
+    public List<PropertyDTO> getPropertyByPropertyCategory(@PathVariable String category){
+        return this.propertyService.findByPropertyCategory(category).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
+
+    }
+
     @GetMapping({"/address/{address}"})
     @Operation(summary = "This endpoint will allow to retrieve a property based on address")
     public List<PropertyDTO> getPropertyByAddress(@PathVariable String address){
@@ -101,19 +108,36 @@ public class PropertyController {
 
     }
 
+    @GetMapping({"/state/{state}"})
+    @Operation(summary = "This endpoint will allow to retrieve a property based on city name")
+    public List<PropertyDTO> getPropertyByState(@PathVariable String state){
+        return this.propertyService.findByState(state).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
+
+    }
+
     @GetMapping({"/country/{country}"})
     @Operation(summary = "This endpoint will allow to retrieve a property based on country name")
     public List<PropertyDTO> getPropertyByCountry(@PathVariable String country){
         return this.propertyService.findByCountry(country).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
 
     }
-
     @GetMapping({"/price/{price}"})
     @Operation(summary = "This endpoint will allow to retrieve a property based on price")
     public List<PropertyDTO> getPropertyByPrice(@PathVariable BigDecimal price){
         return this.propertyService.findByPrice(price).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
     }
 
+    @GetMapping({"/price/{price1}/{price2}"})
+    @Operation(summary = "This endpoint will allow to retrieve a property based on price")
+    public List<PropertyDTO> getPropertyByPriceBetween(@PathVariable BigDecimal price1, @PathVariable BigDecimal price2){
+        return this.propertyService.findByPriceBetween(price1, price2).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
+    }
+
+    @GetMapping({"/surface_area/{area}"})
+    @Operation(summary = "This endpoint will allow to retrieve a property based on price")
+    public List<PropertyDTO> getPropertyByArea(@PathVariable float area){
+        return this.propertyService.findBySurfaceArea(area).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
+    }
     @GetMapping({"/owner_email/{email}"})
     @Operation(summary = "This endpoint will allow to retrieve a property based on owner email")
     public List<PropertyDTO> getPropertyByOwnerEmail(@PathVariable String email){
