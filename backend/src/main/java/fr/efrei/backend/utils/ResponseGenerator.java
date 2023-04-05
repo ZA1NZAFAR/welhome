@@ -3,13 +3,17 @@ package fr.efrei.backend.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Scope;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 
 @Slf4j
+@Service
+@Scope("singleton")
 public class ResponseGenerator<T> {
     public ResponseEntity<T> buildRequest(String requestUrl, HttpMethod method, ParameterizedTypeReference<T> responseType) {
         return buildRequest(requestUrl, method, null, responseType);
