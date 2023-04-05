@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -42,6 +39,24 @@ public class PropertiesController {
     @GetMapping("/{id}")
     public ResponseEntity<Property> getProperty(@PathVariable String id) {
         ResponseEntity<Property> result = generator.buildRequest(URL.concat("/" + id), HttpMethod.GET, new ParameterizedTypeReference<Property>() {});
+        return result;
+    }
+
+    @PostMapping
+    public ResponseEntity<Property> postProperty(@RequestBody Property property) {
+        ResponseEntity<Property> result = generator.buildRequest(URL, HttpMethod.POST, property, new ParameterizedTypeReference<Property>() {});
+        return result;
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Property> putProperty(@PathVariable String id, @RequestBody Property property) {
+        ResponseEntity<Property> result = generator.buildRequest(URL.concat("/" + id), HttpMethod.PUT, property, new ParameterizedTypeReference<Property>() {});
+        return result;
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Property> deleteProperty(@PathVariable String id) {
+        ResponseEntity<Property> result = generator.buildRequest(URL.concat("/" + id), HttpMethod.DELETE, new ParameterizedTypeReference<Property>() {});
         return result;
     }
 
