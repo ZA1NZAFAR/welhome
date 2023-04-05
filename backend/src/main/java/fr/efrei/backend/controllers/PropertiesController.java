@@ -71,4 +71,48 @@ public class PropertiesController {
         ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/description/" + description), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
         return result;
     }
+
+    // DYSFUNCTIONAL: Currently does nothing, implemented for future use-case
+    @GetMapping("/property_category/{propertyCategory}")
+    public ResponseEntity<List<Property>> getPropertyByCategory(@PathVariable String propertyCategory) {
+        ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/property_category/" + propertyCategory), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
+        return result;
+    }
+
+    @GetMapping("/address/{address}")
+    public ResponseEntity<List<Property>> getPropertyByAddress(@PathVariable String address) {
+        ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/address/" + address), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
+        return result;
+    }
+
+    @GetMapping("/city/{city}")
+    public ResponseEntity<List<Property>> getPropertyByCity(@PathVariable String city) {
+        ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/city/" + city), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
+        return result;
+    }
+
+    @GetMapping("/zip_code/{zipCode}")
+    public ResponseEntity<List<Property>> getPropertyByZipCode(@PathVariable String zipCode) {
+        ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/zip_code/" + zipCode), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
+        return result;
+    }
+
+    // DYSFUNCTIONAL: Currently does nothing, implemented for future use-case
+    @GetMapping("/state/{state}")
+    public ResponseEntity<List<Property>> getPropertyByState(@PathVariable String state) {
+        ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/state/" + state), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
+        return result;
+    }
+
+    @GetMapping("/country/{country}")
+    public ResponseEntity<List<Property>> getPropertyByCountry(@PathVariable String country) {
+        ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/country/" + country), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
+        return result;
+    }
+
+    @GetMapping("/price/{price}")
+    public ResponseEntity<List<Property>> getPropertyByPrice(@PathVariable String price) {
+        ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/price/" + price), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
+        return result;
+    }
 }
