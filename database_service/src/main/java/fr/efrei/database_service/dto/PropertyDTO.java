@@ -28,6 +28,8 @@ public class PropertyDTO {
     private Date constructionDate;
     private Date publishDate;
     private String ownerEmail;
-    private String imageUrl;
+    private String imageUrl_1;
+    private String imageUrl_2;
+    private String imageUrl_3;
 
 }
