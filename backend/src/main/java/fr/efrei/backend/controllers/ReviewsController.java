@@ -76,4 +76,16 @@ public class ReviewsController {
         ResponseEntity<List<Review>> result = listGenerator.buildRequest(URL.concat("/publish_date/" + date), HttpMethod.GET, new ParameterizedTypeReference<List<Review>>() {});
         return result;
     }
+
+    @GetMapping("/property_id/{id}")
+    public ResponseEntity<List<Review>> getReviewByPropertyId(@PathVariable String id) {
+        ResponseEntity<List<Review>> result = listGenerator.buildRequest(URL.concat("/property_id/" + id), HttpMethod.GET, new ParameterizedTypeReference<List<Review>>() {});
+        return result;
+    }
+
+    @GetMapping("/reviewer_email/{email}")
+    public ResponseEntity<List<Review>> getReviewByReviewerEmail(@PathVariable String email) {
+        ResponseEntity<List<Review>> result = listGenerator.buildRequest(URL.concat("/reviewer_email/" + email), HttpMethod.GET, new ParameterizedTypeReference<List<Review>>() {});
+        return result;
+    }
 }
