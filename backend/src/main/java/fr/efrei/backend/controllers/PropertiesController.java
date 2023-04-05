@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -149,6 +151,21 @@ public class PropertiesController {
     @GetMapping("/owner_email/{email}")
     public ResponseEntity<List<Property>> getPropertyByOwnerEmail(@PathVariable String email) {
         ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/owner_email/" + email), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
+        return result;
+    }
+
+    // Enhanced queries, filtering out based on several attributes
+    // Filters out properties based on several category attributes: (House & Room, House & Apartment, Apartment & Room)
+    @GetMapping("/multi_category")
+    public ResponseEntity<List<Property>> getPropertyBySeveralCategories(@RequestParam(value="category") List<String> categories) {
+        List<Property> properties = new ArrayList<>();
+
+        categories.forEach(category -> {
+            ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/property_category/" + category), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
+            properties.addAll(result.getBody());
+        });
+
+        ResponseEntity<List<Property>> result = new ResponseEntity<>(properties, HttpStatus.OK);
         return result;
     }
 }
