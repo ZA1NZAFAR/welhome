@@ -93,7 +93,6 @@ public class PropertyService implements CRUD<PropertyEntity, Long>{
     public List<PropertyEntity> findByConstructionDate(Date contructionDate){
         return propertyRepository.findByConstructionDate(contructionDate);
     }
-
     public List<PropertyEntity> findByPublishDate(Date publishDate){
         return propertyRepository.findByPublishDate(publishDate);
     }

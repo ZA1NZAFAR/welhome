@@ -121,7 +121,6 @@ public class PropertyController {
         return this.propertyService.findByCountry(country).stream().map(property -> Mapper.convert(property, PropertyDTO.class)).collect(Collectors.toList());
 
     }
-
     @GetMapping({"/price/{price}"})
     @Operation(summary = "This endpoint will allow to retrieve a property based on price")
     public List<PropertyDTO> getPropertyByPrice(@PathVariable BigDecimal price){

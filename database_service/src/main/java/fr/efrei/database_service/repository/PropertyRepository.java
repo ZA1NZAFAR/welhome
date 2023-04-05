@@ -24,7 +24,6 @@ public interface PropertyRepository extends JpaRepository<PropertyEntity, Long> 
 
     List<PropertyEntity> findByState(String state);
 
-
     List<PropertyEntity> findByCountry(String description);
 
     List<PropertyEntity> findByPrice(BigDecimal description);
