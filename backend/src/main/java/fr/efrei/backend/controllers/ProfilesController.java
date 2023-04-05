@@ -2,14 +2,11 @@ package fr.efrei.backend.controllers;
 
 import fr.efrei.backend.entities.Profile;
 import fr.efrei.backend.utils.ResponseGenerator;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -18,9 +15,9 @@ public class ProfilesController {
     private String URL;
 
     @GetMapping("/api/profiles")
-    public ResponseEntity<Profile[]> getUsers() {
-        ResponseGenerator<Profile[]> generator = new ResponseGenerator<>();
-        ResponseEntity<Profile[]> result = generator.buildRequest(URL, HttpMethod.GET, new ParameterizedTypeReference<Profile[]>() {});
+    public ResponseEntity<List<Profile>> getUsers() {
+        ResponseGenerator<List<Profile>> generator = new ResponseGenerator<>();
+        ResponseEntity<List<Profile>> result = generator.buildRequest(URL, HttpMethod.GET, new ParameterizedTypeReference<List<Profile>>() {});
         return result;
     }
 
@@ -49,6 +46,20 @@ public class ProfilesController {
     public ResponseEntity<Profile> deleteUser(@PathVariable String email) {
         ResponseGenerator<Profile> generator = new ResponseGenerator<>();
         ResponseEntity<Profile> result = generator.buildRequest(URL.concat("/" + email), HttpMethod.DELETE, new ParameterizedTypeReference<Profile>() {});
+        return result;
+    }
+
+    @GetMapping("/api/profiles/phoneNumber/{phoneNumber}")
+    public ResponseEntity<List<Profile>> getUserByPhoneNumber(@PathVariable String phoneNumber) {
+        ResponseGenerator<List<Profile>> generator = new ResponseGenerator<>();
+        ResponseEntity<List<Profile>> result = generator.buildRequest(URL.concat("/phoneNumber/" + phoneNumber), HttpMethod.GET, new ParameterizedTypeReference<List<Profile>>() {});
+        return result;
+    }
+
+    @GetMapping("/api/profiles/lastName/{lastName}")
+    public ResponseEntity<List<Profile>> getUserByLastName(@PathVariable String lastName) {
+        ResponseGenerator<List<Profile>> generator = new ResponseGenerator<>();
+        ResponseEntity<List<Profile>> result = generator.buildRequest(URL.concat("/lastName/" + lastName), HttpMethod.GET, new ParameterizedTypeReference<List<Profile>>() {});
         return result;
     }
 }
