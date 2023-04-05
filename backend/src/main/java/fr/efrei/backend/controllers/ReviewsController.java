@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
@@ -41,6 +38,24 @@ public class ReviewsController {
     @GetMapping("/{id}")
     public ResponseEntity<Review> getReview(@PathVariable String id) {
         ResponseEntity<Review> result = generator.buildRequest(URL.concat("/" + id), HttpMethod.GET, new ParameterizedTypeReference<Review>() {});
+        return result;
+    }
+
+    @PostMapping
+    public ResponseEntity<Review> postReview(@RequestBody Review review) {
+        ResponseEntity<Review> result = generator.buildRequest(URL, HttpMethod.POST, review, new ParameterizedTypeReference<Review>() {});
+        return result;
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Review> putReview(@PathVariable String id, @RequestBody Review review) {
+        ResponseEntity<Review> result = generator.buildRequest(URL.concat("/" + id), HttpMethod.PUT, review, new ParameterizedTypeReference<Review>() {});
+        return result;
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Review> deleteReview(@PathVariable String id) {
+        ResponseEntity<Review> result = generator.buildRequest(URL.concat("/" + id), HttpMethod.DELETE, new ParameterizedTypeReference<Review>() {});
         return result;
     }
 
