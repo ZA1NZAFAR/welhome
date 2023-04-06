@@ -224,7 +224,9 @@ public class PropertiesController {
                 else if (quantity == 3)
                     return (property.getImageUrl1() != null && property.getImageUrl2() != null && property.getImageUrl3() != null);
                 else
-                    throw new IllegalArgumentException("Properties can't contain asked number of images: " + quantity + "\nMaximum allowed number of images is " + 3);
+                    throw new IllegalArgumentException("Properties can't contain asked number of images: " + quantity
+                            + "\nMinimum allowed number of images is " + 0 
+                            + "\nMaximum allowed number of images is " + 3);
             }).collect(Collectors.toList());
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.FORBIDDEN);
