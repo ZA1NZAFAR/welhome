@@ -9,8 +9,7 @@
     <div class='d-flex flex-column mb-3'>
       <div class='p-2' *ngFor='let property of properties;'>
         <app-host-property-card
-          [property]='property'
-          (deletePropertyEvent)="this.deleteProperty($event)">
+          [property]='property'>
         </app-host-property-card>
       </div>
     </div>

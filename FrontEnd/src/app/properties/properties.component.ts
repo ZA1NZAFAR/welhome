@@ -63,7 +63,7 @@ export class PropertiesComponent implements OnInit, OnDestroy {
   }
 
   deleteProperty(): void {
-    this.propertyService.deleteProperty(this.propertyData.id).subscribe().unsubscribe();
+    this.propertyService.deleteProperty(this.propertyData.id).subscribe();
   }
 
   nextImage(): void {
