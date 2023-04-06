@@ -3,6 +3,7 @@ import { Router } from '@angular/router'
 import jwtDecode, { JwtPayload } from 'jwt-decode';
 import { IProfile, ITokenPayload } from './auth.model'
 import { environment } from 'src/environments/environment';
+import { ToastService } from 'src/app/utils/toast/toast.service'
 
 @Injectable({
   providedIn: 'root'
@@ -36,7 +37,8 @@ export class AuthService implements OnInit {
   private _payload: ITokenPayload | null = null;
 
   constructor(
-    private router: Router
+    private router: Router,
+    private toast: ToastService
   ) { }
   ngOnInit(): void {
   }
@@ -53,6 +55,7 @@ export class AuthService implements OnInit {
     if (!environment.production) {
       localStorage.setItem('token', this._token);
       this._payload = jwtDecode<ITokenPayload>(this._token);
+      this.toast.showSuccess('Logged in');
       return;
     }
     const loginWindow = window.open(environment.authUrl, 'Authentication', 'location=yes,height=300,width=300,scrollbars=yes,status=yes');
@@ -64,9 +67,11 @@ export class AuthService implements OnInit {
           try {
             this._payload = jwtDecode<ITokenPayload>(data.token);
             if (!this.isValid(this._payload)) {
+              this.toast.showError('Invalid token');
               throw new Error('Invalid token');
             }
             localStorage.setItem('token', data.token);
+            this.toast.showSuccess('Logged in');
           } catch (err) {
             this.logout();
             console.error(err);
@@ -93,6 +98,7 @@ export class AuthService implements OnInit {
   }
 
   logout(): void {
+    this.toast.showInfo('Logged out');
     localStorage.removeItem('token');
     this._payload = null;
     this.router.navigate(['/']);
