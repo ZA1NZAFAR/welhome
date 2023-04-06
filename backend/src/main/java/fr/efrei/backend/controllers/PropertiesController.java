@@ -73,7 +73,6 @@ public class PropertiesController {
         return result;
     }
 
-    // DYSFUNCTIONAL: Currently does nothing, implemented for future use-case
     @GetMapping("/property_category/{propertyCategory}")
     public ResponseEntity<List<Property>> getPropertyByCategory(@PathVariable String propertyCategory) {
         ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/property_category/" + propertyCategory), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
@@ -98,7 +97,6 @@ public class PropertiesController {
         return result;
     }
 
-    // DYSFUNCTIONAL: Currently does nothing, implemented for future use-case
     @GetMapping("/state/{state}")
     public ResponseEntity<List<Property>> getPropertyByState(@PathVariable String state) {
         ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/state/" + state), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
@@ -117,7 +115,13 @@ public class PropertiesController {
         return result;
     }
 
-    // DYSFUNCTIONAL: Currently does nothing, implemented for future use-case
+    // Inclusive lower & upper bounds (search between 100$ and 1000$ yields properties which are valued both 100$ and 1000$)
+    @GetMapping("/price_between")
+    public ResponseEntity<List<Property>> getPropertyByPriceBetween(@RequestParam("min") String lowerBound, @RequestParam("max") String upperBound) {
+        ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/price/" + lowerBound + "/" + upperBound), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
+        return result;
+    }
+
     @GetMapping("/surface_area/{surfaceArea}")
     public ResponseEntity<List<Property>> getPropertyBySurfaceArea(@PathVariable String surfaceArea) {
         ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/surface_area/" + surfaceArea), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});

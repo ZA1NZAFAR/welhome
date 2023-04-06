@@ -58,25 +58,25 @@ public class ProfilesController {
         return result;
     }
 
-    @GetMapping("/firstName/{firstName}")
+    @GetMapping("/first_name/{firstName}")
     public ResponseEntity<List<Profile>> getUserByFirstName(@PathVariable String firstName) {
         ResponseEntity<List<Profile>> result = listGenerator.buildRequest(URL.concat("/firstName/" + firstName), HttpMethod.GET, new ParameterizedTypeReference<List<Profile>>() {});
         return result;
     }
 
-    @GetMapping("/lastName/{lastName}")
+    @GetMapping("/last_name/{lastName}")
     public ResponseEntity<List<Profile>> getUserByLastName(@PathVariable String lastName) {
         ResponseEntity<List<Profile>> result = listGenerator.buildRequest(URL.concat("/lastName/" + lastName), HttpMethod.GET, new ParameterizedTypeReference<List<Profile>>() {});
         return result;
     }
 
-    @GetMapping("/birthDate/{birthDate}")
+    @GetMapping("/birth_date/{birthDate}")
     public ResponseEntity<List<Profile>> getUserByBirthDate(@PathVariable String birthDate) {
         ResponseEntity<List<Profile>> result = listGenerator.buildRequest(URL.concat("/birthDate/" + birthDate), HttpMethod.GET, new ParameterizedTypeReference<List<Profile>>() {});
         return result;
     }
 
-    @GetMapping("/phoneNumber/{phoneNumber}")
+    @GetMapping("/phone_number/{phoneNumber}")
     public ResponseEntity<List<Profile>> getUserByPhoneNumber(@PathVariable String phoneNumber) {
         ResponseEntity<List<Profile>> result = listGenerator.buildRequest(URL.concat("/phoneNumber/" + phoneNumber), HttpMethod.GET, new ParameterizedTypeReference<List<Profile>>() {});
         return result;
@@ -88,7 +88,7 @@ public class ProfilesController {
         return result;
     }
 
-    @GetMapping("/birthDateBetween")
+    @GetMapping("/birth_date_between")
     public ResponseEntity<List<Profile>> getUserByBirthDateBetween(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) {
         ResponseEntity<List<Profile>> result = listGenerator.buildRequest(URL.concat("/birthDateBetween/" + startDate + "/" + endDate), HttpMethod.GET, new ParameterizedTypeReference<List<Profile>>() {});
         return result;
