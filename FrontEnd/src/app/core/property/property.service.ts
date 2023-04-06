@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IProperty } from './property.model';
-import { BehaviorSubject, Observable, Subject, Subscription, map } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, Subscription, map, of } from 'rxjs';
 import { AuthService } from '../auth/auth.service'
 
 const mockPropertyMap: Map<number,IProperty> = new Map([
@@ -9,7 +9,7 @@ const mockPropertyMap: Map<number,IProperty> = new Map([
     id : 1,
     title: 'House in Paris',
     description: 'A beautiful house in Paris',
-    property_catergory: 'House',
+    property_category: 'House',
     address: '1, rue de la paix',
     city: 'Paris',
     state: 'Ile-de-France',
@@ -25,7 +25,7 @@ const mockPropertyMap: Map<number,IProperty> = new Map([
     id : 2,
     title: 'Room in Toulouse',
     description: 'A beautiful room in Toulouse',
-    property_catergory: 'House',
+    property_category: 'House',
     address: '1, rue de la Republique',
     city: 'Toulouse',
     state: 'Occitanie',
@@ -41,7 +41,7 @@ const mockPropertyMap: Map<number,IProperty> = new Map([
     id : 3,
     title: 'Apartment in Lyon',
     description: 'A beautiful apartment in Lyon',
-    property_catergory: 'Apartment',
+    property_category: 'Apartment',
     address: '1, rue General de Gaulle',
     city: 'Lyon',
     state: 'Auvergne-Rhône-Alpes',
@@ -96,27 +96,46 @@ export class PropertyService {
   }
 
   addProperty(property: IProperty): Observable<IProperty> {
-    return this._addProperty(property);
+    return this._addProperty(property).pipe(map(() => {
+      this.propertySubject.next(this.properties);
+      return property;
+    }));
   }
 
   private _addProperty(property: IProperty): Observable<IProperty> {
     property.id = ++this._propertyCount;
     mockPropertyMap.set(property.id, property);
     this.properties = Array.from(mockPropertyMap.values());
-    const result = new BehaviorSubject<IProperty>(property);
-    result.next(property);
-    return result.asObservable();
+    return of(property);
   }
 
   updateProperty(property: IProperty): Observable<IProperty> {
-    return this._updateProperty(property);
+    return this._updateProperty(property).pipe(map(() => {
+      this.propertySubject.next(this.properties);
+      return property;
+    }));
   }
 
   private _updateProperty(property: IProperty): Observable<IProperty> {
     mockPropertyMap.set(property.id, property);
     this.properties = Array.from(mockPropertyMap.values());
-    const result = new BehaviorSubject<IProperty>(property);
-    result.next(property);
-    return result.asObservable();
+    return of(property);
+  }
+
+  deleteProperty(propertyId: number): Observable<boolean> {
+    return this._deleteProperty(propertyId).pipe(map((result) => {
+      if (!result) return false;
+      this.propertySubject.next(this.properties);
+      return true;
+    }));
+  }
+
+  private _deleteProperty(propertyId: number): Observable<boolean> {
+    if (!mockPropertyMap.has(propertyId)) {
+      return of(false);
+    }
+    mockPropertyMap.delete(propertyId);
+    this.properties = Array.from(mockPropertyMap.values());
+    return of(true);
   }
 }

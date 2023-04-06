@@ -34,7 +34,7 @@ export class HostPropertyListComponent implements OnInit, OnDestroy {
     this.getPropertiesSub$ = this.propertyService.getProperties().subscribe((properties) => {
       const userEmail = this.authService.profile?.email;
       properties.forEach((property: IProperty) => {
-        if (property.owner_email === userEmail && this.propertyMap.get(property.id) === undefined) {
+        if (property.owner_email === userEmail) {
           this.propertyMap.set(property.id, property);
         }
       });
@@ -48,5 +48,12 @@ export class HostPropertyListComponent implements OnInit, OnDestroy {
   openAddForm() {
     const modal = this.modalService.open(PropertyFormComponent);
     modal.componentInstance.owner_email = this.authService.profile?.email;
+  }
+
+  deleteProperty(id: number) {
+    this.propertyService.deleteProperty(id).subscribe(() => {
+      this.propertyMap.delete(id);
+      this.properties = Array.from(this.propertyMap.values());
+    });
   }
 }

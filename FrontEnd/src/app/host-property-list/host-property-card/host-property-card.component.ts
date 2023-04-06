@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { IProperty } from 'src/app/core/property/property.model'
+import { PropertyService } from 'src/app/core/property/property.service'
 
 @Component({
   selector: 'app-host-property-card',
@@ -10,9 +11,11 @@ import { IProperty } from 'src/app/core/property/property.model'
 export class HostPropertyCardComponent implements OnInit {
 
   @Input() property: IProperty;
+  @Output() deletePropertyEvent = new EventEmitter<number>();
 
   constructor(
-    private router: Router
+    private router: Router,
+    private propertyService: PropertyService
   ) { }
 
   ngOnInit(): void {
@@ -20,5 +23,12 @@ export class HostPropertyCardComponent implements OnInit {
 
   goToProperty() {
     this.router.navigate(['/properties', this.property.id]);
+  }
+
+  deleteProperty() {
+    this.propertyService.deleteProperty(this.property.id).subscribe((result) => {
+      if (result) this.deletePropertyEvent.emit(this.property.id);
+    });
+
   }
 }
