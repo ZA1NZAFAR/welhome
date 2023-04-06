@@ -1,6 +1,7 @@
 package fr.efrei.backend.controllers;
 
 import fr.efrei.backend.entities.Property;
+import fr.efrei.backend.exceptions.CheckingQueryParametersFailedException;
 import fr.efrei.backend.utils.ResponseGenerator;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -228,7 +229,7 @@ public class PropertiesController {
                 else if (quantity == 3)
                     return (property.getImageUrl1() != null && property.getImageUrl2() != null && property.getImageUrl3() != null);
                 else
-                    throw new IllegalArgumentException("Properties can't contain asked number of images: " + quantity
+                    throw new IllegalArgumentException("ERROR:\nProperties cannot contain asked number of images. Asked: " + quantity
                             + "\nMinimum allowed number of images is " + 0
                             + "\nMaximum allowed number of images is " + 3);
             }).collect(Collectors.toList());
@@ -241,8 +242,9 @@ public class PropertiesController {
     }
 
     // Find outs a property containing specified attributes
+    @ExceptionHandler(CheckingQueryParametersFailedException.class)
     @GetMapping("/property")
-    public ResponseEntity<List<Property>> getPropertyBySeveralAttributes(@RequestParam(value="category") Optional<String> category, @RequestParam(value="country") Optional<String> country,
+    public ResponseEntity<?> getPropertyBySeveralAttributes(@RequestParam(value="category") Optional<String> category, @RequestParam(value="country") Optional<String> country,
                                                                          @RequestParam(value="state") Optional<String> state, @RequestParam(value="city") Optional<String> city,
                                                                          @RequestParam(value="min_price") Optional<BigDecimal> minPrice, @RequestParam(value="max_price") Optional<BigDecimal> maxPrice,
                                                                          @RequestParam(value="min_surface_area") Optional<Float> minSurfaceArea, @RequestParam(value="max_surface_area") Optional<Float> maxSurfaceArea,
@@ -250,6 +252,41 @@ public class PropertiesController {
                                                                          @RequestParam(value="min_capacity") Optional<Long> minCapacity, @RequestParam(value="max_capacity") Optional<Long> maxCapacity,
                                                                          @RequestParam(value="min_construction_date") Optional<Date> minConstructionDate, @RequestParam(value="max_construction_date") Optional<Date> maxConstructionDate) {
         ResponseEntity<List<Property>> allProperties = listGenerator.buildRequest(URL, HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
+
+        try {
+            StringBuilder message = new StringBuilder();
+            message.append("ERROR:");
+
+            if (category.isPresent() && (!category.get().equals("House") && !category.get().equals("Apartment") && !category.get().equals("Room")))
+                message.append("\nCategory can only be one of 3 three types: House, Apartment, Room");
+
+            if ((country.isPresent() && state.isPresent() && (country.get().equals(state.get())))
+            || (country.isPresent() && city.isPresent() && (country.get().equals(city.get())))
+            || state.isPresent() && city.isPresent() && (state.get().equals(city.get())))
+                message.append("\nCountry, state & city must all be distinct values");
+
+            if (minPrice.isPresent() && maxPrice.isPresent() && (maxPrice.get().compareTo(minPrice.get()) <= 0))
+                message.append("\nMaximum price can't be less than minimum price");
+
+            if (minSurfaceArea.isPresent() && maxSurfaceArea.isPresent() && (maxSurfaceArea.get().compareTo(minSurfaceArea.get()) <= 0))
+                message.append("\nMaximum surface area can't be less than minimum surface area");
+
+            if (minFloors.isPresent() && maxFloors.isPresent() && (maxFloors.get().compareTo(minFloors.get()) <= 0))
+                message.append("\nMaximum number of floors can't be less than minimum number of floors");
+
+            if (minCapacity.isPresent() && maxCapacity.isPresent() && (maxCapacity.get().compareTo(minCapacity.get()) <= 0))
+                message.append("\nMaximum capacity can't be less than minimum capacity");
+
+            if (minConstructionDate.isPresent() && maxConstructionDate.isPresent() && (maxConstructionDate.get().compareTo(minConstructionDate.get()) <= 0))
+                message.append("\nMaximum construction date can't be less than minimum construction date. Impossible to impose maximum construction date on a property which hasn't been built yet");
+
+            if (message.toString().equals("ERROR:"))
+                message.setLength(0);
+            else
+                throw new CheckingQueryParametersFailedException(message.toString());
+        } catch (CheckingQueryParametersFailedException exception) {
+            return new ResponseEntity<String>(exception.getMessage(), HttpStatus.FORBIDDEN);
+        }
 
         List<Property> properties = allProperties.getBody().stream().filter(property -> ((category.isPresent() ? property.getPropertyCategory().equals(category.get()) : true) && (country.isPresent() ? property.getCountry().equals(country.get()) : true)
                 && (state.isPresent() ? property.getState().equals(state.get()) : true)  && (city.isPresent() ? property.getCity().equals(city.get()) : true)
