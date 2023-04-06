@@ -1,9 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { Subscription, map } from 'rxjs';
 import { IProperty } from 'src/app/core/property/property.model';
 import { PropertyService } from 'src/app/core/property/property.service';
-
+import { PropertyFormComponent } from '../property-form/property-form.component'
+import { Location } from '@angular/common';
+import { AuthService } from '../core/auth/auth.service'
 @Component({
   selector: 'app-properties',
   templateUrl: './properties.component.html',
@@ -12,31 +15,40 @@ import { PropertyService } from 'src/app/core/property/property.service';
 export class PropertiesComponent implements OnInit, OnDestroy {
   propertyData: IProperty;
 
+  user_email: string;
   getPropertySub$: Subscription;
   paramsSub$: Subscription;
 
   constructor(
     private propertyService: PropertyService,
-    private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private modalService: NgbModal,
+    private locationService: Location,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
     this.paramsSub$ = this.route.paramMap.subscribe(params => {
       const id = Number(params.get('id'));
       if (id === null) {
-        this.router.navigate(['properties']);
+        this.locationService.back();
         return;
       }
       this.getPropertySub$ = this.propertyService.getProperties().subscribe(properties => {
         const property = properties.find(p => p.id === id);
         if (property === undefined) {
-          this.router.navigate(['properties']);
+          this.locationService.back();
           return;
         }
         this.propertyData = property;
       });
     });
+    console.log(this.authService.profile?.email)
+    this.user_email = this.authService.profile?.email || '';
+  }
+
+  get isOwner(): boolean {
+    return this.user_email === this.propertyData.owner_email;
   }
 
   ngOnDestroy(): void {
@@ -44,10 +56,14 @@ export class PropertiesComponent implements OnInit, OnDestroy {
     this.paramsSub$.unsubscribe();
   }
 
+  editProperty(): void {
+    const modal = this.modalService.open(PropertyFormComponent);
+    modal.componentInstance.selectedProperty = this.propertyData;
+    modal.componentInstance.owner_email = this.user_email;
+  }
+
   deleteProperty(): void {
-    this.propertyService.deleteProperty(this.propertyData.id).subscribe(() => {
-      this.router.navigate(['properties']);
-    });
+    this.propertyService.deleteProperty(this.propertyData.id).subscribe().unsubscribe();
   }
 
   nextImage(): void {

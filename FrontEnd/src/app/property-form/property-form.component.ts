@@ -40,6 +40,10 @@ export class PropertyFormComponent implements OnInit {
       construction_date: new FormControl(''),
       image_url: new FormControl('')
     });
+
+    if (this.selectedProperty) {
+      this.propertyGroup.patchValue(this.selectedProperty);
+    }
   }
 
   categoryValidator(control: FormControl) {

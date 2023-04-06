@@ -1,5 +1,8 @@
 <div>
-  <button matButton (click)="this.deleteProperty()" class="btn btn-danger">Supprimer</button>
+  <ng-template [ngIf]="this.isOwner">
+    <button matButton (click)="this.editProperty()" class="btn btn-primary">Modifier</button>
+    <button matButton (click)="this.deleteProperty()" class="btn btn-danger">Supprimer</button>
+  </ng-template>
   <div class="photos">
     <img src="{{ this.propertyData.image_url }}" alt="Property image" class="main-photo">
     <div class="maisons">

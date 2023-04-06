@@ -3,8 +3,8 @@ import { AuthService } from '../core/auth/auth.service'
 import { IProperty } from '../core/property/property.model'
 import { PropertyService } from '../core/property/property.service'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { PropertyFormComponent } from './property-form/property-form.component';
 import { Subscription } from 'rxjs';
+import { PropertyFormComponent } from '../property-form/property-form.component'
 
 @Component({
   selector: 'app-host-property-list',
