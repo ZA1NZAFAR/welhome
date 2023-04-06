@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/properties")
@@ -198,6 +199,36 @@ public class PropertiesController {
             // Make union of properties based on several city type attributes
             properties.addAll(result.getBody());
         });
+
+        ResponseEntity<List<Property>> result = new ResponseEntity<>(properties, HttpStatus.OK);
+        return result;
+    }
+
+    @ExceptionHandler
+    @GetMapping("/with_images")
+    public ResponseEntity<?> getPropertyByImagePresence(@RequestParam(value="quantity") int quantity) {
+        ResponseEntity<List<Property>> allProperties = listGenerator.buildRequest(URL, HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
+        List<Property> properties;
+
+        try {
+            // Check image presence
+            properties = allProperties.getBody().stream().filter(property -> {
+                if (quantity == 0)
+                    return (property.getImageUrl1() == null && property.getImageUrl2() == null && property.getImageUrl3() == null);
+                else if (quantity == 1)
+                    return (property.getImageUrl1() != null || property.getImageUrl2() != null || property.getImageUrl3() != null);
+                else if (quantity == 2)
+                    return ((property.getImageUrl1() != null && property.getImageUrl2() != null)
+                            || (property.getImageUrl1() != null && property.getImageUrl3() != null)
+                            || (property.getImageUrl2() != null && property.getImageUrl3() != null));
+                else if (quantity == 3)
+                    return (property.getImageUrl1() != null && property.getImageUrl2() != null && property.getImageUrl3() != null);
+                else
+                    throw new IllegalArgumentException("Properties can't contain asked number of images: " + quantity + "\nMaximum allowed number of images is " + 3);
+            }).collect(Collectors.toList());
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.FORBIDDEN);
+        }
 
         ResponseEntity<List<Property>> result = new ResponseEntity<>(properties, HttpStatus.OK);
         return result;
