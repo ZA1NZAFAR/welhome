@@ -11,8 +11,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -204,6 +207,7 @@ public class PropertiesController {
         return result;
     }
 
+    // Provides properties containing specified number of images
     @ExceptionHandler
     @GetMapping("/with_images")
     public ResponseEntity<?> getPropertyByImagePresence(@RequestParam(value="quantity") int quantity) {
@@ -225,12 +229,36 @@ public class PropertiesController {
                     return (property.getImageUrl1() != null && property.getImageUrl2() != null && property.getImageUrl3() != null);
                 else
                     throw new IllegalArgumentException("Properties can't contain asked number of images: " + quantity
-                            + "\nMinimum allowed number of images is " + 0 
+                            + "\nMinimum allowed number of images is " + 0
                             + "\nMaximum allowed number of images is " + 3);
             }).collect(Collectors.toList());
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.FORBIDDEN);
         }
+
+        ResponseEntity<List<Property>> result = new ResponseEntity<>(properties, HttpStatus.OK);
+        return result;
+    }
+
+    // Find outs a property containing specified attributes
+    @GetMapping("/property")
+    public ResponseEntity<List<Property>> getPropertyBySeveralAttributes(@RequestParam(value="category") Optional<String> category, @RequestParam(value="country") Optional<String> country,
+                                                                         @RequestParam(value="state") Optional<String> state, @RequestParam(value="city") Optional<String> city,
+                                                                         @RequestParam(value="min_price") Optional<BigDecimal> minPrice, @RequestParam(value="max_price") Optional<BigDecimal> maxPrice,
+                                                                         @RequestParam(value="min_surface_area") Optional<Float> minSurfaceArea, @RequestParam(value="max_surface_area") Optional<Float> maxSurfaceArea,
+                                                                         @RequestParam(value="min_floors") Optional<Long> minFloors, @RequestParam(value="max_floors") Optional<Long> maxFloors,
+                                                                         @RequestParam(value="min_capacity") Optional<Long> minCapacity, @RequestParam(value="max_capacity") Optional<Long> maxCapacity,
+                                                                         @RequestParam(value="min_construction_date") Optional<Date> minConstructionDate, @RequestParam(value="max_construction_date") Optional<Date> maxConstructionDate) {
+        ResponseEntity<List<Property>> allProperties = listGenerator.buildRequest(URL, HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
+
+        List<Property> properties = allProperties.getBody().stream().filter(property -> ((category.isPresent() ? property.getPropertyCategory().equals(category.get()) : true) && (country.isPresent() ? property.getCountry().equals(country.get()) : true)
+                && (state.isPresent() ? property.getState().equals(state.get()) : true)  && (city.isPresent() ? property.getCity().equals(city.get()) : true)
+                && (minPrice.isPresent() ? property.getPrice().compareTo(minPrice.get()) >= 0 : true) && (maxPrice.isPresent() ? property.getPrice().compareTo(maxPrice.get()) <= 0 : true)
+                && (minSurfaceArea.isPresent() ? property.getSurfaceArea().compareTo(minSurfaceArea.get()) >= 0 : true) && (maxSurfaceArea.isPresent() ? property.getSurfaceArea().compareTo(maxSurfaceArea.get()) <= 0 : true)
+                && (minFloors.isPresent() ? property.getFloors().compareTo(minFloors.get()) >= 0 : true) && (maxFloors.isPresent() ? property.getFloors().compareTo(maxFloors.get()) <= 0 : true)
+                && (minCapacity.isPresent() ? property.getCapacity().compareTo(minCapacity.get()) >= 0 : true) && (maxCapacity.isPresent() ? property.getCapacity().compareTo(maxCapacity.get()) <= 0 : true)
+                && (minConstructionDate.isPresent() ? property.getConstructionDate().compareTo(minConstructionDate.get()) >= 0 : true) && (maxConstructionDate.isPresent() ? property.getConstructionDate().compareTo(maxConstructionDate.get()) <= 0 : true))
+        ).collect(Collectors.toList());
 
         ResponseEntity<List<Property>> result = new ResponseEntity<>(properties, HttpStatus.OK);
         return result;
