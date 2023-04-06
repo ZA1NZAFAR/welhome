@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Titre de la page</title>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<body>
 <div>
+  <button matButton (click)="this.deleteProperty()" class="btn btn-danger">Supprimer</button>
   <div class="photos">
     <img src="{{ this.propertyData.image_url }}" alt="Property image" class="main-photo">
     <div class="maisons">
@@ -14,43 +7,15 @@
       <img src="https://media.istockphoto.com/id/943709096/fr/photo/salon-int%C3%A9rieur-illustration-3d.jpg?s=1024x1024&w=is&k=20&c=r5sjY84dqpuowRgnGM-di1pmVeK2Kcd6eZIDkn8T3PE=" alt="Maison 2" class="small-photo">
       <img src="https://media.istockphoto.com/id/1195597185/fr/photo/image-g%C3%A9n%C3%A9r%C3%A9e-par-ordinateur-du-salon-rendu-3d.jpg?s=1024x1024&w=is&k=20&c=iVxRtBR_k0CTUYyyivGJRckUC24ol1R_KtWzNx-Ty0U=" alt="Maison 3" class="small-photo">
     </div>
-    <button id="next-btn">Suivant</button>
+    <button id="next-btn" (click)="this.nextImage()">Suivant</button>
 
   </div>
   <h4> {{this.propertyData.title}}</h4>
   <p> {{ this.propertyData.description }}</p>
   <p><strong> Lieu : </strong>{{ this.propertyData.city}}, {{ this.propertyData.country}} </p>
-  <p> <strong> Surface : </strong>{{ this.propertyData.surface_area}}</p>
-  <p> <strong> Nombre d'étage : </strong>{{ this.propertyData.floors}}</p>
-  <p> <strong> Nombre de personne au maximum : </strong>{{ this.propertyData.capacity}}</p>
-  <p> <strong> Prix : </strong>{{ this.propertyData.price}}</p>
+  <p><strong> Surface : </strong>{{ this.propertyData.surface_area}}</p>
+  <p><strong> Nombre d'étage : </strong>{{ this.propertyData.floors}}</p>
+  <p><strong> Nombre de personne au maximum : </strong>{{ this.propertyData.capacity}}</p>
+  <p><strong> Prix : </strong>{{ this.propertyData.price}}</p>
 
 </div>
-</body>
-<script>
-  $(document).ready(function() {
-    var currentPhoto = 1;
-    var numPhotos = $('.small-photo').length;
-
-    function showPhoto(photoNum) {
-      $('.main-photo').attr('src', $('.small-photo:eq(' + (photoNum-1) + ')').attr('src'));
-      $('.small-photo').removeClass('active');
-      $('.small-photo:eq(' + (photoNum-1) + ')').addClass('active');
-    }
-
-    $('.small-photo').click(function() {
-      currentPhoto = $(this).index() + 1;
-      showPhoto(currentPhoto);
-    });
-
-    $('#next-btn').click(function() {
-      currentPhoto++;
-      if (currentPhoto > numPhotos) {
-        currentPhoto = 1;
-      }
-      showPhoto(currentPhoto);
-    });
-
-    showPhoto(currentPhoto);
-  });
-</script>
