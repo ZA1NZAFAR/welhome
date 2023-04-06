@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IProperty } from './property.model';
-import { BehaviorSubject, Observable, Subject, Subscription, map, of } from 'rxjs';
-import { AuthService } from '../auth/auth.service'
+import { BehaviorSubject, Observable, catchError, map, of, throwError } from 'rxjs';
+import { ToastService } from 'src/app/utils/toast/toast.service'
 
 const mockPropertyMap: Map<number,IProperty> = new Map([
   [1, {
@@ -70,7 +70,8 @@ export class PropertyService {
   private propertyLoadingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private toastService: ToastService
   ) {
     
   }
@@ -98,7 +99,11 @@ export class PropertyService {
   addProperty(property: IProperty): Observable<IProperty> {
     return this._addProperty(property).pipe(map(() => {
       this.propertySubject.next(this.properties);
+      this.toastService.showSuccess('Property added successfully');
       return property;
+    }), catchError((error: Error) => {
+      this.toastService.showError('Error while updating property : ' + error.message);
+      throw error;
     }));
   }
 
@@ -111,8 +116,12 @@ export class PropertyService {
 
   updateProperty(property: IProperty): Observable<IProperty> {
     return this._updateProperty(property).pipe(map(() => {
+      this.toastService.showSuccess('Property updated successfully');
       this.propertySubject.next(this.properties);
       return property;
+    }), catchError((error: Error) => {
+      this.toastService.showError('Error while updating property : ' + error.message);
+      throw error;
     }));
   }
 
@@ -124,9 +133,12 @@ export class PropertyService {
 
   deleteProperty(propertyId: number): Observable<boolean> {
     return this._deleteProperty(propertyId).pipe(map((result) => {
-      if (!result) return false;
+      this.toastService.showSuccess('Property deleted successfully');
       this.propertySubject.next(this.properties);
       return true;
+    }), catchError((error: Error) => {
+      this.toastService.showError('Error while deleting property : ' + error.message);
+      throw error;
     }));
   }
 

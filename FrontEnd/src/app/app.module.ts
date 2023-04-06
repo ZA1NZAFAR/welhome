@@ -11,12 +11,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { HostPropertyListModule } from './host-property-list/host-property-list.module'
 import { ReservationListModule } from './reservation-list/reservation-list.module'
 import { PropertiesModule } from './properties/properties.module';
+import { ToastComponent } from './utils/toast/toast.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FooterComponent,
-    NavbarComponent
+    NavbarComponent,
+    ToastComponent
   ],
   imports: [
     BrowserModule,
