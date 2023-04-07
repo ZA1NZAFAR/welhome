@@ -257,12 +257,12 @@ public class PropertiesController {
             StringBuilder message = new StringBuilder();
             message.append("ERROR:");
 
-            if (category.isPresent() && (!category.get().equals("House") && !category.get().equals("Apartment") && !category.get().equals("Room")))
+            if (category.isPresent() && (!category.get().toLowerCase().equals("house") && !category.get().toLowerCase().equals("apartment") && !category.get().toLowerCase().equals("room")))
                 message.append("\nCategory can only be one of 3 three types: House, Apartment, Room");
 
-            if ((country.isPresent() && state.isPresent() && (country.get().equals(state.get())))
-            || (country.isPresent() && city.isPresent() && (country.get().equals(city.get())))
-            || state.isPresent() && city.isPresent() && (state.get().equals(city.get())))
+            if ((country.isPresent() && state.isPresent() && (country.get().toLowerCase().equals(state.get().toLowerCase())))
+            || (country.isPresent() && city.isPresent() && (country.get().toLowerCase().equals(city.get().toLowerCase())))
+            || state.isPresent() && city.isPresent() && (state.get().toLowerCase().equals(city.get().toLowerCase())))
                 message.append("\nCountry, state & city must all be distinct values");
 
             if (minPrice.isPresent() && maxPrice.isPresent() && (maxPrice.get().compareTo(minPrice.get()) <= 0))
@@ -288,8 +288,9 @@ public class PropertiesController {
             return new ResponseEntity<String>(exception.getMessage(), HttpStatus.FORBIDDEN);
         }
 
-        List<Property> properties = allProperties.getBody().stream().filter(property -> ((category.isPresent() ? property.getPropertyCategory().equals(category.get()) : true) && (country.isPresent() ? property.getCountry().equals(country.get()) : true)
-                && (state.isPresent() ? property.getState().equals(state.get()) : true)  && (city.isPresent() ? property.getCity().equals(city.get()) : true)
+        List<Property> properties = allProperties.getBody().stream().filter(property -> (
+                (category.isPresent() ? property.getPropertyCategory().toLowerCase().equals(category.get().toLowerCase()) : true) && (country.isPresent() ? property.getCountry().toLowerCase().equals(country.get().toLowerCase()) : true)
+                && (state.isPresent() ? property.getState().toLowerCase().equals(state.get().toLowerCase()) : true)  && (city.isPresent() ? property.getCity().toLowerCase().equals(city.get().toLowerCase()) : true)
                 && (minPrice.isPresent() ? property.getPrice().compareTo(minPrice.get()) >= 0 : true) && (maxPrice.isPresent() ? property.getPrice().compareTo(maxPrice.get()) <= 0 : true)
                 && (minSurfaceArea.isPresent() ? property.getSurfaceArea().compareTo(minSurfaceArea.get()) >= 0 : true) && (maxSurfaceArea.isPresent() ? property.getSurfaceArea().compareTo(maxSurfaceArea.get()) <= 0 : true)
                 && (minFloors.isPresent() ? property.getFloors().compareTo(minFloors.get()) >= 0 : true) && (maxFloors.isPresent() ? property.getFloors().compareTo(maxFloors.get()) <= 0 : true)
