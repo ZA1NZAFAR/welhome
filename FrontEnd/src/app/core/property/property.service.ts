@@ -79,14 +79,14 @@ export class PropertyService {
    * use only for test
    * @returns 
    */
-  private getMockProperty(): BehaviorSubject<IProperty[]> {
+  private _getMockProperty(): BehaviorSubject<IProperty[]> {
     this.propertySubject.next(this.properties);
     return this.propertySubject;
   }
 
   getProperties(): Observable<IProperty[]> {
     this.propertyLoadingSubject.next(true);
-    return this.getMockProperty().pipe(map(() => {
+    return this._getMockProperty().pipe(map(() => {
       this.propertyLoadingSubject.next(false);
       return this.properties;
     })); // should use http client to get data from server

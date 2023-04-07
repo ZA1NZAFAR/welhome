@@ -4,4 +4,5 @@
   <button type="button" class="btn btn-primary" routerLink="/myproperties" routerLinkActive="active" ariaCurrentWhenActive="page" *ngIf="this.isLoggedIn">My Properties</button>
   <button type="button" class="btn btn-primary" (click)="this.login()" *ngIf="!this.isLoggedIn">Login</button>
   <button type="button" class="btn btn-danger" (click)="this.logout()" *ngIf="this.isLoggedIn">Logout</button>
+  <button type="button" class="btn btn-secondary" (click)="this.changeContext()" *ngIf="this.isLoggedIn">{{ this.changeContextText }}</button>
 </div>

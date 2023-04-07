@@ -1,9 +1,12 @@
 <div>
     <div class='d-flex flex-column mb-3'>
-      <div class='p-2' *ngFor='let reservation of reservations; index as i'>
-        <app-reservation-card
-          [reservation]='reservation'>
-        </app-reservation-card>
+      <div class='p-2' *ngFor='let reservation of this.reservations; index as i'>
+        <ng-template [ngIf]="this.propertyExists(reservation.property_id)">
+          <app-reservation-card
+            [reservation]='reservation'
+            [property]='this.getProperty(reservation.property_id)'>
+          </app-reservation-card>
+        </ng-template>
       </div>
     </div>
   </div>

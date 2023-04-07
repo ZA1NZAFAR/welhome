@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/core/auth/auth.service';
+import { ContextService } from 'src/app/core/context/context.service'
 
 @Component({
   selector: 'app-navbar',
@@ -9,7 +10,8 @@ import { AuthService } from 'src/app/core/auth/auth.service';
 export class NavbarComponent implements OnInit {
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private contextService: ContextService
   ) { }
 
   ngOnInit(): void {
@@ -26,6 +28,14 @@ export class NavbarComponent implements OnInit {
 
   logout(): void {
     this.authService.logout();
+  }
+
+  get changeContextText(): string {
+    return this.contextService.isRenter ? 'Switch to Owner View' : 'Switch to Renter View';
+  }
+
+  changeContext(): void {
+    this.contextService.changeContext();
   }
 
 }
