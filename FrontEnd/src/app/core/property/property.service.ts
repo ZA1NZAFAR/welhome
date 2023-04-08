@@ -79,14 +79,23 @@ export class PropertyService {
    * use only for test
    * @returns 
    */
-  private _getMockProperty(): BehaviorSubject<IProperty[]> {
-    this.propertySubject.next(this.properties);
-    return this.propertySubject;
+  private _getMockProperty(owner_email?: string): BehaviorSubject<IProperty[]> {
+    const properties: IProperty[] = [];
+    mockProperties.forEach((property: IProperty) => {
+      if (owner_email && property.owner_email !== owner_email) {
+        return;
+      }
+      properties.push(property);
+    });
+    
+    return new BehaviorSubject<IProperty[]>(properties);
   }
 
   getProperties(owner_email?: string): Observable<IProperty[]> {
     this.propertyLoadingSubject.next(true);
-    return this._getMockProperty().pipe(map(() => {
+    return this._getMockProperty(owner_email).pipe(map((properties) => {
+      this.properties = properties;
+      this.propertySubject.next(this.properties);
       this.propertyLoadingSubject.next(false);
       return this.properties;
     })); // should use http client to get data from server
