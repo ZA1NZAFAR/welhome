@@ -1,14 +1,16 @@
 <div class="main-div">
   <div class="photos">
-    <img src="{{ this.propertyData.image_url }}" alt="Property image" class="main-photo">
+    <img src="{{ this.images[this.currentImageIndex] }}" alt="Property image" class="main-photo">
     <div class="maisons">
-      <img src="https://media.istockphoto.com/id/1449364000/fr/photo/petite-chambre-de-style-minimaliste.jpg?s=612x612&w=is&k=20&c=LPjfaAJ5HPVU-CXvoaz14qNg13o8VVSuiQgEcPflu5Q=" alt="Maison 1" class="small-photo">
-      <img src="https://media.istockphoto.com/id/943709096/fr/photo/salon-int%C3%A9rieur-illustration-3d.jpg?s=1024x1024&w=is&k=20&c=r5sjY84dqpuowRgnGM-di1pmVeK2Kcd6eZIDkn8T3PE=" alt="Maison 2" class="small-photo">
-      <img src="https://media.istockphoto.com/id/1195597185/fr/photo/image-g%C3%A9n%C3%A9r%C3%A9e-par-ordinateur-du-salon-rendu-3d.jpg?s=1024x1024&w=is&k=20&c=iVxRtBR_k0CTUYyyivGJRckUC24ol1R_KtWzNx-Ty0U=" alt="Maison 3" class="small-photo">
+      <img *ngFor="let image of this.images; let i = index" 
+           [src]="image" 
+           [alt]="'Maison ' + (i+1)" 
+           class="small-photo" 
+           (click)="this.currentImageIndex = i">
     </div>
-    <button id="next-btn" (click)="this.nextImage()">Suivant</button>
-
+    <button id="next-btn" (click)="nextImage()">Suivant</button>
   </div>
+  
   <div class="left-div">
   <div class="infos">
     <h1> {{this.propertyData.title}}</h1>

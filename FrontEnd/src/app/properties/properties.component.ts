@@ -18,6 +18,13 @@ export class PropertiesComponent implements OnInit, OnDestroy {
   user_email: string;
   getPropertySub$: Subscription;
   paramsSub$: Subscription;
+  currentImageIndex: number = 0;
+  images = [
+    "https://media.istockphoto.com/id/1449364000/fr/photo/petite-chambre-de-style-minimaliste.jpg?s=612x612&w=is&k=20&c=LPjfaAJ5HPVU-CXvoaz14qNg13o8VVSuiQgEcPflu5Q=",
+    "https://media.istockphoto.com/id/943709096/fr/photo/salon-int%C3%A9rieur-illustration-3d.jpg?s=1024x1024&w=is&k=20&c=r5sjY84dqpuowRgnGM-di1pmVeK2Kcd6eZIDkn8T3PE=",
+    "https://media.istockphoto.com/id/1195597185/fr/photo/image-g%C3%A9n%C3%A9r%C3%A9e-par-ordinateur-du-salon-rendu-3d.jpg?s=1024x1024&w=is&k=20&c=iVxRtBR_k0CTUYyyivGJRckUC24ol1R_KtWzNx-Ty0U="
+  ]
+
 
   constructor(
     private propertyService: PropertyService,
@@ -25,6 +32,7 @@ export class PropertiesComponent implements OnInit, OnDestroy {
     private modalService: NgbModal,
     private locationService: Location,
     private authService: AuthService
+    
   ) { }
 
   ngOnInit(): void {
@@ -45,6 +53,10 @@ export class PropertiesComponent implements OnInit, OnDestroy {
     });
     console.log(this.authService.profile?.email)
     this.user_email = this.authService.profile?.email || '';
+    if (this.propertyData.image_url !== undefined) {
+      this.images.unshift(this.propertyData.image_url);
+    }
+    
   }
 
   get isOwner(): boolean {
@@ -66,9 +78,14 @@ export class PropertiesComponent implements OnInit, OnDestroy {
     this.propertyService.deleteProperty(this.propertyData.id).subscribe();
   }
 
-  nextImage(): void {
-
+  nextImage() {
+    this.currentImageIndex++;
+    if (this.currentImageIndex >= this.images.length) {
+      this.currentImageIndex = 0;
+    }
   }
+  
+  
   /*
   $(document).ready(function() {
     var currentPhoto = 1;
