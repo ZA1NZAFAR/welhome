@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AppGuard } from './app.guard'
+import { AuthenticationGuard, ContextGuard } from './app.guard'
 import { HostPropertyListComponent } from './host-property-list/host-property-list.component';
 import { PropertiesComponent } from './properties/properties.component';
 import { PropertyListComponent } from './property-list/property-list.component';
@@ -11,16 +11,18 @@ const routes: Routes = [
   { path: 'properties/:id', component: PropertiesComponent },
   { path: 'myproperties',
     component: HostPropertyListComponent,
-    canActivate: [ AppGuard ]
+    canActivate: [ AuthenticationGuard, ContextGuard ],
+    runGuardsAndResolvers: 'always',
   },
   { path: 'myreservations',
     component: ReservationListComponent,
-    canActivate: [ AppGuard ] },
+    canActivate: [ AuthenticationGuard ],
+    runGuardsAndResolvers: 'always', },
   { path: '**', redirectTo: '' }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

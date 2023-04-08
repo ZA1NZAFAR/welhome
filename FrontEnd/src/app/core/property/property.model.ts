@@ -2,7 +2,7 @@ export interface IProperty {
   id:number,
   title: string,
   description: string,
-  property_catergory: PropertyCategory,
+  property_category: PropertyCategory,
   address: string,
   city: string,
   state?: string,

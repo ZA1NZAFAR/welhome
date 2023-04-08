@@ -10,7 +10,8 @@
       <p class="mb-1"><strong>Surface :</strong> {{property.surface_area}} m²</p>
       <p class="mb-1"><strong>Capacité:</strong> {{property.capacity}} personne(s)</p>
       <p class="mb-1"><strong>Prix :</strong> {{property.price}} €</p>
-      <button class="btn btn-primary">Details</button>
+      <button class="btn btn-primary" (click)="this.goToProperty()">Details</button>
+      <button class="btn btn-danger" (click)="this.deleteProperty()">Delete</button>
     </div>
   </div>
 </div>

@@ -1,23 +1,21 @@
 <div class="row border p-3">
   <div class="col-md-3">
-    <img src="{{ reservation.property?.image_url }}" alt="Reservation image" class="img-thumbnail photo-thumbnail">
+    <img src="{{ this.property.image_url }}" alt="Reservation image" class="img-thumbnail photo-thumbnail">
   </div>
   
   <div class="col-md-7">
-    <h3>{{ reservation.property?.title }}</h3>
-    <p><strong>Lieu :</strong> {{ reservation.property?.city }}</p>
-    <p><strong>Surface du logement :</strong> {{ reservation.property?.surface_area }} m²</p>
-    <p><strong>Arrivée :</strong> {{ reservation.check_in | date: 'dd/MM/yyyy' }} </p>
-    <p><strong>Départ :</strong> {{ reservation.check_out | date: 'dd/MM/yyyy' }} </p>
-    <p><strong>Nombre d'occupant :</strong> {{ reservation.nbr_person }}</p>
-    <p><strong>Prix total :</strong> {{ reservation.total_price }} €</p>
+    <h3>{{ this.property.title }}</h3>
+    <p><strong>Lieu :</strong> {{ this.property.city }}</p>
+    <p><strong>Surface du logement :</strong> {{ this.property.surface_area }} m²</p>
+    <p><strong>Arrivée :</strong> {{ this.reservation.start_date | date: 'dd/MM/yyyy' }} </p>
+    <p><strong>Départ :</strong> {{ this.reservation.end_date | date: 'dd/MM/yyyy' }} </p>
     <div class="col-md-2">
       <div class="d-flex justify-content-between align-items-center">
-        <div class="btn no-cursor" [ngClass]="getButtonClass()">
-          {{ reservation.state }}
+        <div class="btn no-cursor" [ngClass]="this.buttonClass">
+          {{ this.status }}
         </div>
         <div  class="col-md-3 d-flex align-items-center justify-content-center">
-          <button *ngIf="reservation.state === 'Validé' || reservation.state === 'En cours'" type="button" class="btn btn-danger ml-3 ml-auto">
+          <button *ngIf="this.status === 'Validé' || this.status === 'En cours'" type="button" class="btn btn-danger ml-3 ml-auto">
             Annuler
           </button>
         </div>

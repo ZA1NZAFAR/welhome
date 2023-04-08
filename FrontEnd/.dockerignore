@@ -1,0 +1,8 @@
+dist/
+.vscode/
+.angular/
+node_modules/
+.editorconfig
+docker-compose.yml
+Dockerfile
+.Dockerignore

@@ -2,6 +2,7 @@
   "dependencies": {
     "@types/moment": "^2.13.0",
     "moment": "^2.29.4",
+    "ngx-bootstrap": "^10.2.0",
     "ngx-slick-carousel": "^15.0.0"
   }
 }

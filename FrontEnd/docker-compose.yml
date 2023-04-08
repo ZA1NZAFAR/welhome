@@ -1,0 +1,12 @@
+version: '1.0'
+services:
+  front-end:
+    image: ${DOCKER_REGISTRY-}front-end
+    pull_policy: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+      no_cache: true
+    ports:
+      - 4200:80
+
