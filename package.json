@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "@types/moment": "^2.13.0",
+    "moment": "^2.29.4",
     "ngx-slick-carousel": "^15.0.0"
   }
 }

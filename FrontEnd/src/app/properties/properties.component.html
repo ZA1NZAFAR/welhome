@@ -17,15 +17,39 @@
     <button id="next-btn">Suivant</button>
 
   </div>
-  <h4> {{this.propertyData.title}}</h4>
+  <div>
+    <h4> {{this.propertyData.title}}</h4>
   <p> {{ this.propertyData.description }}</p>
   <p><strong> Lieu : </strong>{{ this.propertyData.city}}, {{ this.propertyData.country}} </p>
   <p> <strong> Surface : </strong>{{ this.propertyData.surface_area}}</p>
   <p> <strong> Nombre d'étage : </strong>{{ this.propertyData.floors}}</p>
   <p> <strong> Nombre de personne au maximum : </strong>{{ this.propertyData.capacity}}</p>
   <p> <strong> Prix : </strong>{{ this.propertyData.price}}</p>
+  </div>
 
 </div>
+
+<div class="reservation-container">
+  <div class="date-container">
+    <label for="checkin">Arrivée:</label>
+    <input type="date" id="checkin" name="checkin">
+
+    <label for="checkout">Départ:</label>
+    <input type="date" id="checkout" name="checkout">
+  </div>
+
+  <div class="nb-voyageurs-container">
+    <label for="nb-voyageurs">Nombre de voyageurs :</label>
+    <input type="number" id="nb-voyageurs" name="nb-voyageurs" min="1" max="10">
+  </div>
+
+  <div class="btn-container">
+    <button id="reservation-btn">Réserver</button>
+  </div>
+</div>
+
+
+
 </body>
 <script>
   $(document).ready(function() {
