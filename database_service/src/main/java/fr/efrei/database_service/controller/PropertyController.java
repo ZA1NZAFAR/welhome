@@ -1,6 +1,5 @@
 package fr.efrei.database_service.controller;
 
-import fr.efrei.database_service.dto.ProfileDTO;
 import fr.efrei.database_service.dto.PropertyDTO;
 import fr.efrei.database_service.entity.PropertyEntity;
 import fr.efrei.database_service.exception.DatabaseExceptions;
@@ -32,7 +31,7 @@ public class PropertyController {
 
             propertyToCreate = propertyService.save(Mapper.convert(property, PropertyEntity.class));
         } catch (DatabaseExceptions.EntityAlreadyExistsException e) {
-            return ResponseEntity.badRequest().body(Mapper.convert(property, PropertyDTO.class));
+            return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(Mapper.convert(propertyToCreate, PropertyDTO.class));
     }
@@ -51,14 +50,14 @@ public class PropertyController {
 
     @PutMapping("/{id}")
     @Operation(summary = "This endpoint will allow to update a property based on id")
-    public ResponseEntity<PropertyDTO> updateProperty(@PathVariable Long id, @RequestBody ProfileDTO property) {
+    public ResponseEntity<PropertyDTO> updateProperty(@PathVariable Long id, @RequestBody PropertyDTO propertyDTO) {
         PropertyEntity propertyToUpdate;
         try {
-            propertyToUpdate = propertyService.update(id, Mapper.convert(property, PropertyEntity.class));
+            propertyToUpdate = propertyService.update(id, Mapper.convert(propertyDTO, PropertyEntity.class));
         } catch (DatabaseExceptions.EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         } catch (DatabaseExceptions.BadRequestException e) {
-            return ResponseEntity.badRequest().body(Mapper.convert(property, PropertyDTO.class));
+            return ResponseEntity.badRequest().body(propertyDTO);
         }
         return ResponseEntity.ok(Mapper.convert(propertyToUpdate, PropertyDTO.class));
     }

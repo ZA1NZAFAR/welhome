@@ -3,6 +3,7 @@ package fr.efrei.database_service.service;
 import fr.efrei.database_service.entity.ReservationEntity;
 import fr.efrei.database_service.exception.DatabaseExceptions;
 import fr.efrei.database_service.repository.ReservationRepository;
+import fr.efrei.database_service.tools.Tools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,12 +29,26 @@ public class ReservationService implements CRUD<ReservationEntity, Long> {
     }
 
     @Override
-    public ReservationEntity update(Long id, ReservationEntity reservation) {
+    public ReservationEntity update(Long id, ReservationEntity updatedReservation) {
         ReservationEntity existingReservation = reservationRepository.findById(id).orElseThrow(DatabaseExceptions.EntityNotFoundException::new);
-        if (existingReservation.getId()!=(reservation.getId()))
+        if (!Tools.isNullOrEmpty(updatedReservation.getPropertyId()) && existingReservation.getId() != (updatedReservation.getId()))
             throw new DatabaseExceptions.BadRequestException("Id cannot be changed");
-        reservation.setId(id);
-        return reservationRepository.save(reservation);
+
+        // update only if the new value is different from the existing one
+        if (!Tools.isNullOrEmpty(updatedReservation.getPropertyId()))
+            existingReservation.setPropertyId(updatedReservation.getPropertyId());
+        if (!Tools.isNullOrEmpty(updatedReservation.getRenterEmail()))
+            existingReservation.setRenterEmail(updatedReservation.getRenterEmail());
+        if (!Tools.isNullOrEmpty(updatedReservation.getStartDate()))
+            existingReservation.setStartDate(updatedReservation.getStartDate());
+        if (!Tools.isNullOrEmpty(updatedReservation.getEndDate()))
+            existingReservation.setEndDate(updatedReservation.getEndDate());
+        if (!Tools.isNullOrEmpty(updatedReservation.isConfirmedOwner()))
+            existingReservation.setConfirmedOwner(updatedReservation.isConfirmedOwner());
+        if (!Tools.isNullOrEmpty(updatedReservation.isConfirmedRenter()))
+            existingReservation.setConfirmedRenter(updatedReservation.isConfirmedRenter());
+
+        return reservationRepository.save(existingReservation);
     }
 
     public List<ReservationEntity> findAll() {
@@ -59,10 +74,6 @@ public class ReservationService implements CRUD<ReservationEntity, Long> {
 
     public List<ReservationEntity> findByConfirmedRenter (boolean confirmedRenter) {
         return this.reservationRepository.findByConfirmedRenter(confirmedRenter);
-    }
-
-    public List<ReservationEntity> findByTotalPrice (float totalPrice) {
-        return this.reservationRepository.findByTotalPrice(totalPrice);
     }
 
     @Override

@@ -4,6 +4,7 @@ package fr.efrei.database_service.service;
 import fr.efrei.database_service.entity.ProfileEntity;
 import fr.efrei.database_service.exception.DatabaseExceptions;
 import fr.efrei.database_service.repository.ProfileRepository;
+import fr.efrei.database_service.tools.Tools;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,11 +38,22 @@ public class ProfileService implements CRUD<ProfileEntity, String> {
     @Transactional
     public ProfileEntity update(String email, ProfileEntity updatedProfile) throws IllegalArgumentException, EntityNotFoundException {
         ProfileEntity existingProfile = profileRepository.findById(email).orElseThrow(EntityNotFoundException::new);
-        if (!existingProfile.getEmail().equals(updatedProfile.getEmail()))
-            throw new IllegalArgumentException("Email cannot be changed");
+        if (!Tools.isNullOrEmpty(updatedProfile.getEmail()) && !existingProfile.getEmail().equals(updatedProfile.getEmail()))
+            throw new DatabaseExceptions.BadRequestException("Email cannot be changed");
 
-        updatedProfile.setEmail(email);
-        return profileRepository.save(updatedProfile);
+        // only update the fields that are not null and different from the existing profile
+        if (!Tools.isNullOrEmpty(updatedProfile.getFirstName()))
+            existingProfile.setFirstName(updatedProfile.getFirstName());
+        if (!Tools.isNullOrEmpty(updatedProfile.getLastName()))
+            existingProfile.setLastName(updatedProfile.getLastName());
+        if (!Tools.isNullOrEmpty(updatedProfile.getPhoneNumber()))
+            existingProfile.setPhoneNumber(updatedProfile.getPhoneNumber());
+        if (!Tools.isNullOrEmpty(updatedProfile.getGender()))
+            existingProfile.setGender(updatedProfile.getGender());
+        if (!Tools.isNullOrEmpty(updatedProfile.getBirthDate()))
+            existingProfile.setBirthDate(updatedProfile.getBirthDate());
+
+        return profileRepository.save(existingProfile);
     }
 
     @Override

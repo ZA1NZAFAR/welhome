@@ -3,6 +3,7 @@ package fr.efrei.database_service.service;
 import fr.efrei.database_service.entity.ReviewEntity;
 import fr.efrei.database_service.exception.DatabaseExceptions;
 import fr.efrei.database_service.repository.ReviewRepository;
+import fr.efrei.database_service.tools.Tools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,12 +32,24 @@ public class ReviewService implements CRUD<ReviewEntity, Long> {
     }
 
     @Override
-    public ReviewEntity update(Long id, ReviewEntity object) {
+    public ReviewEntity update(Long id, ReviewEntity updatedReview) {
         ReviewEntity existingReview = reviewRepository.findById(id).orElseThrow(DatabaseExceptions.EntityNotFoundException::new);
-        if (existingReview.getId()!=(object.getId()))
+        if (Tools.isNullOrEmpty(updatedReview.getId()) && existingReview.getId() != (updatedReview.getId()))
             throw new DatabaseExceptions.BadRequestException("Id cannot be changed");
-        object.setId(id);
-        return reviewRepository.save(object);
+
+        // only update the fields that are not null and different from the existing review
+        if (!Tools.isNullOrEmpty(updatedReview.getRating()))
+            existingReview.setRating(updatedReview.getRating());
+        if (!Tools.isNullOrEmpty(updatedReview.getReviewText()))
+            existingReview.setReviewText(updatedReview.getReviewText());
+        if (!Tools.isNullOrEmpty(updatedReview.getPublishDate()))
+            existingReview.setPublishDate(updatedReview.getPublishDate());
+        if (!Tools.isNullOrEmpty(updatedReview.getPropertyId()))
+            existingReview.setPropertyId(updatedReview.getPropertyId());
+        if (!Tools.isNullOrEmpty(updatedReview.getReviewerEmail()))
+            existingReview.setReviewerEmail(updatedReview.getReviewerEmail());
+
+        return reviewRepository.save(existingReview);
     }
 
     @Override

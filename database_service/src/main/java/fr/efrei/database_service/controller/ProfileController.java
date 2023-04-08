@@ -31,7 +31,7 @@ public class ProfileController {
         try {
             userToCreate = profileService.save(Mapper.convert(user, ProfileEntity.class));
         } catch (DatabaseExceptions.EntityAlreadyExistsException e) {
-            return ResponseEntity.badRequest().body("Invalid request: " + e.getMessage());
+            return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(Mapper.convert(userToCreate, ProfileDTO.class));
     }
@@ -51,12 +51,12 @@ public class ProfileController {
 
     @PutMapping("/{email}")
     @Operation(summary = "This endpoint will allow to update a user profile based on email")
-    public ResponseEntity<?> updateUser(@PathVariable String email, @RequestBody ProfileDTO profileDTO) {
+    public ResponseEntity<ProfileDTO> updateUser(@PathVariable String email, @RequestBody ProfileDTO profileDTO) {
         try {
             ProfileEntity updatedProfile = profileService.update(email, Mapper.convert(profileDTO, ProfileEntity.class));
             return ResponseEntity.ok(Mapper.convert(updatedProfile, ProfileDTO.class));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body("Invalid request: " + e.getMessage());
+        } catch (DatabaseExceptions.BadRequestException e) {
+            return ResponseEntity.badRequest().body(profileDTO);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         }

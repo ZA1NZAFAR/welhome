@@ -16,7 +16,4 @@ public interface ReservationRepository extends JpaRepository<ReservationEntity, 
     List<ReservationEntity> findByEndDate(Date endDate);
     List<ReservationEntity> findByConfirmedOwner(boolean confirmedOwner);
     List<ReservationEntity> findByConfirmedRenter(boolean confirmedRenter);
-    List<ReservationEntity> findByTotalPrice(float totalPrice);
-
-
 }

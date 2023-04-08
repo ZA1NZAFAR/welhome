@@ -37,7 +37,7 @@ public class ReservationController {
         try {
             reservationToCreate = reservationService.save(Mapper.convert(reservation, ReservationEntity.class));
         } catch (DatabaseExceptions.EntityAlreadyExistsException e) {
-            return ResponseEntity.badRequest().body(Mapper.convert(reservation, ReservationDTO.class));
+            return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(Mapper.convert(reservationToCreate, ReservationDTO.class));
     }
@@ -90,10 +90,16 @@ public class ReservationController {
     }
     @PutMapping("/{reservationId}")
     @Operation(summary = "This endPoint will allow to update a booking by providing the relevant booking id")
-    public ResponseEntity<ReservationDTO> updateReservation(@PathVariable long reservationId, @RequestBody ReservationEntity reservation) {
-        ReservationEntity tmp = reservationService.update(reservationId, reservation);
-        if (tmp == null)
+    public ResponseEntity<ReservationDTO> updateReservation(@PathVariable long reservationId, @RequestBody ReservationDTO reservation) {
+        ReservationEntity tmp;
+        try {
+            tmp = reservationService.update(reservationId, Mapper.convert(reservation, ReservationEntity.class));
+        } catch (DatabaseExceptions.EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
+        } catch (DatabaseExceptions.BadRequestException e) {
+            return ResponseEntity.badRequest().body(reservation);
+        }
+
         return ResponseEntity.ok(Mapper.convert(tmp, ReservationDTO.class));
     }
     @DeleteMapping("/{reservationId}")

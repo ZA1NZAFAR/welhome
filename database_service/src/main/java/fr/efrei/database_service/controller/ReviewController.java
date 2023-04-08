@@ -30,7 +30,7 @@ public class ReviewController {
         try {
             reviewToCreate = reviewService.save(Mapper.convert(reviewEntity, ReviewEntity.class));
         } catch (DatabaseExceptions.EntityAlreadyExistsException e) {
-            return ResponseEntity.badRequest().body(Mapper.convert(reviewEntity, ReviewDTO.class));
+            return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(Mapper.convert(reviewToCreate, ReviewDTO.class));
     }
@@ -49,14 +49,14 @@ public class ReviewController {
 
     @PutMapping("/{id}")
     @Operation(summary = "This endPoint will allow to update a specific review about a reservation by providing its id")
-    public ResponseEntity<ReviewDTO> updateReview(@PathVariable long id, @RequestBody ReviewDTO review) {
+    public ResponseEntity<ReviewDTO> updateReview(@PathVariable long id, @RequestBody ReviewDTO reviewDTO) {
         ReviewEntity reviewToUpdate;
         try {
-            reviewToUpdate = reviewService.update(id, Mapper.convert(review, ReviewEntity.class));
+            reviewToUpdate = reviewService.update(id, Mapper.convert(reviewDTO, ReviewEntity.class));
         } catch (DatabaseExceptions.EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         } catch (DatabaseExceptions.BadRequestException e) {
-            return ResponseEntity.badRequest().body(Mapper.convert(review, ReviewDTO.class));
+            return ResponseEntity.badRequest().body(reviewDTO);
         }
         return ResponseEntity.ok(Mapper.convert(reviewToUpdate, ReviewDTO.class));
     }
