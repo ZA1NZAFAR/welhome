@@ -43,9 +43,9 @@ public class ReservationService implements CRUD<ReservationEntity, Long> {
             existingReservation.setStartDate(updatedReservation.getStartDate());
         if (!Tools.isNullOrEmpty(updatedReservation.getEndDate()))
             existingReservation.setEndDate(updatedReservation.getEndDate());
-        if (!Tools.isNullOrEmpty(updatedReservation.isConfirmedOwner()))
+        if (existingReservation.isConfirmedOwner() != updatedReservation.isConfirmedOwner())
             existingReservation.setConfirmedOwner(updatedReservation.isConfirmedOwner());
-        if (!Tools.isNullOrEmpty(updatedReservation.isConfirmedRenter()))
+        if (existingReservation.isConfirmedRenter() != updatedReservation.isConfirmedRenter())
             existingReservation.setConfirmedRenter(updatedReservation.isConfirmedRenter());
 
         return reservationRepository.save(existingReservation);

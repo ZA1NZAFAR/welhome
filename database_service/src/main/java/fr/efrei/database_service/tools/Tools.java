@@ -17,13 +17,14 @@ public class Tools {
         return aFloat == 0 || aFloat == 0.0;
     }
 
+    public static boolean isNullOrEmpty(Integer anInteger) {
+        return anInteger == null || anInteger == 0;
+    }
+
     public static boolean isNullOrEmpty(Date date) {
         return date == null;
     }
 
-    public static boolean isNullOrEmpty(boolean bool) {
-        return bool;
-    }
 
     public static boolean isNullOrEmpty(BigDecimal price) {
         return price == null || price.compareTo(BigDecimal.ZERO) == 0;

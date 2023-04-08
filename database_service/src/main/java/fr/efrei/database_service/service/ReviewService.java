@@ -34,7 +34,7 @@ public class ReviewService implements CRUD<ReviewEntity, Long> {
     @Override
     public ReviewEntity update(Long id, ReviewEntity updatedReview) {
         ReviewEntity existingReview = reviewRepository.findById(id).orElseThrow(DatabaseExceptions.EntityNotFoundException::new);
-        if (Tools.isNullOrEmpty(updatedReview.getId()) && existingReview.getId() != (updatedReview.getId()))
+        if (!Tools.isNullOrEmpty(updatedReview.getId()) && existingReview.getId() != (updatedReview.getId()))
             throw new DatabaseExceptions.BadRequestException("Id cannot be changed");
 
         // only update the fields that are not null and different from the existing review
@@ -48,6 +48,8 @@ public class ReviewService implements CRUD<ReviewEntity, Long> {
             existingReview.setPropertyId(updatedReview.getPropertyId());
         if (!Tools.isNullOrEmpty(updatedReview.getReviewerEmail()))
             existingReview.setReviewerEmail(updatedReview.getReviewerEmail());
+        if (!Tools.isNullOrEmpty(updatedReview.getImage()))
+            existingReview.setImage(updatedReview.getImage());
 
         return reviewRepository.save(existingReview);
     }
