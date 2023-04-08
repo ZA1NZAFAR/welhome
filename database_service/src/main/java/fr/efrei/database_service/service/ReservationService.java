@@ -1,6 +1,7 @@
 package fr.efrei.database_service.service;
 
 import fr.efrei.database_service.entity.ReservationEntity;
+import fr.efrei.database_service.exception.DatabaseExceptions;
 import fr.efrei.database_service.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,16 +18,20 @@ public class ReservationService implements CRUD<ReservationEntity, Long> {
     @Override
     public ReservationEntity save(ReservationEntity reservation) {
         if (reservationRepository.findById(reservation.getId()).isPresent())
-            return null;
-        return this.reservationRepository.save(reservation);  }
+            throw new DatabaseExceptions.EntityAlreadyExistsException();
+        return this.reservationRepository.save(reservation);
+    }
 
     @Override
     public ReservationEntity findById(Long id) {
-        return this.reservationRepository.findById(id).orElse(null);
+        return this.reservationRepository.findById(id).orElseThrow(DatabaseExceptions.EntityNotFoundException::new);
     }
 
     @Override
     public ReservationEntity update(Long id, ReservationEntity reservation) {
+        ReservationEntity existingReservation = reservationRepository.findById(id).orElseThrow(DatabaseExceptions.EntityNotFoundException::new);
+        if (existingReservation.getId()!=(reservation.getId()))
+            throw new DatabaseExceptions.BadRequestException("Id cannot be changed");
         reservation.setId(id);
         return reservationRepository.save(reservation);
     }

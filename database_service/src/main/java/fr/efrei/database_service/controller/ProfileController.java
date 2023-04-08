@@ -2,6 +2,7 @@ package fr.efrei.database_service.controller;
 
 import fr.efrei.database_service.dto.ProfileDTO;
 import fr.efrei.database_service.entity.ProfileEntity;
+import fr.efrei.database_service.exception.DatabaseExceptions;
 import fr.efrei.database_service.service.ProfileService;
 import fr.efrei.database_service.tools.Mapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,24 +26,27 @@ public class ProfileController {
 
     @PostMapping
     @Operation(summary = "This endpoint will create a new user profile")
-    public ResponseEntity<ProfileDTO> createUser(@RequestBody ProfileEntity user) {
-        ProfileEntity userToCreate = profileService.save(user);
-        if (userToCreate == null) {
-            return ResponseEntity.badRequest().build();
-        } else {
-            return ResponseEntity.ok(Mapper.convert(userToCreate, ProfileDTO.class));
+    public ResponseEntity<?> createUser(@RequestBody ProfileDTO user) {
+        ProfileEntity userToCreate;
+        try {
+            userToCreate = profileService.save(Mapper.convert(user, ProfileEntity.class));
+        } catch (DatabaseExceptions.EntityAlreadyExistsException e) {
+            return ResponseEntity.badRequest().body("Invalid request: " + e.getMessage());
         }
+        return ResponseEntity.ok(Mapper.convert(userToCreate, ProfileDTO.class));
     }
 
 
     @GetMapping("/{email}")
     @Operation(summary = "This endpoint will allow to retrieve a user profile based on email")
-    public ResponseEntity<ProfileDTO> getUser(@PathVariable String email) {
-        ProfileEntity user = this.profileService.findById(email);
-        if (user == null)
+    public ResponseEntity<?> getUser(@PathVariable String email) {
+        ProfileEntity user;
+        try {
+            user = this.profileService.findById(email);
+        } catch (DatabaseExceptions.EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
-        else
-            return ResponseEntity.ok(Mapper.convert(user, ProfileDTO.class));
+        }
+        return ResponseEntity.ok(Mapper.convert(user, ProfileDTO.class));
     }
 
     @PutMapping("/{email}")

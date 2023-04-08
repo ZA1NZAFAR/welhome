@@ -2,6 +2,7 @@ package fr.efrei.database_service.service;
 
 
 import fr.efrei.database_service.entity.ProfileEntity;
+import fr.efrei.database_service.exception.DatabaseExceptions;
 import fr.efrei.database_service.repository.ProfileRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class ProfileService implements CRUD<ProfileEntity, String> {
     @Override
     public ProfileEntity save(ProfileEntity profile) {
         if (profileRepository.findById(profile.getEmail()).isPresent())
-            return null;
+            throw new DatabaseExceptions.EntityAlreadyExistsException();
         if (profile.getRegistrationDate()==null)
             profile.setRegistrationDate(new Date(System.currentTimeMillis()));
         return profileRepository.save(profile);
@@ -29,9 +30,8 @@ public class ProfileService implements CRUD<ProfileEntity, String> {
 
     @Override
     public ProfileEntity findById(String id) {
-        return profileRepository.findById(id).orElse(null);
+        return profileRepository.findById(id).orElseThrow(DatabaseExceptions.EntityNotFoundException::new);
     }
-
 
     @Override
     @Transactional
@@ -47,7 +47,7 @@ public class ProfileService implements CRUD<ProfileEntity, String> {
     @Override
     public void deleteById(String id) {
         if (!profileRepository.findById(id).isPresent())
-            throw new RuntimeException("Profile not found");
+            throw new DatabaseExceptions.EntityNotFoundException("Profile not found");
         profileRepository.deleteById(id);
     }
 

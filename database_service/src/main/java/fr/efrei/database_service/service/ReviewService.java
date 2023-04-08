@@ -1,6 +1,7 @@
 package fr.efrei.database_service.service;
 
 import fr.efrei.database_service.entity.ReviewEntity;
+import fr.efrei.database_service.exception.DatabaseExceptions;
 import fr.efrei.database_service.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ public class ReviewService implements CRUD<ReviewEntity, Long> {
     @Override
     public ReviewEntity save(ReviewEntity object) {
         if (reviewRepository.findById(object.getId()).isPresent())
-            return null;
+            throw new DatabaseExceptions.EntityAlreadyExistsException();
         if (object.getPublishDate()==null)
             object.setPublishDate(new Date(System.currentTimeMillis()));
         return reviewRepository.save(object);
@@ -26,11 +27,14 @@ public class ReviewService implements CRUD<ReviewEntity, Long> {
 
     @Override
     public ReviewEntity findById(Long id) {
-        return reviewRepository.findById(id).orElse(null);
+        return reviewRepository.findById(id).orElseThrow(DatabaseExceptions.EntityNotFoundException::new);
     }
 
     @Override
     public ReviewEntity update(Long id, ReviewEntity object) {
+        ReviewEntity existingReview = reviewRepository.findById(id).orElseThrow(DatabaseExceptions.EntityNotFoundException::new);
+        if (existingReview.getId()!=(object.getId()))
+            throw new DatabaseExceptions.BadRequestException("Id cannot be changed");
         object.setId(id);
         return reviewRepository.save(object);
     }

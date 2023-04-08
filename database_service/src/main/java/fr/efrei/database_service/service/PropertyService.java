@@ -1,6 +1,7 @@
 package fr.efrei.database_service.service;
 
 import fr.efrei.database_service.entity.PropertyEntity;
+import fr.efrei.database_service.exception.DatabaseExceptions;
 import fr.efrei.database_service.repository.PropertyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ public class PropertyService implements CRUD<PropertyEntity, Long>{
     @Override
     public PropertyEntity save(PropertyEntity property) {
         if (propertyRepository.findById(property.getId()).isPresent())
-            return null;
+            throw new DatabaseExceptions.EntityAlreadyExistsException();
         if (property.getPublishDate()==null)
             property.setPublishDate(new Date(System.currentTimeMillis()));
         return propertyRepository.save(property);
@@ -26,16 +27,19 @@ public class PropertyService implements CRUD<PropertyEntity, Long>{
 
     @Override
     public PropertyEntity findById(Long id) {
-        return propertyRepository.findById(id).orElse(null);
+        return propertyRepository.findById(id).orElseThrow(DatabaseExceptions.EntityNotFoundException::new);
     }
 
     @Override
     public PropertyEntity update(Long id, PropertyEntity property) {
-
+        PropertyEntity existingProperty = propertyRepository.findById(id).orElseThrow(DatabaseExceptions.EntityNotFoundException::new);
+        if (existingProperty.getId()!=(property.getId()))
+            throw new DatabaseExceptions.BadRequestException("Id cannot be changed");
         property.setId(id);
         return propertyRepository.save(property);
-
     }
+
+
 
     @Override
     public void deleteById(Long id) {
