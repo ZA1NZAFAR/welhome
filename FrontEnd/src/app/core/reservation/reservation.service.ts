@@ -53,15 +53,23 @@ export class ReservationService {
 
     /* for test */
 
-    private _getMockReservation(): BehaviorSubject<IReservation[]> {
-      this.reservationSubject.next(this.reservations);
-      return this.reservationSubject;
+    private _getMockReservation(renter_email?: string): BehaviorSubject<IReservation[]> {
+      const reservations: IReservation[] = [];
+      mockReservations.forEach((reservation: IReservation) => {
+        if (renter_email && reservation.renter_email !== renter_email) {
+          return;
+        }
+        reservations.push(reservation);
+      });
+      return new BehaviorSubject(reservations);
     }
   
-    getProperties(): Observable<IReservation[]> {
+    getReservations(renter_email?: string): Observable<IReservation[]> {
       this.loadingSubject.next(true);
-      return this._getMockReservation().pipe(
-        map(() => {
+      return this._getMockReservation(renter_email).pipe(
+        map((reservations) => {
+          this.reservations = reservations;
+          this.reservationSubject.next(this.reservations);
           this.loadingSubject.next(false);
           return this.reservations;
         })

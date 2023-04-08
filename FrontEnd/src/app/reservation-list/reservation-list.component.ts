@@ -4,6 +4,7 @@ import { IReservation } from '../core/reservation/reservation.model';
 import { ReservationService } from '../core/reservation/reservation.service';
 import { PropertyService } from '../core/property/property.service'
 import { IProperty } from '../core/property/property.model'
+import { ContextService } from '../core/context/context.service';
 
 @Component({
   selector: 'app-reservation-list',
@@ -17,7 +18,8 @@ export class ReservationListComponent implements OnInit {
   constructor(
     private reservationService: ReservationService,
     private propertyService: PropertyService,
-    private authService: AuthService
+    private authService: AuthService,
+    private contextService: ContextService
   ) { 
     
   }
@@ -34,16 +36,14 @@ export class ReservationListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.reservationService.getProperties().subscribe((reservations: IReservation[]) => {
+    const userEmail = this.authService.profile?.email;
+    this.reservationService.getReservations(this.contextService.isRenter ? userEmail : undefined).subscribe((reservations: IReservation[]) => {
       this.reservations = reservations;
     });
-    this.propertyService.getProperties().subscribe((properties) => {
-      const userEmail = this.authService.profile?.email;
+    this.propertyService.getProperties(!this.contextService.isRenter ? userEmail : undefined).subscribe((properties) => {
       this.propertyMap.clear();
       properties.forEach((property: IProperty) => {
-        if (property.owner_email === userEmail) {
-          this.propertyMap.set(property.id, property);
-        }
+        this.propertyMap.set(property.id, property);
       });
     });
   }

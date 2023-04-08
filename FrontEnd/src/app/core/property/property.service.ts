@@ -84,7 +84,7 @@ export class PropertyService {
     return this.propertySubject;
   }
 
-  getProperties(): Observable<IProperty[]> {
+  getProperties(owner_email?: string): Observable<IProperty[]> {
     this.propertyLoadingSubject.next(true);
     return this._getMockProperty().pipe(map(() => {
       this.propertyLoadingSubject.next(false);
