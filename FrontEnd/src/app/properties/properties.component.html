@@ -1,4 +1,4 @@
-<div>
+<div class="main-div">
   <div class="photos">
     <img src="{{ this.propertyData.image_url }}" alt="Property image" class="main-photo">
     <div class="maisons">
@@ -9,21 +9,24 @@
     <button id="next-btn" (click)="this.nextImage()">Suivant</button>
 
   </div>
-  <div>
-    <h4> {{this.propertyData.title}}</h4>
-  <p> {{ this.propertyData.description }}</p>
+  <div class="left-div">
+  <div class="infos">
+    <h1> {{this.propertyData.title}}</h1>
+  <p> <strong> Description : </strong>{{ this.propertyData.description }}</p>
   <p><strong> Lieu : </strong>{{ this.propertyData.city}}, {{ this.propertyData.country}} </p>
   <p> <strong> Surface : </strong>{{ this.propertyData.surface_area}}</p>
   <p> <strong> Nombre d'étage : </strong>{{ this.propertyData.floors}}</p>
   <p> <strong> Nombre de personne au maximum : </strong>{{ this.propertyData.capacity}}</p>
-  <p> <strong> Prix : </strong>{{ this.propertyData.price}}</p>
+  <p> <strong> Prix : </strong>{{ this.propertyData.price}} €</p>
   </div>
 
 
 <div class="reservation-container">
-  <div>
-    <h1> {{ this.propertyData.price}} €</h1> par nuit
+  <h1> Réserver</h1>
+  <div class="price">
+    <span class="price-value">{{ this.propertyData.price }} €</span> par nuit
   </div>
+  
   <div class="date-container">
     <label for="checkin">Arrivée:</label>
     <input type="date" id="checkin" name="checkin">
@@ -36,13 +39,17 @@
     <label for="nb-voyageurs">Nombre de voyageurs :</label>
     <input type="number" id="nb-voyageurs" name="nb-voyageurs" min="1" max="10">
   </div>
+  
 
   <div class="btn-container">
     <button id="reservation-btn">Réserver</button>
   </div>
-  <div>
-    <h4> Total </h4>
+  <div class="total-container">
+    <h4>Total</h4>
+    <span>{{this.propertyData.price}} €</span>
   </div>
+  
+</div>
 </div>
 
 

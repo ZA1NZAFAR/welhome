@@ -1,13 +1,32 @@
+
+.main-div {
+  display: flex;
+  flex-direction: row;
+}
+.left-div{
+  margin-top: 2vh;
+  width: 50%;
+
+}
 .photos {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  max-width: 50vw; /* limite la largeur à 50% de la largeur de l'écran */
+  max-height: 70vh; /* limite la hauteur à 70% de la hauteur de l'écran si nécessaire */
+  margin-top: 5vh;
+  width: 50%;
+
+}
+
+
   
-  .main-photo {
-    max-width: 500px;
-    margin-bottom: 20px;
-  }
+.main-photo {
+  width: 50vw;
+  margin-bottom: 20px;
+}
+
   
   .maisons {
     display: flex;
@@ -41,32 +60,174 @@
   .reservation-container {
     display: flex;
     flex-direction: column;
-    border: 1px solid #ccc;
-    padding: 20px;
-    width: 50%;
-    margin-left: auto; /* pousse le bloc vers la droite */
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
+    padding: 32px;
+    width: 40vw;
+    max-width: 600px;
+    margin-left: 50px;
+    align-self: flex-start;
+  }
+  
+ 
+    .date-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    
+    .date-container label {
+      font-size: 16px;
+      font-weight: 400;
+      margin-right: 16px;
+    
+    }
+    
+    .date-container input[type="date"] {
+      width: 48%;
+      padding: 12px 16px;
+      border: 1px solid #e4e4e4;
+      border-radius: 4px;
+      font-size: 16px;
+      font-weight: 400;
+      color: #484848;
+      background-color: #fff;
+      margin-right: 16px;
 
-  }
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    
+    .date-container input[type="date"]:hover, 
+    .date-container input[type="date"]:focus {
+      outline: none;
+      border-color: #4c68af;
+      box-shadow: 0 0 0 2px rgba(0,132,137,0.2);
+    }
   
-  .date-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  
-  .nb-voyageurs-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 10px;
-  }
+//nb voyageur
+.nb-voyageurs-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.nb-voyageurs-container label {
+  font-size: 16px;
+  font-weight: 400;
+  margin-right: 16px;
+}
+
+.nb-voyageurs-container input[type="number"] {
+  width: 48%;
+  padding: 12px 16px;
+  border: 1px solid #e4e4e4;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 400;
+  color: #484848;
+  background-color: #fff;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.nb-voyageurs-container input[type="number"]:hover, 
+.nb-voyageurs-container input[type="number"]:focus {
+  outline: none;
+  border-color: #4c68af;
+  box-shadow: 0 0 0 2px rgba(0,132,137,0.2);
+}
+
   
   .btn-container {
     display: flex;
     flex-direction: row;
     justify-content: center;
+  }
+  
+  #reservation-btn {
+    background-color: #ff1d25;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 16px 32px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  #reservation-btn:hover {
+    background-color: #ff7b7e;
+  }
+
+
+  .infos {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    width: 50vw;
+    max-width: 40vw; /* limite la largeur à 40% de la largeur de l'écran */
+    align-self: flex-start; /* aligne la div en haut du conteneur */
+    margin-left: 30px;
+    font-size: 16px;
+    //border: 1px solid #484848;
+
+  }
+  .infos p {
+    margin-bottom: 20px;
+  }
+  
+ .infos h1 {
+    font-family: 'Circular', sans-serif;
+    font-size: 32px;
+    font-weight: bold;
+    line-height: 40px;
+    margin: 0;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .reservation-container h1 {
+    font-family: 'Circular', sans-serif;
+    font-size: 27px;
+    font-weight: bold;
+    line-height: 40px;
+    margin: 0;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .price {
+    display: inline-block;
+    font-size: 20px;
+    margin-top: 16px;
+    margin-bottom: 24px;
+  }
+  
+  .price-value {
+    font-weight: 600;
+  }
+  //prix total
+  .total-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #e4e4e4;
+  }
+  
+  .total-container h4 {
+    font-size: 20px;
+    font-weight: 400;
+    margin: 0;
+  }
+  
+  .total-container span {
+    font-size: 20px;
+    font-weight: 600;
+    color: #4c68af;
   }
   
