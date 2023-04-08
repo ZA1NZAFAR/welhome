@@ -47,7 +47,7 @@ public class ProfileService implements CRUD<ProfileEntity, String> {
     @Override
     public void deleteById(String id) {
         if (!profileRepository.findById(id).isPresent())
-            throw new DatabaseExceptions.EntityNotFoundException("Profile not found");
+            throw new DatabaseExceptions.EntityNotFoundException();
         profileRepository.deleteById(id);
     }
 
