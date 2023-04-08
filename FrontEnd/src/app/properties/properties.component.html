@@ -19,9 +19,11 @@
   <p> <strong> Prix : </strong>{{ this.propertyData.price}}</p>
   </div>
 
-</div>
 
 <div class="reservation-container">
+  <div>
+    <h1> {{ this.propertyData.price}} €</h1> par nuit
+  </div>
   <div class="date-container">
     <label for="checkin">Arrivée:</label>
     <input type="date" id="checkin" name="checkin">
@@ -38,8 +40,12 @@
   <div class="btn-container">
     <button id="reservation-btn">Réserver</button>
   </div>
+  <div>
+    <h4> Total </h4>
+  </div>
 </div>
 
 
 
 
+</div>

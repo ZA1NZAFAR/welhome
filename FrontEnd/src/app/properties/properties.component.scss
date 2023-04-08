@@ -41,9 +41,11 @@
   .reservation-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
     border: 1px solid #ccc;
     padding: 20px;
+    width: 50%;
+    margin-left: auto; /* pousse le bloc vers la droite */
+
   }
   
   .date-container {

@@ -1,6 +1,6 @@
-<div>
-  <img src="{{ property.image_url }}" alt="Property image" class="img-thumbnail photo-thumbnail" (click)="openDetails()">
-  <div>{{property.city}}, {{property.country}}</div>
-  <div>{{property.surface_area}} m²</div>
-  <div>{{property.price}} par nuit</div>
+<div class="property">
+  <img src="{{ property.image_url }}" alt="Property image" class="photo-thumbnail" (click)="openDetails()">
+  <div class="location">{{property.city}}, {{property.country}}</div>
+  <div class="price">{{property.price}} €<span class="price-text"> par nuit</span></div>
+  <div class="surface-area">{{property.surface_area}} m²</div>
 </div>
