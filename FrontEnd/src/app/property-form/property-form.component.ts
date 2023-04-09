@@ -28,7 +28,7 @@ export class PropertyFormComponent implements OnInit {
     this.propertyGroup = new FormGroup({
       title: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required]),
-      property_category: new FormControl('', [Validators.required, this.categoryValidator]),
+      property_category: new FormControl('House', [Validators.required, this.categoryValidator]),
       address: new FormControl('', [Validators.required]),
       city: new FormControl('', [Validators.required]),
       state: new FormControl(''),
@@ -38,7 +38,9 @@ export class PropertyFormComponent implements OnInit {
       floors: new FormControl('', [Validators.required]),
       capacity: new FormControl('', [Validators.required, Validators.min(0)]),
       construction_date: new FormControl(''),
-      image_url: new FormControl('')
+      image_url: new FormControl(''),
+      image_url2: new FormControl(''),
+      image_url3: new FormControl(''),
     });
 
     if (this.selectedProperty) {

@@ -1,4 +1,5 @@
 <div>
+<<<<<<< HEAD
   <div class="button-container">
     <button class="btn-validated">Validated</button>
     <button class="btn-cancelled">Cancelled</button>
@@ -8,6 +9,12 @@
   </div>
   
   
+=======
+  <div *ngIf="(this.ownerPropertyLoadingObservable$ | async) || (this.reservationLoadingObservable$ | async); else loaded">
+    <div class="spinner-border" role="status"></div>
+  </div>
+  <ng-template #loaded>
+>>>>>>> 8a51433fa613577c8727a0dbc33e3803533ec9c3
     <div class='d-flex flex-column mb-3'>
       <div class='p-2' *ngFor='let reservation of this.reservations; index as i'>
         <ng-template [ngIf]="this.propertyExists(reservation.property_id)">
@@ -18,5 +25,6 @@
         </ng-template>
       </div>
     </div>
-  </div>
+  </ng-template>
+</div>
   
