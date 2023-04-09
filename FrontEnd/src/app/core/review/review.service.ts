@@ -17,11 +17,6 @@ export class ReviewService {
     private authService: AuthService
   ) {
   }
-
-  getReviews(propertyId: number): Observable<IReview[]> {
-    return this.http.get<IReview[]>(`${environment.backEndUrl}/reviews?property_id=${propertyId}`);
-  }
-
   getPropertyReviews(propertyId: number): Observable<IReview[]> {
     return this.http.get<IReview[]>(`${environment.backEndUrl}/reviews?property_id=${propertyId}`);
   }
