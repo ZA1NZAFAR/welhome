@@ -97,6 +97,10 @@ export class AuthService implements OnInit {
     }
   }
 
+  get token(): string | null {
+    return localStorage.getItem('token');
+  }
+
   logout(): void {
     this.toast.showInfo('Logged out');
     localStorage.removeItem('token');

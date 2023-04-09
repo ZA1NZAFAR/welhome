@@ -51,7 +51,6 @@ export class PropertiesComponent implements OnInit, OnDestroy {
         this.propertyData = property;
       });
     });
-    console.log(this.authService.profile?.email)
     this.user_email = this.authService.profile?.email || '';
     if (this.propertyData.image_url !== undefined) {
       this.images.unshift(this.propertyData.image_url);

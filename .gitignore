@@ -45,3 +45,5 @@ Thumbs.db
 
 MailingService/
 Authentication/
+package-lock.json
+package.json
