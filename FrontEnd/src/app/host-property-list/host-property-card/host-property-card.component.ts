@@ -1,5 +1,4 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/auth/auth.service';
@@ -22,7 +21,6 @@ export class HostPropertyCardComponent implements OnInit, OnDestroy {
   private reviewSubsription: Subscription;
 
   constructor(
-    private router: Router,
     private propertyService: PropertyService,
     private modalService: NgbModal,
     private authService: AuthService,

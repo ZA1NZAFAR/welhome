@@ -2,9 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ToastService } from 'src/app/utils/toast/toast.service';
 import { AuthService } from '../auth/auth.service';
-import { BehaviorSubject, Observable, Subject, Subscription, catchError, map, of } from 'rxjs';
+import { Observable, catchError, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { IRating, IReview } from './review.model';
+import { IReview } from './review.model';
 
 @Injectable({
   providedIn: 'root'
