@@ -91,12 +91,12 @@ export class PropertyService {
     this.ownerPropertyLoadingObservable = this.ownerPropertyLoadingSubject.asObservable();
   }
 
-  getProperties(): PropertyService {
+  getProperties(category?: string): PropertyService {
     if (this.propertySubscription) {
       this.propertySubscription.unsubscribe();
     }
     this.propertyLoadingSubject.next(true);
-    this.propertySubscription = this.http.get<IProperty[]>(`${environment.backEndUrl}/properties`).subscribe((properties) => {
+    this.propertySubscription = this.http.get<IProperty[]>(`${environment.backEndUrl}/properties?category=${category}`).subscribe((properties) => {
       this.propertySubject.next(properties);
       this.propertyLoadingSubject.next(false);
     });

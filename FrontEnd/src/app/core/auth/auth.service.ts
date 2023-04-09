@@ -45,7 +45,6 @@ export class AuthService implements OnInit {
 
   startupToken(): void {
     const token = localStorage.getItem('token');
-    console.log(token);
     if (token) {
       this._payload = jwtDecode<ITokenPayload>(token);
     }
