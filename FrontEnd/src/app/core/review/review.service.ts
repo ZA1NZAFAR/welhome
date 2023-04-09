@@ -25,9 +25,6 @@ export class ReviewService {
     return this.http.post<IReview>(`${environment.backEndUrl}/reviews`, review).pipe(map((review) => {
       this.toastService.showSuccess('Review added successfully');
       return review;
-    }), catchError((error: Error) => {
-      this.toastService.showError('Error while adding review :' + error.message);
-      throw error;
     }));
   }
 
@@ -44,9 +41,6 @@ export class ReviewService {
     return this.http.put<IReview>(`${environment.backEndUrl}/reviews/${review.id}`, review).pipe(map((review) => {
       this.toastService.showSuccess('Review updated successfully');
       return review;
-    }), catchError((error: Error) => {
-      this.toastService.showError('Error while updating review :' + error.message);
-      throw error;
     }));
   }
 
@@ -63,9 +57,6 @@ export class ReviewService {
     return this.http.delete<IReview>(`${environment.backEndUrl}/reviews/${review.id}`).pipe(map((review) => {
       this.toastService.showSuccess('Review deleted successfully');
       return review;
-    }), catchError((error: Error) => {
-      this.toastService.showError('Error while deleting review :' + error.message);
-      throw error;
     }));
   }
 }

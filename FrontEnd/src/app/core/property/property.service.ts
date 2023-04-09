@@ -135,9 +135,6 @@ export class PropertyService {
       this.getOwnerProperties(property.owner_email);
       this.toastService.showSuccess('Property added successfully');
       return property;
-    }), catchError((error: Error) => {
-      this.toastService.showError('Error while updating property : ' + error.message);
-      throw error;
     }));
   }
 
@@ -147,9 +144,6 @@ export class PropertyService {
       this.getOwnerProperties(property.owner_email);
       this.toastService.showSuccess('Property updated successfully');
       return property;
-    }), catchError((error: Error) => {
-      this.toastService.showError('Error while updating property : ' + error.message);
-      throw error;
     }));
   }
 
@@ -159,9 +153,6 @@ export class PropertyService {
       this.getOwnerProperties(this.authService.profile!.email);
       this.toastService.showSuccess('Property deleted successfully');
       return true;
-    }), catchError((error: Error) => {
-      this.toastService.showError('Error while deleting property : ' + error.message);
-      throw error;
     }));
   }
 }
