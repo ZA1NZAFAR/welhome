@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReservationListComponent } from './reservation-list.component';
 import { ReservationCardComponent } from './reservation-card/reservation-card.component';
+import {RouterModule} from "@angular/router";
 
 
 
@@ -11,7 +12,8 @@ import { ReservationCardComponent } from './reservation-card/reservation-card.co
     ReservationCardComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    RouterModule
   ]
 })
 export class ReservationListModule { }

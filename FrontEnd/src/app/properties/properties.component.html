@@ -1,60 +1,82 @@
+
 <div class="main-div">
   <div class="photos">
     <img src="{{ this.images[this.currentImageIndex] }}" alt="Property image" class="main-photo">
     <div class="maisons">
-      <img *ngFor="let image of this.images; let i = index" 
-           [src]="image" 
-           [alt]="'Maison ' + (i+1)" 
-           class="small-photo" 
+      <img *ngFor="let image of this.images; let i = index"
+           [src]="image"
+           [alt]="'Maison ' + (i+1)"
+           class="small-photo"
            (click)="this.currentImageIndex = i">
     </div>
     <button id="next-btn" (click)="nextImage()">Suivant</button>
   </div>
-  
+
   <div class="left-div">
-  <div class="infos">
-    <h1> {{this.propertyData.title}}</h1>
-  <p> <strong> Description : </strong>{{ this.propertyData.description }}</p>
-  <p><strong> Lieu : </strong>{{ this.propertyData.city}}, {{ this.propertyData.country}} </p>
-  <p> <strong> Surface : </strong>{{ this.propertyData.surface_area}}</p>
-  <p> <strong> Nombre d'étage : </strong>{{ this.propertyData.floors}}</p>
-  <p> <strong> Nombre de personne au maximum : </strong>{{ this.propertyData.capacity}}</p>
-  <p> <strong> Prix : </strong>{{ this.propertyData.price}} €</p>
-  </div>
+    <div class="infos">
+      <h1> {{this.propertyData.title}}</h1>
+      <p> <strong> Description : </strong>{{ this.propertyData.description }}</p>
+      <p><strong> Lieu : </strong>{{ this.propertyData.city}}, {{ this.propertyData.country}} </p>
+      <p> <strong> Surface : </strong>{{ this.propertyData.surface_area}}</p>
+      <p> <strong> Nombre d'étage : </strong>{{ this.propertyData.floors}}</p>
+      <p> <strong> Nombre de personne au maximum : </strong>{{ this.propertyData.capacity}}</p>
+      <p> <strong> Prix : </strong>{{ this.propertyData.price}} €</p>
+    </div>
+
+    <div class="reservation-container">
+      <h1> Réserver</h1>
+      <div class="price">
+        <span class="price-value">{{ this.propertyData.price }} €</span> par nuit
+      </div>
+
+      <div class="date-container">
+        <label for="checkin">Arrivée:</label>
+        <input type="date" id="checkin" name="checkin">
+
+        <label for="checkout">Départ:</label>
+        <input type="date" id="checkout" name="checkout">
+      </div>
+
+      <div class="nb-voyageurs-container">
+        <label for="nb-voyageurs">Nombre de voyageurs :</label>
+        <input type="number" id="nb-voyageurs" name="nb-voyageurs" min="1" max="10">
+      </div>
 
 
-<div class="reservation-container">
-  <h1> Réserver</h1>
-  <div class="price">
-    <span class="price-value">{{ this.propertyData.price }} €</span> par nuit
+      <div class="btn-container">
+        <button id="reservation-btn">Réserver</button>
+      </div>
+      <div class="total-container">
+        <h4>Total</h4>
+        <span>{{this.propertyData.price}} €</span>
+      </div>
+    </div>
   </div>
-  
-  <div class="date-container">
-    <label for="checkin">Arrivée:</label>
-    <input type="date" id="checkin" name="checkin">
-
-    <label for="checkout">Départ:</label>
-    <input type="date" id="checkout" name="checkout">
-  </div>
-
-  <div class="nb-voyageurs-container">
-    <label for="nb-voyageurs">Nombre de voyageurs :</label>
-    <input type="number" id="nb-voyageurs" name="nb-voyageurs" min="1" max="10">
-  </div>
-  
-
-  <div class="btn-container">
-    <button id="reservation-btn">Réserver</button>
-  </div>
-  <div class="total-container">
-    <h4>Total</h4>
-    <span>{{this.propertyData.price}} €</span>
-  </div>
-  
 </div>
+<div class="reviews-container">
+  <h1 class="reviews-title">Reviews</h1>
+  <hr class="title-underline">
+
+  <!-- Boucle pour parcourir chaque review -->
+  <div *ngFor="let review of this.reviewData" class="review">
+    <div class="review-header">
+      <span class="review-author">{{review.reviewer_email}}</span>
+      <span class="review-date">{{review.published_date}}</span>
+
+      <!-- Boucle pour afficher le nombre d'étoiles correspondant à la note -->
+      <div class="review-rating">
+        <ng-container *ngFor="let i of [].constructor(review.rating)">
+          <i class="fas fa-star"></i>
+        </ng-container>
+        <ng-container *ngFor="let i of [].constructor(5 - review.rating)">
+          <i class="far fa-star"></i>
+        </ng-container>
+      </div>
+    </div>
+    <span class="review-text">{{review.review_text}}</span>
+  </div>
 </div>
 
 
 
 
-</div>

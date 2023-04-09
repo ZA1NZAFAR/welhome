@@ -6,6 +6,7 @@ import { PropertyService } from '../core/property/property.service'
 import { IProperty } from '../core/property/property.model'
 import { ContextService } from '../core/context/context.service';
 import { Subscription } from 'rxjs';
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-reservation-list',
@@ -16,14 +17,16 @@ export class ReservationListComponent implements OnInit, OnDestroy {
   reservations: IReservation[] = [];
   propertyMap: Map<number, IProperty> = new Map();
   private propertySubscription: Subscription;
+  propertyId: string;
 
   constructor(
     private reservationService: ReservationService,
     private propertyService: PropertyService,
     private authService: AuthService,
-    private contextService: ContextService
-  ) { 
-    
+    private contextService: ContextService,
+    private route: ActivatedRoute
+  ) {
+
   }
 
   propertyExists(propertyId: number): boolean {
@@ -38,6 +41,9 @@ export class ReservationListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      this.propertyId = params['id'];
+    });
     const userEmail = this.authService.profile!.email;
     this.reservationService.getReservations(this.contextService.isRenter ? userEmail : undefined).subscribe((reservations: IReservation[]) => {
       this.reservations = reservations;

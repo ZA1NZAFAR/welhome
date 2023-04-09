@@ -78,18 +78,38 @@
       "image_url": "https://media.istockphoto.com/id/1165384568/fr/photo/complexe-moderne-europ%C3%A9en-de-b%C3%A2timents-r%C3%A9sidentiels.jpg?s=612x612&w=0&k=20&c=nvoIbiIffCt-nuj47Cc3I261Ke98iMouq_HefNM7Lz0="
     }
   ],
-<<<<<<< HEAD
-  "reviews": [
-=======
   "reviews" : [
->>>>>>> 4451ca811338cbe254ee806d21208a0c963ac118
     {
       "id": 1,
       "property_id": 1,
       "reviewer_email": "xyz@gmail.com",
       "review_text": "This place sucks!",
       "rating": 1,
+      "published_date": "2021-03-19T11:33:00.594Z"
+    },
+    {
+      "id": 2,
+      "property_id": 2,
+      "reviewer_email": "abc@gmail.com",
+      "review_text": "This place is lovely!",
+      "rating": 4.5,
       "published_date": "2021-03-18T09:00:00.594Z"
+    },
+    {
+      "id": 3,
+      "property_id": 3,
+      "reviewer_email": "abcdef@gmail.com",
+      "review_text": "OMG LOVE IT!",
+      "rating": 5,
+      "published_date": "2021-03-21:23:04.594Z"
+    },
+    {
+      "id": 4,
+      "property_id": 3,
+      "reviewer_email": "zerty@gmail.com",
+      "review_text": "What ?! AWESOME !",
+      "rating": 3.5,
+      "published_date": "2021-03-22:34:04.594Z"
     }
   ]
 }

@@ -18,7 +18,8 @@ const routes: Routes = [
     component: ReservationListComponent,
     canActivate: [ AuthenticationGuard ],
     runGuardsAndResolvers: 'always', },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
+  { path: 'properties/:id', component: ReservationListComponent }
 ];
 
 @NgModule({

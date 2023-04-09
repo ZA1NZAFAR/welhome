@@ -7,6 +7,9 @@ import { PropertyService } from 'src/app/core/property/property.service';
 import { PropertyFormComponent } from '../property-form/property-form.component'
 import { Location } from '@angular/common';
 import { AuthService } from '../core/auth/auth.service'
+import {IReview} from "../core/review/review.model";
+import {ReviewService} from "../core/review/review.service";
+
 @Component({
   selector: 'app-properties',
   templateUrl: './properties.component.html',
@@ -14,6 +17,7 @@ import { AuthService } from '../core/auth/auth.service'
 })
 export class PropertiesComponent implements OnInit, OnDestroy {
   propertyData: IProperty;
+  reviewData: IReview[];
 
   user_email: string;
   getPropertySub$: Subscription;
@@ -28,11 +32,12 @@ export class PropertiesComponent implements OnInit, OnDestroy {
 
   constructor(
     private propertyService: PropertyService,
+    private reviewService : ReviewService,
     private route: ActivatedRoute,
     private modalService: NgbModal,
     private locationService: Location,
     private authService: AuthService
-    
+
   ) { }
 
   ngOnInit(): void {
@@ -49,15 +54,22 @@ export class PropertiesComponent implements OnInit, OnDestroy {
           return;
         }
         this.propertyData = property;
+        this.reviewService.getPropertyReviews(property.id).subscribe(reviews => {
+          const propertyReviews = reviews.filter(r => r.property_id === property.id);
+          if (propertyReviews.length === 0) {
+            return;
+          }
+          this.reviewData = propertyReviews;
+        });
+
       });
     });
     this.user_email = this.authService.profile?.email || '';
     if (this.propertyData.image_url !== undefined) {
       this.images.unshift(this.propertyData.image_url);
     }
-    
-  }
 
+  }
   get isOwner(): boolean {
     return this.user_email === this.propertyData.owner_email;
   }
@@ -83,8 +95,8 @@ export class PropertiesComponent implements OnInit, OnDestroy {
       this.currentImageIndex = 0;
     }
   }
-  
-  
+
+
   /*
   $(document).ready(function() {
     var currentPhoto = 1;

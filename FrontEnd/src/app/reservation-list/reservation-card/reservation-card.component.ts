@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/core/auth/auth.service'
 import { IProperty } from 'src/app/core/property/property.model'
 import { PropertyService } from 'src/app/core/property/property.service'
 import { IReservation } from 'src/app/core/reservation/reservation.model';
 import { ReservationService } from 'src/app/core/reservation/reservation.service'
+import { ActivatedRoute } from '@angular/router';
+
 
 @Component({
   selector: 'app-reservation-card',
@@ -13,13 +14,20 @@ import { ReservationService } from 'src/app/core/reservation/reservation.service
 export class ReservationCardComponent implements OnInit {
   @Input() reservation: IReservation;
   @Input() property: IProperty;
+  propertyId: string;
 
   constructor(
     private propertyService: PropertyService,
-    private reservationService: ReservationService
+    private reservationService: ReservationService,
+    private route: ActivatedRoute
   ) { }
 
-  ngOnInit(): void { }
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      this.propertyId = params['propertyId'];
+      console.log("ici");
+    });
+  }
 
   get status(): string {
     if (this.reservation.end_date < new Date()) {
@@ -56,6 +64,6 @@ export class ReservationCardComponent implements OnInit {
         return 'btn-primary';
     }
   }
-  
+
 
 }
