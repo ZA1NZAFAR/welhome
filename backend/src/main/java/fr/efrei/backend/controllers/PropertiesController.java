@@ -3,6 +3,9 @@ package fr.efrei.backend.controllers;
 import fr.efrei.backend.entities.Property;
 import fr.efrei.backend.exceptions.CheckingQueryParametersFailedException;
 import fr.efrei.backend.utils.ResponseGenerator;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +23,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
+@Tag(name = "Properties", description = "This API allows to perform a set of operations related to properties")
 @RequestMapping("/api/properties")
 public class PropertiesController {
     @Value("${databaseService.url}/properties")
@@ -37,135 +41,162 @@ public class PropertiesController {
     }
 
     @GetMapping
+    @Operation(summary = "This endpoint allows to retrieve all properties")
     public ResponseEntity<List<Property>> getProperties() {
         ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL, HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
         return result;
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "This endpoint allows to retrieve a property based on id")
     public ResponseEntity<Property> getProperty(@PathVariable String id) {
         ResponseEntity<Property> result = generator.buildRequest(URL.concat("/" + id), HttpMethod.GET, new ParameterizedTypeReference<Property>() {});
         return result;
     }
 
     @PostMapping
+    @Operation(summary = "This endpoint allows to create a new property")
+    @ApiResponse(responseCode = "201", description = "Creates a property")
     public ResponseEntity<Property> postProperty(@RequestBody Property property) {
         ResponseEntity<Property> result = generator.buildRequest(URL, HttpMethod.POST, property, new ParameterizedTypeReference<Property>() {});
         return result;
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "This endpoint allows to update a property based on id if property exists, otherwise it creates a new property")
+    @ApiResponse(responseCode = "200", description = "Updates a property")
+    @ApiResponse(responseCode = "201", description = "Creates a property")
     public ResponseEntity<Property> putProperty(@PathVariable String id, @RequestBody Property property) {
         ResponseEntity<Property> result = generator.buildRequest(URL.concat("/" + id), HttpMethod.PUT, property, new ParameterizedTypeReference<Property>() {});
         return result;
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "This endpoint allows to delete a property based on id")
+    @ApiResponse(responseCode = "200", description = "Deletes a property")
+    @ApiResponse(responseCode = "404", description = "Property has not been found")
     public ResponseEntity<Property> deleteProperty(@PathVariable String id) {
         ResponseEntity<Property> result = generator.buildRequest(URL.concat("/" + id), HttpMethod.DELETE, new ParameterizedTypeReference<Property>() {});
         return result;
     }
 
     @GetMapping("/title/{title}")
+    @Operation(summary = "This endpoint allows to retrieve a property based on title")
     public ResponseEntity<List<Property>> getPropertyByTitle(@PathVariable String title) {
         ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/title/" + title), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
         return result;
     }
 
     @GetMapping("/description/{description}")
+    @Operation(summary = "This endpoint allows to retrieve a property based on description")
     public ResponseEntity<List<Property>> getPropertyByDescription(@PathVariable String description) {
         ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/description/" + description), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
         return result;
     }
 
     @GetMapping("/property_category/{propertyCategory}")
+    @Operation(summary = "This endpoint allows to retrieve a property based on category")
     public ResponseEntity<List<Property>> getPropertyByCategory(@PathVariable String propertyCategory) {
         ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/property_category/" + propertyCategory), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
         return result;
     }
 
     @GetMapping("/address/{address}")
+    @Operation(summary = "This endpoint allows to retrieve a property based on address")
     public ResponseEntity<List<Property>> getPropertyByAddress(@PathVariable String address) {
         ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/address/" + address), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
         return result;
     }
 
     @GetMapping("/city/{city}")
+    @Operation(summary = "This endpoint allows to retrieve a property based on city name")
     public ResponseEntity<List<Property>> getPropertyByCity(@PathVariable String city) {
         ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/city/" + city), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
         return result;
     }
 
     @GetMapping("/zip_code/{zipCode}")
+    @Operation(summary = "This endpoint allows to retrieve a property based on zip code")
     public ResponseEntity<List<Property>> getPropertyByZipCode(@PathVariable String zipCode) {
         ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/zip_code/" + zipCode), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
         return result;
     }
 
     @GetMapping("/state/{state}")
+    @Operation(summary = "This endpoint allows to retrieve a property based on state name")
     public ResponseEntity<List<Property>> getPropertyByState(@PathVariable String state) {
         ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/state/" + state), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
         return result;
     }
 
     @GetMapping("/country/{country}")
+    @Operation(summary = "This endpoint allows to retrieve a property based on country name")
     public ResponseEntity<List<Property>> getPropertyByCountry(@PathVariable String country) {
         ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/country/" + country), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
         return result;
     }
 
     @GetMapping("/price/{price}")
+    @Operation(summary = "This endpoint allows to retrieve a property based on price")
     public ResponseEntity<List<Property>> getPropertyByPrice(@PathVariable String price) {
         ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/price/" + price), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
         return result;
     }
 
-    // Inclusive lower & upper bounds (search between 100$ and 1000$ yields properties which are valued both 100$ and 1000$)
     @GetMapping("/price_between")
+    @Operation(summary = "This endpoint allows to retrieve a property based on price between 2 given price values", description = "Inclusive lower & upper bounds - search between 100$ and 1000$ yields properties which are valued both 100$ and 1000$")
     public ResponseEntity<List<Property>> getPropertyByPriceBetween(@RequestParam("min") String lowerBound, @RequestParam("max") String upperBound) {
         ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/price/" + lowerBound + "/" + upperBound), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
         return result;
     }
 
     @GetMapping("/surface_area/{surfaceArea}")
+    @Operation(summary = "This endpoint allows to retrieve a property based on surface area")
     public ResponseEntity<List<Property>> getPropertyBySurfaceArea(@PathVariable String surfaceArea) {
         ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/surface_area/" + surfaceArea), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
         return result;
     }
 
     @GetMapping("/floors/{floors}")
+    @Operation(summary = "This endpoint allows to retrieve a property based on number of floors")
     public ResponseEntity<List<Property>> getPropertyByNbFloors(@PathVariable String floors) {
         ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/floors/" + floors), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
         return result;
     }
 
     @GetMapping("/capacity/{capacity}")
+    @Operation(summary = "This endpoint allows to retrieve a property based on capacity")
     public ResponseEntity<List<Property>> getPropertyByCapacity(@PathVariable String capacity) {
         ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/capacity/" + capacity), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
         return result;
     }
 
     @GetMapping("/construction_date/{constructionDate}")
+    @Operation(summary = "This endpoint allows to retrieve a property based on construction date")
     public ResponseEntity<List<Property>> getPropertyByConstructionDate(@PathVariable String constructionDate) {
         ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/construction_date/" + constructionDate), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
         return result;
     }
 
     @GetMapping("/publish_date/{publishDate}")
+    @Operation(summary = "This endpoint allows to retrieve a property based on publish date")
     public ResponseEntity<List<Property>> getPropertyByPublishDate(@PathVariable String publishDate) {
         ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/publish_date/" + publishDate), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
         return result;
     }
 
     @GetMapping("/owner_email/{email}")
+    @Operation(summary = "This endpoint allows to retrieve a property based on owner email")
     public ResponseEntity<List<Property>> getPropertyByOwnerEmail(@PathVariable String email) {
         ResponseEntity<List<Property>> result = listGenerator.buildRequest(URL.concat("/owner_email/" + email), HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
         return result;
     }
 
     // Enhanced queries, filtering out based on several attributes
-    // Filters out properties based on several category attributes: (House & Room, House & Apartment, Apartment & Room)
     @GetMapping("/categories")
+    @Operation(summary = "This endpoint allows to filter out properties based on several category attributes", description = "For example properties, associated with the following categories: House, Apartment, Room or House & Room, House & Apartment, Apartment & Room, House & Apartment & Room")
+    @ApiResponse(responseCode = "200", description = "Properties have been found")
+    @ApiResponse(responseCode = "404", description = "No properties have been found")
     public ResponseEntity<List<Property>> getPropertyBySeveralCategories(@RequestParam(value="category") List<String> categories) {
         List<Property> properties = new ArrayList<>();
 
@@ -178,8 +209,10 @@ public class PropertiesController {
         return result;
     }
 
-    // Filters out properties based on several city attributes. Use case: for example, retrieval of properties located in different cities (Los Angeles, Seattle, Houston, Chicago)
     @GetMapping("/cities")
+    @Operation(summary = "This endpoint allows to filter out properties based on several city attributes", description = "Use case: for example, the retrieval of properties located in different cities - Los Angeles, Seattle, Houston, Chicago")
+    @ApiResponse(responseCode = "200", description = "Properties have been found")
+    @ApiResponse(responseCode = "404", description = "No properties have been found")
     public ResponseEntity<List<Property>> getPropertyBySeveralCities(@RequestParam(value="city") List<String> cities) {
         List<Property> properties = new ArrayList<>();
 
@@ -193,8 +226,10 @@ public class PropertiesController {
         return result;
     }
 
-    // Filters out properties based on several owner attributes. Use case: finding out properties of renters favorite owners (in case if renters want to re-rent from owners they trust the most)
     @GetMapping("/owners")
+    @Operation(summary = "This endpoint allows to filter out properties based on several owner attributes", description = "Use case: finding out properties of renters favorite owners (in case if renters want to re-rent from owners they trust the most)")
+    @ApiResponse(responseCode = "200", description = "Properties have been found")
+    @ApiResponse(responseCode = "404", description = "No properties have been found")
     public ResponseEntity<List<Property>> getPropertyBySeveralOwnerEmails(@RequestParam(value="owner") List<String> owners) {
         List<Property> properties = new ArrayList<>();
 
@@ -208,9 +243,12 @@ public class PropertiesController {
         return result;
     }
 
-    // Provides properties containing specified number of images
     @ExceptionHandler
     @GetMapping("/with_images")
+    @Operation(summary = "This endpoint allows to find out properties containing specified number of images")
+    @ApiResponse(responseCode = "200", description = "Properties have been found")
+    @ApiResponse(responseCode = "403", description = "Query has not been properly formatted")
+    @ApiResponse(responseCode = "404", description = "No properties have been found")
     public ResponseEntity<?> getPropertyByImagePresence(@RequestParam(value="quantity") int quantity) {
         ResponseEntity<List<Property>> allProperties = listGenerator.buildRequest(URL, HttpMethod.GET, new ParameterizedTypeReference<List<Property>>() {});
         List<Property> properties;
@@ -241,9 +279,12 @@ public class PropertiesController {
         return result;
     }
 
-    // Find outs a property containing specified attributes
     @ExceptionHandler(CheckingQueryParametersFailedException.class)
     @GetMapping("/property")
+    @Operation(summary = "This endpoint allows to find out properties containing specified/number of specified attributes", description = "Query parameter values are case-insensitive: Los Angeles == log angeles == LOS ANGELES")
+    @ApiResponse(responseCode = "200", description = "Properties have been found")
+    @ApiResponse(responseCode = "400", description = "Query has not been properly formatted")
+    @ApiResponse(responseCode = "404", description = "No properties have been found")
     public ResponseEntity<?> getPropertyBySeveralAttributes(@RequestParam(value="category") Optional<String> category, @RequestParam(value="country") Optional<String> country,
                                                                          @RequestParam(value="state") Optional<String> state, @RequestParam(value="city") Optional<String> city,
                                                                          @RequestParam(value="min_price") Optional<BigDecimal> minPrice, @RequestParam(value="max_price") Optional<BigDecimal> maxPrice,
