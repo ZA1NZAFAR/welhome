@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IProperty } from './property.model';
-import { BehaviorSubject, Observable, Subject, Subscription, catchError, map, of, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, Subscription, catchError, map } from 'rxjs';
 import { ToastService } from 'src/app/utils/toast/toast.service'
 import { environment } from 'src/environments/environment';
 
@@ -62,10 +62,6 @@ export const mockProperties: IProperty[] = Array.from(mockPropertyMap.values());
   providedIn: 'root'
 })
 export class PropertyService {
-
-  private properties: IProperty[] = mockProperties;
-
-  private _propertyCount: number = mockPropertyMap.size;
 
   private propertySubject: Subject<IProperty[]>;
   private propertyLoadingSubject: BehaviorSubject<boolean>;
@@ -132,8 +128,7 @@ export class PropertyService {
     return this.ownerPropertyLoadingObservable;
   }
   addProperty(property: IProperty): Observable<IProperty> {
-    return this._addProperty(property).pipe(map(() => {
-      this.propertySubject.next(this.properties);
+    return this.http.post<IProperty>(`${environment.backEndUrl}/properties`, property).pipe(map((property) => {
       this.toastService.showSuccess('Property added successfully');
       return property;
     }), catchError((error: Error) => {
@@ -142,17 +137,9 @@ export class PropertyService {
     }));
   }
 
-  private _addProperty(property: IProperty): Observable<IProperty> {
-    property.id = ++this._propertyCount;
-    mockPropertyMap.set(property.id, property);
-    this.properties = Array.from(mockPropertyMap.values());
-    return of(property);
-  }
-
   updateProperty(property: IProperty): Observable<IProperty> {
-    return this._updateProperty(property).pipe(map(() => {
+    return this.http.put<IProperty>(`${environment.backEndUrl}/properties/${property.id}`, property).pipe(map(() => {
       this.toastService.showSuccess('Property updated successfully');
-      this.propertySubject.next(this.properties);
       return property;
     }), catchError((error: Error) => {
       this.toastService.showError('Error while updating property : ' + error.message);
@@ -160,29 +147,13 @@ export class PropertyService {
     }));
   }
 
-  private _updateProperty(property: IProperty): Observable<IProperty> {
-    mockPropertyMap.set(property.id, property);
-    this.properties = Array.from(mockPropertyMap.values());
-    return of(property);
-  }
-
   deleteProperty(propertyId: number): Observable<boolean> {
-    return this._deleteProperty(propertyId).pipe(map((result) => {
+    return this.http.delete(`${environment.backEndUrl}/properties/${propertyId}`).pipe(map(() => {
       this.toastService.showSuccess('Property deleted successfully');
-      this.propertySubject.next(this.properties);
       return true;
     }), catchError((error: Error) => {
       this.toastService.showError('Error while deleting property : ' + error.message);
       throw error;
     }));
-  }
-
-  private _deleteProperty(propertyId: number): Observable<boolean> {
-    if (!mockPropertyMap.has(propertyId)) {
-      return of(false);
-    }
-    mockPropertyMap.delete(propertyId);
-    this.properties = Array.from(mockPropertyMap.values());
-    return of(true);
   }
 }
