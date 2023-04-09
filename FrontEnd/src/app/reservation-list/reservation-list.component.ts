@@ -26,8 +26,8 @@ export class ReservationListComponent implements OnInit, OnDestroy {
     private propertyService: PropertyService,
     private authService: AuthService,
     private contextService: ContextService
-  ) { 
-    
+  ) {
+
   }
 
   propertyExists(propertyId: number): boolean {
@@ -45,7 +45,7 @@ export class ReservationListComponent implements OnInit, OnDestroy {
     const userEmail = this.authService.profile!.email;
     this.ownerPropertyLoadingObservable$ = this.propertyService.getOwnerProperties(userEmail).getOwnerPropertyLoadingObservable();
     this.reservationLoadingObservable$ = this.reservationService.getReservations().getReservationLoadingObservable();
-    
+
     this.reservationSubscription = this.reservationService.getReservations()
       .getReservationObservable()
       .subscribe((reservations) => {

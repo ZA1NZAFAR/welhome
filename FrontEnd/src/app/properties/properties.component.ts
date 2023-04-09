@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { Subscription } from 'rxjs';
 import { IProperty } from 'src/app/core/property/property.model';
 import { PropertyService } from 'src/app/core/property/property.service';
@@ -11,6 +10,8 @@ import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { ReservationService } from '../core/reservation/reservation.service';
 import { IReservation } from '../core/reservation/reservation.model';
 import { ContextService } from '../core/context/context.service';
+import {IReview} from "../core/review/review.model";
+import {ReviewService} from "../core/review/review.service";
 @Component({
   selector: 'app-properties',
   templateUrl: './properties.component.html',
@@ -19,6 +20,7 @@ import { ContextService } from '../core/context/context.service';
 })
 export class PropertiesComponent implements OnInit, OnDestroy {
   propertyData: IProperty;
+  reviewData: IReview[];
 
   user_email: string;
   getPropertySub$: Subscription;
@@ -31,13 +33,14 @@ export class PropertiesComponent implements OnInit, OnDestroy {
 
   constructor(
     private propertyService: PropertyService,
+    private reviewService : ReviewService,
     private route: ActivatedRoute,
     private reservationService: ReservationService,
     private locationService: Location,
     private authService: AuthService,
     private adapter: DateAdapter<any>,
     private contextService: ContextService
-    
+
   ) {}
 
   ngOnInit(): void {
@@ -59,6 +62,14 @@ export class PropertiesComponent implements OnInit, OnDestroy {
           return;
         }
         this.propertyData = property;
+        this.reviewService.getPropertyReviews(property.id).subscribe(reviews => {
+          const propertyReviews = reviews.filter(r => r.property_id === property.id);
+          if (propertyReviews.length === 0) {
+            return;
+          }
+          this.reviewData = propertyReviews;
+        });
+
         this.images = [];
         if (this.propertyData.image_url !== undefined) {
           this.images.push(this.propertyData.image_url);
@@ -68,7 +79,7 @@ export class PropertiesComponent implements OnInit, OnDestroy {
         }
         if (this.propertyData.image_url3 !== undefined) {
           this.images.push(this.propertyData.image_url3);
-        }   
+        }
       });
     });
     this.user_email = this.authService.profile?.email || '';
@@ -111,7 +122,7 @@ export class PropertiesComponent implements OnInit, OnDestroy {
   promptLogin(): void {
     this.authService.login();
   }
-  
+
   reserveProperty(): void {
     if (this.reservationGroup.valid) {
       const reservation: IReservation = {
@@ -126,7 +137,7 @@ export class PropertiesComponent implements OnInit, OnDestroy {
       });
     }
   }
-  
+
   /*
   $(document).ready(function() {
     var currentPhoto = 1;

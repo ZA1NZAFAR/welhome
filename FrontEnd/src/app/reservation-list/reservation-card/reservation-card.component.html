@@ -3,7 +3,7 @@
   <div class="col-md-3">
     <img src="{{ this.property.image_url }}" alt="Reservation image" class="img-thumbnail photo-thumbnail">
   </div>
-  
+
   <div class="col-md-7 infos">
     <h1>{{ this.property.title }}</h1>
     <p><strong>Lieu :</strong> {{ this.property.city }}</p>
@@ -21,10 +21,13 @@
             Cancel
           </button>
         </div>
-       
+        <button type="button" class="btn btn-info ml-3" [routerLink]="['/properties', this.property.id]">
+          Reviews
+        </button>
+
       </div>
     </div>
-    
+
   </div>
 </div>
 </div>
