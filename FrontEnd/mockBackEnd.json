@@ -1,40 +1,38 @@
 {
-  "reservations" : [
+  "reservations": [
     {
       "id": 1,
-      "property_id" : 1,
-      "start_date" : "2023-03-15T09:00:00.594Z",
-      "end_date" : "2023-03-18T09:00:00.594Z" ,
-      "confirmed_owner" : true,
-      "confirmed_renter" : false,
-      "renter_email" : "xyz@gmail.com"
+      "property_id": 1,
+      "start_date": "2023-03-15T09:00:00.594Z",
+      "end_date": "2023-03-18T09:00:00.594Z",
+      "confirmed_owner": true,
+      "confirmed_renter": false,
+      "renter_email": "xyz@gmail.com"
     },
     {
       "id": 2,
-      "property_id" : 3,
-      "start_date" : "2023-03-15T09:00:00.594Z",
-      "end_date" : "2023-03-18T09:00:00.594Z" ,
-      "confirmed_owner" : true,
-      "confirmed_renter" : true,
-      "renter_email" : "zain.zafar@gmail.com"
+      "property_id": 3,
+      "start_date": "2023-03-15T09:00:00.594Z",
+      "end_date": "2023-03-18T09:00:00.594Z",
+      "confirmed_owner": true,
+      "confirmed_renter": true,
+      "renter_email": "zain.zafar@gmail.com"
     },
     {
       "id": 3,
-      "property_id" : 2,
-      "start_date" : "2023-04-15T09:00:00.594Z",
-      "end_date" : "2023-04-18T09:00:00.594Z" ,
-      "confirmed_owner" : true,
-      "confirmed_renter" : false,
-      "renter_email" : "zzz@lmao.com"
+      "property_id": 2,
+      "start_date": "2023-04-15T09:00:00.594Z",
+      "end_date": "2023-04-18T09:00:00.594Z",
+      "confirmed_owner": true,
+      "confirmed_renter": false,
+      "renter_email": "zzz@lmao.com"
     }
   ],
   "properties": [
     {
-      "id": 1,
       "title": "House in Paris",
       "description": "A beautiful house in Paris",
-      "owner_email": "zain.zafar@gmail.com",
-      "property_category": "Room",
+      "property_category": "House",
       "address": "1234 rue de la paix",
       "city": "Paris",
       "state": "Ile-de-France",
@@ -43,7 +41,10 @@
       "surface_area": 100,
       "floors": 1,
       "capacity": 4,
-      "image_url": "https://cdn.pixabay.com/photo/2016/11/18/17/46/house-1836070_960_720.jpg"
+      "construction_date": "",
+      "image_url": "https://cdn.pixabay.com/photo/2016/11/18/17/46/house-1836070_960_720.jpg",
+      "owner_email": "zain.zafar@gmail.com",
+      "id": 1
     },
     {
       "id": 2,
@@ -75,6 +76,16 @@
       "floors": 4,
       "capacity": 2,
       "image_url": "https://media.istockphoto.com/id/1165384568/fr/photo/complexe-moderne-europ%C3%A9en-de-b%C3%A2timents-r%C3%A9sidentiels.jpg?s=612x612&w=0&k=20&c=nvoIbiIffCt-nuj47Cc3I261Ke98iMouq_HefNM7Lz0="
+    }
+  ],
+  "reviews": [
+    {
+      "id": 1,
+      "property_id": 1,
+      "reviewer_email": "xyz@gmail.com",
+      "review_text": "This place sucks!",
+      "rating": 1,
+      "published_date": "2021-03-18T09:00:00.594Z"
     }
   ]
 }

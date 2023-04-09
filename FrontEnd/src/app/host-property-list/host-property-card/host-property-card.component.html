@@ -1,17 +1,19 @@
-<div class="border p-3">
-  <div class="row">
+<div class="property-card">
+  <div class="row ">
     <div class="col-md-3">
       <img src="{{property.image_url}}" alt="Property image" class="img-thumbnail photo-thumbnail">
     </div>
-    <div class="col-md-7 d-flex align-items-start flex-column">
+    <div class="col-md-7 d-flex align-items-start flex-column infos">
       <h3>{{property.title}}</h3>
-      <p class="mb-1">{{property.description}}</p>
-      <p class="mb-1"><strong>Lieu :</strong> {{property.city}}</p>
-      <p class="mb-1"><strong>Surface :</strong> {{property.surface_area}} m²</p>
-      <p class="mb-1"><strong>Capacité:</strong> {{property.capacity}} personne(s)</p>
-      <p class="mb-1"><strong>Prix :</strong> {{property.price}} €</p>
-      <button class="btn btn-primary" (click)="this.openEditForm()">Edit</button>
-      <button class="btn btn-danger" (click)="this.deleteProperty()">Delete</button>
+      <p class="mb-2">{{property.description}}</p>
+      <p class="mb-2"><strong>Lieu :</strong> {{property.city}}</p>
+      <p class="mb-2"><strong>Surface :</strong> {{property.surface_area}} m²</p>
+      <p class="mb-2"><strong>Capacité:</strong> {{property.capacity}} personne(s)</p>
+      <p class="mb-2"><strong>Prix :</strong> {{property.price}} €</p>
+     <div class="action-btn">
+      <button class="btn btn-primary" (click)="openEditForm()">Modifier</button>
+      <button class="btn btn-danger" (click)="this.deleteProperty()">Supprimer</button>
+     </div>
     </div>
   </div>
 </div>
