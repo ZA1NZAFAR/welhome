@@ -1,22 +1,36 @@
 import { Injectable } from '@angular/core';
 
+const CONTEXTS = ['OWNER', 'RENTER'];
+
 @Injectable({
   providedIn: 'root'
 })
 export class ContextService {
-  context: 'OWNER' | 'RENTER' = 'RENTER';
+  constructor() {
+    const context = this.getContext();
+    if (!context || !CONTEXTS.includes(context)) {
+      this.setContext('RENTER');
+    }
+  }
 
-  constructor() { }
-
-  getContext(): 'OWNER' | 'RENTER' {
-    return this.context;
+  getContext(): string | null {
+    return window.localStorage.getItem('context');
   }
 
   get isRenter(): boolean {
-    return this.context === 'RENTER';
+    return this.getContext() === 'RENTER';
   }
 
   changeContext() {
-    this.context = this.context === 'OWNER' ? 'RENTER' : 'OWNER';
+    if (this.getContext() === 'RENTER') {
+      this.setContext('OWNER');
+    } else {
+      this.setContext('RENTER');
+    }
+  }
+
+  setContext(context: 'OWNER' | 'RENTER') {
+    console.log('setContext', context)
+    window.localStorage.setItem('context', context);
   }
 }
