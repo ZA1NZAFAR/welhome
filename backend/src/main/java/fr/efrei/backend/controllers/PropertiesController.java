@@ -285,7 +285,7 @@ public class PropertiesController {
             else
                 throw new CheckingQueryParametersFailedException(message.toString());
         } catch (CheckingQueryParametersFailedException exception) {
-            return new ResponseEntity<String>(exception.getMessage(), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<String>(exception.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
         List<Property> properties = allProperties.getBody().stream().filter(property -> (
