@@ -5,6 +5,50 @@
     width: 500px;
     height: 330px;
     object-fit: cover;
+
   }
 
   
+  
+  .reservation-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .infos h1 {
+    font-family: 'Circular', sans-serif;
+    font-size: 32px;
+    font-weight: bold;
+    line-height: 40px;
+    margin: 0;
+    margin-bottom: 20px;
+  }
+
+  .infos {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    width: 50vw;
+    max-width: 40vw; 
+    align-self: flex-start; 
+    font-size: 16px;
+    //border: 1px solid #484848;
+
+  }
+  .infos p {
+    margin-bottom: 20px;
+  }
+  .action-btn{
+    border: 1px solid #484848;
+
+  }
+
+  .action-btn button{
+   margin-left: 5vw;
+
+  }
