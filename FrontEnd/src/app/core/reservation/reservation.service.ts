@@ -48,7 +48,7 @@ export class ReservationService {
 
   constructor(    
     private http: HttpClient,
-    toastService: ToastService
+    private toastService: ToastService
     ) { }
 
     /* for test */
