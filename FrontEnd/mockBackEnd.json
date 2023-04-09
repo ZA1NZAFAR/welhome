@@ -76,5 +76,15 @@
       "capacity": 2,
       "image_url": "https://media.istockphoto.com/id/1165384568/fr/photo/complexe-moderne-europ%C3%A9en-de-b%C3%A2timents-r%C3%A9sidentiels.jpg?s=612x612&w=0&k=20&c=nvoIbiIffCt-nuj47Cc3I261Ke98iMouq_HefNM7Lz0="
     }
+  ],
+  "reviews" : [
+    {
+      "id": 1,
+      "property_id": 1,
+      "reviewer_email": "xyz@gmail.com",
+      "review_text": "This place sucks!",
+      "rating": 1,
+      "published_date": "2021-03-18T09:00:00.594Z"
+    }
   ]
 }

@@ -3,15 +3,19 @@
     <div class="col-md-3">
       <img src="{{property.image_url}}" alt="Property image" class="img-thumbnail photo-thumbnail">
     </div>
-    <div class="col-md-7 d-flex align-items-start flex-column">
+    <div class="col-md-6 d-flex align-items-start flex-column">
       <h3>{{property.title}}</h3>
       <p class="mb-1">{{property.description}}</p>
-      <p class="mb-1"><strong>Lieu :</strong> {{property.city}}</p>
-      <p class="mb-1"><strong>Surface :</strong> {{property.surface_area}} m²</p>
-      <p class="mb-1"><strong>Capacité:</strong> {{property.capacity}} personne(s)</p>
-      <p class="mb-1"><strong>Prix :</strong> {{property.price}} €</p>
+      <p class="mb-1"><strong>City:</strong> {{property.city}}</p>
+      <p class="mb-1"><strong>Living area:</strong> {{property.surface_area}} m²</p>
+      <p class="mb-1"><strong>Capacity:</strong> {{property.capacity}} {{property.capacity > 1 ? 'people' : 'person'}}</p>
+      <p class="mb-1"><strong>Price:</strong> {{property.price}} €</p>
+
       <button class="btn btn-primary" (click)="this.openEditForm()">Edit</button>
       <button class="btn btn-danger" (click)="this.deleteProperty()">Delete</button>
+    </div>
+    <div class="col-md-3">
+      <strong>Rating:</strong> {{ this.rating }}
     </div>
   </div>
 </div>

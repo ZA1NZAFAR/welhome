@@ -7,3 +7,8 @@ export interface IReview {
   property_id: number;
   reviewer_email: string;
 }
+
+export interface IRating {
+  rating: number;
+  reviewCount: number; 
+}
