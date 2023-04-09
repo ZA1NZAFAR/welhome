@@ -1,82 +1,89 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IReservation } from './reservation.model';
-import { BehaviorSubject, Observable, Subject, map } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, Subscription, map } from 'rxjs';
 import { ToastService } from 'src/app/utils/toast/toast.service'
+import { environment } from 'src/environments/environment';
+import { AuthService } from '../auth/auth.service';
+import { ContextService } from '../context/context.service';
 
-const mockPropertyMap: Map<number, IReservation> = new Map([
-  [1, {
-    id: 1,
-    property_id : 1,
-    start_date : new Date(2023, 2, 15),
-    end_date : new Date(2023, 2, 18) ,
-    confirmed_owner : true,
-    confirmed_renter : false,
-    renter_email : 'xyz@gmail.com'
-  }],
-  [2, {
-    id: 2,
-    property_id : 3,
-    start_date : new Date(2023, 2, 15),
-    end_date : new Date(2023, 2, 18) ,
-    confirmed_owner : true,
-    confirmed_renter : true,
-    renter_email : 'zain.zafar@gmail.com'
-  }],
-  [3, {
-    id: 3,
-    property_id : 2,
-    start_date : new Date(2023, 3, 15),
-    end_date : new Date(2023, 3, 18) ,
-    confirmed_owner : true,
-    confirmed_renter : false,
-    renter_email : 'zzz@lmao.com'
-  }]
-]);
-
-const mockReservations: IReservation[] = Array.from(mockPropertyMap.values());
 @Injectable({
   providedIn: 'root'
 })
 export class ReservationService {
-  private reservations: IReservation[] = mockReservations;
-
-  private _reservationCount: number = mockReservations.length;
-  private reservationSubject: BehaviorSubject<IReservation[]> = new BehaviorSubject(this.reservations);
-
-  private loadingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private reservationSubject: Subject<IReservation[]>;
+  private reservationLoadingSubject: BehaviorSubject<boolean>;
+  private reservationObservable: Observable<IReservation[]>;
+  private reservationLoadingObservable: Observable<boolean>;
+  private reservationSubsrciption: Subscription;
 
   constructor(    
     private http: HttpClient,
-    private toastService: ToastService
-    ) { }
-
-    /* for test */
-
-    private _getMockReservation(renter_email?: string): BehaviorSubject<IReservation[]> {
-      const reservations: IReservation[] = [];
-      mockReservations.forEach((reservation: IReservation) => {
-        if (renter_email && reservation.renter_email !== renter_email) {
-          return;
-        }
-        reservations.push(reservation);
-      });
-      return new BehaviorSubject(reservations);
+    private toastService: ToastService,
+    private authService: AuthService,
+    private contextService: ContextService
+    ) {
+      this.reservationSubject = new Subject<IReservation[]>();
+      this.reservationLoadingSubject = new BehaviorSubject<boolean>(false);
+      this.reservationObservable = this.reservationSubject.asObservable();
+      this.reservationLoadingObservable = this.reservationLoadingSubject.asObservable();
     }
   
-    getReservations(renter_email?: string): Observable<IReservation[]> {
-      this.loadingSubject.next(true);
-      return this._getMockReservation(renter_email).pipe(
-        map((reservations) => {
-          this.reservations = reservations;
-          this.reservationSubject.next(this.reservations);
-          this.loadingSubject.next(false);
-          return this.reservations;
-        })
-      ); // should use http client to get data from server
+    getReservations(): ReservationService {
+      const renter_email = this.contextService.isRenter ? this.authService.profile!.email : undefined;
+      if (this.reservationSubsrciption) {
+        this.reservationSubsrciption.unsubscribe();
+      }
+      this.reservationLoadingSubject.next(true);
+      this.reservationSubsrciption = this.http.get<IReservation[]>(`${environment.backEndUrl}/reservations${ renter_email ? `/renter_email/${renter_email}` : ''}`)
+        .subscribe((reservations) => {
+          this.reservationSubject.next(reservations);
+          this.reservationLoadingSubject.next(false);
+        });
+      return this;
+    }
+
+    getReservationObservable(): Observable<IReservation[]> {
+      return this.reservationObservable;
+    }
+    getReservationLoadingObservable(): Observable<boolean> {
+      return this.reservationLoadingObservable;
     }
 
     getReservationLoading(): Observable<boolean> {
-      return this.loadingSubject.asObservable();
+      return this.reservationLoadingSubject.asObservable();
+    }
+
+    addReservation(reservation: IReservation): Observable<IReservation> {
+      return this.http.post<IReservation>(`${environment.backEndUrl}/reservations`, reservation)
+        .pipe(
+          map((reservation) => {
+            this.getReservations();
+            this.toastService.showSuccess('Reservation added successfully');
+            return reservation;
+          })
+        );
+    }
+
+    updateReservation(reservation: IReservation): Observable<IReservation> {
+      return this.http.put<IReservation>(`${environment.backEndUrl}/reservations/${reservation.id}`, reservation)
+        .pipe(
+          map((reservation) => {
+            this.getReservations();
+            this.toastService.showSuccess('Reservation updated successfully');
+            return reservation;
+          })
+        );
+    }
+
+    deleteReservation(reservation: IReservation): Observable<IReservation> {
+      return this.http.delete<IReservation>(`${environment.backEndUrl}/reservations/${reservation.id}`)
+        .pipe(
+          map((reservation) => {
+            this.getReservations();
+            this.toastService.showSuccess('Reservation deleted successfully');
+            return reservation;
+          })
+        );
     }
 }

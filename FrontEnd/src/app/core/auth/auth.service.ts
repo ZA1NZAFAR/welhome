@@ -4,6 +4,7 @@ import jwtDecode, { JwtPayload } from 'jwt-decode';
 import { IProfile, ITokenPayload } from './auth.model'
 import { environment } from 'src/environments/environment';
 import { ToastService } from 'src/app/utils/toast/toast.service'
+import { ContextService } from '../context/context.service';
 
 @Injectable({
   providedIn: 'root'
@@ -38,14 +39,14 @@ export class AuthService implements OnInit {
 
   constructor(
     private router: Router,
-    private toast: ToastService
+    private toast: ToastService,
+    private contextService: ContextService
   ) { }
   ngOnInit(): void {
   }
 
   startupToken(): void {
     const token = localStorage.getItem('token');
-    console.log(token);
     if (token) {
       this._payload = jwtDecode<ITokenPayload>(token);
     }
@@ -58,19 +59,22 @@ export class AuthService implements OnInit {
       this.toast.showSuccess('Logged in');
       return;
     }
-    const loginWindow = window.open(environment.authUrl, 'Authentication', 'location=yes,height=300,width=300,scrollbars=yes,status=yes');
+    const loginWindow = window.open(`${environment.authUrl}/auth/google`, 'Authentication', 'height=800,width=600');
     if (loginWindow !== null) {
       loginWindow.focus();
       window.addEventListener('message', event => {
-        const data = event.data;
-        if (data.token !== undefined) {
+        if (event.source !== loginWindow) {
+          return;
+        }
+        const data = event.data.data;
+        if (data.accessToken !== undefined) {
           try {
-            this._payload = jwtDecode<ITokenPayload>(data.token);
+            this._payload = jwtDecode<ITokenPayload>(data.accessToken);
             if (!this.isValid(this._payload)) {
               this.toast.showError('Invalid token');
               throw new Error('Invalid token');
             }
-            localStorage.setItem('token', data.token);
+            localStorage.setItem('token', data.accessToken);
             this.toast.showSuccess('Logged in');
           } catch (err) {
             this.logout();
@@ -103,6 +107,7 @@ export class AuthService implements OnInit {
 
   logout(): void {
     this.toast.showInfo('Logged out');
+    this.contextService.setContext('RENTER')
     localStorage.removeItem('token');
     this._payload = null;
     this.router.navigate(['/']);

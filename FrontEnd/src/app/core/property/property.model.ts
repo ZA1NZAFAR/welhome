@@ -14,8 +14,9 @@ export interface IProperty {
   construction_date?: Date,
   publish_date?: Date,
   owner_email: string,
-  image_url?: string
-
+  image_url?: string,
+  image_url2?: string,
+  image_url3?: string
 }
 
 export const propertyCategory = ['House', 'Apartment', 'Room'];

@@ -5,8 +5,7 @@ import { ReservationService } from '../core/reservation/reservation.service';
 import { PropertyService } from '../core/property/property.service'
 import { IProperty } from '../core/property/property.model'
 import { ContextService } from '../core/context/context.service';
-import { Subscription } from 'rxjs';
-import {ActivatedRoute} from "@angular/router";
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-reservation-list',
@@ -17,16 +16,18 @@ export class ReservationListComponent implements OnInit, OnDestroy {
   reservations: IReservation[] = [];
   propertyMap: Map<number, IProperty> = new Map();
   private propertySubscription: Subscription;
-  propertyId: string;
+  private reservationSubscription: Subscription;
+
+  ownerPropertyLoadingObservable$: Observable<boolean>;
+  reservationLoadingObservable$: Observable<boolean>;
 
   constructor(
     private reservationService: ReservationService,
     private propertyService: PropertyService,
     private authService: AuthService,
-    private contextService: ContextService,
-    private route: ActivatedRoute
-  ) {
-
+    private contextService: ContextService
+  ) { 
+    
   }
 
   propertyExists(propertyId: number): boolean {
@@ -41,13 +42,15 @@ export class ReservationListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      this.propertyId = params['id'];
-    });
     const userEmail = this.authService.profile!.email;
-    this.reservationService.getReservations(this.contextService.isRenter ? userEmail : undefined).subscribe((reservations: IReservation[]) => {
-      this.reservations = reservations;
-    });
+    this.ownerPropertyLoadingObservable$ = this.propertyService.getOwnerProperties(userEmail).getOwnerPropertyLoadingObservable();
+    this.reservationLoadingObservable$ = this.reservationService.getReservations().getReservationLoadingObservable();
+    
+    this.reservationSubscription = this.reservationService.getReservations()
+      .getReservationObservable()
+      .subscribe((reservations) => {
+        this.reservations = reservations;
+      });
 
     const propertyObservable = this.contextService.isRenter ? this.propertyService.getProperties().getPropertyObservable() : this.propertyService.getOwnerProperties(userEmail).getOwnerPropertyObservable();
     this.propertySubscription = propertyObservable.subscribe((properties) => {
@@ -60,5 +63,6 @@ export class ReservationListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.propertySubscription.unsubscribe();
+    this.reservationSubscription.unsubscribe();
   }
 }

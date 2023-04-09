@@ -1,0 +1,4 @@
+{
+  "/properties/property*": "/properties$1",
+  "/reservations/renter_email/:email": "/reservations/?renter_email=:email"
+}
