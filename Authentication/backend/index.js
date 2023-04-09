@@ -120,6 +120,20 @@ app.post('/register', async (req, res) => {
   }
 });
 
+app.get('/auth/refresh-token', async (req, res) => {
+  try {
+    // Get the current access token
+    const { credentials } = googleClient;
+    const currentAccessToken = credentials.access_token;
+
+    // Send the access token to the client
+    res.status(200).json({ accessToken: currentAccessToken });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to refresh access token' });
+  }
+});
+
 // app.post('/register', async (req, res) => {
 //   const { email, firstName, lastName, birthDate, phoneNumber, gender } = req.body;
 

@@ -3,6 +3,21 @@ import { useNavigate } from 'react-router-dom';
 function ConnectButton() {
   const navigate = useNavigate();
 
+  async function refreshToken() {
+    try {
+      const response = await fetch('http://localhost:3001/auth/refresh-token');
+      const data = await response.json();
+  
+      // Update the access token in local storage
+      localStorage.setItem('accessToken', data.accessToken);
+    } catch (error) {
+      console.error('Failed to refresh access token:', error);
+    }
+  }
+  
+  // Call the refreshToken function every 5 minutes
+  setInterval(refreshToken, 5 * 60 * 1000);
+
   const handleConnect = async () => {
     try {
       const popup = window.open(`http://localhost:3001/auth/google`, 'googleLogin', 'height=800,width=600');
