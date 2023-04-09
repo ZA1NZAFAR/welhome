@@ -10,7 +10,6 @@ import { AuthService } from '../core/auth/auth.service'
 import {IReview} from "../core/review/review.model";
 import {ReviewService} from "../core/review/review.service";
 
-
 @Component({
   selector: 'app-properties',
   templateUrl: './properties.component.html',
