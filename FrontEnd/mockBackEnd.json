@@ -1,0 +1,80 @@
+{
+  "reservations" : [
+    {
+      "id": 1,
+      "property_id" : 1,
+      "start_date" : "2023-03-15T09:00:00.594Z",
+      "end_date" : "2023-03-18T09:00:00.594Z" ,
+      "confirmed_owner" : true,
+      "confirmed_renter" : false,
+      "renter_email" : "xyz@gmail.com"
+    },
+    {
+      "id": 2,
+      "property_id" : 3,
+      "start_date" : "2023-03-15T09:00:00.594Z",
+      "end_date" : "2023-03-18T09:00:00.594Z" ,
+      "confirmed_owner" : true,
+      "confirmed_renter" : true,
+      "renter_email" : "zain.zafar@gmail.com"
+    },
+    {
+      "id": 3,
+      "property_id" : 2,
+      "start_date" : "2023-04-15T09:00:00.594Z",
+      "end_date" : "2023-04-18T09:00:00.594Z" ,
+      "confirmed_owner" : true,
+      "confirmed_renter" : false,
+      "renter_email" : "zzz@lmao.com"
+    }
+  ],
+  "properties": [
+    {
+      "id": 1,
+      "title": "House in Paris",
+      "description": "A beautiful house in Paris",
+      "owner_email": "zain.zafar@gmail.com",
+      "property_category": "Room",
+      "address": "1234 rue de la paix",
+      "city": "Paris",
+      "state": "Ile-de-France",
+      "country": "France",
+      "price": 100,
+      "surface_area": 100,
+      "floors": 1,
+      "capacity": 4,
+      "image_url": "https://cdn.pixabay.com/photo/2016/11/18/17/46/house-1836070_960_720.jpg"
+    },
+    {
+      "id": 2,
+      "title": "Room in London",
+      "description": "A beautiful room in London",
+      "owner_email": "zain.zafar@gmail.com",
+      "property_category": "Room",
+      "address": "1234 Fake Street",
+      "city": "London",
+      "country": "United Kingdom",
+      "price": 200,
+      "surface_area": 100,
+      "floors": 6,
+      "capacity": 3,
+      "image_url": "https://images.unsplash.com/photo-1615874959474-d609969a20ed?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YmVkJTIwcm9vbXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
+    },
+    {
+      "id": 3,
+      "title": "Apartment in Toronto",
+      "description": "A beautiful apartment in Toronto",
+      "owner_email": "abc@gmail.com",
+      "property_category": "Apartment",
+      "address": "1234 Fake Street",
+      "city": "Toronto",
+      "state": "Ontario",
+      "country": "Canada",
+      "price": 150,
+      "surface_area": 80,
+      "floors": 4,
+      "capacity": 2,
+      "image_url": "https://media.istockphoto.com/id/1165384568/fr/photo/complexe-moderne-europ%C3%A9en-de-b%C3%A2timents-r%C3%A9sidentiels.jpg?s=612x612&w=0&k=20&c=nvoIbiIffCt-nuj47Cc3I261Ke98iMouq_HefNM7Lz0="
+    }
+  ]
+}

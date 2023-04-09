@@ -1,19 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../core/auth/auth.service';
 import { IReservation } from '../core/reservation/reservation.model';
 import { ReservationService } from '../core/reservation/reservation.service';
 import { PropertyService } from '../core/property/property.service'
 import { IProperty } from '../core/property/property.model'
 import { ContextService } from '../core/context/context.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-reservation-list',
   templateUrl: './reservation-list.component.html',
   styleUrls: ['./reservation-list.component.scss']
 })
-export class ReservationListComponent implements OnInit {
+export class ReservationListComponent implements OnInit, OnDestroy {
   reservations: IReservation[] = [];
   propertyMap: Map<number, IProperty> = new Map();
+  private propertySubscription: Subscription;
 
   constructor(
     private reservationService: ReservationService,
@@ -36,11 +38,13 @@ export class ReservationListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const userEmail = this.authService.profile?.email;
+    const userEmail = this.authService.profile!.email;
     this.reservationService.getReservations(this.contextService.isRenter ? userEmail : undefined).subscribe((reservations: IReservation[]) => {
       this.reservations = reservations;
     });
-    this.propertyService.getProperties(!this.contextService.isRenter ? userEmail : undefined).subscribe((properties) => {
+
+    const propertyObservable = this.contextService.isRenter ? this.propertyService.getProperties().getPropertyObservable() : this.propertyService.getOwnerProperties(userEmail).getOwnerPropertyObservable();
+    this.propertySubscription = propertyObservable.subscribe((properties) => {
       this.propertyMap.clear();
       properties.forEach((property: IProperty) => {
         this.propertyMap.set(property.id, property);
@@ -48,4 +52,7 @@ export class ReservationListComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.propertySubscription.unsubscribe();
+  }
 }

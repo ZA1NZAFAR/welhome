@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IProperty } from './property.model';
-import { BehaviorSubject, Observable, catchError, map, of, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, Subscription, catchError, map, of, throwError } from 'rxjs';
 import { ToastService } from 'src/app/utils/toast/toast.service'
+import { environment } from 'src/environments/environment';
 
 const mockPropertyMap: Map<number,IProperty> = new Map([
   [1, {
@@ -66,45 +67,70 @@ export class PropertyService {
 
   private _propertyCount: number = mockPropertyMap.size;
 
-  private propertySubject: BehaviorSubject<IProperty[]> = new BehaviorSubject<IProperty[]>(this.properties);
-  private propertyLoadingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private propertySubject: Subject<IProperty[]>;
+  private propertyLoadingSubject: BehaviorSubject<boolean>;
+  private propertyObservable: Observable<IProperty[]>;
+  private propertyLoadingObservable: Observable<boolean>;
+  private propertySubscription: Subscription;
+
+  private ownerPropertySubject: Subject<IProperty[]>;
+  private ownerPropertyLoadingSubject: BehaviorSubject<boolean>;
+  private ownerPropertyObservable: Observable<IProperty[]>;
+  private ownerPropertyLoadingObservable: Observable<boolean>;
+  private ownerPropertySubscription: Subscription;
 
   constructor(
     private http: HttpClient,
     private toastService: ToastService
   ) {
-    
-  }
-  /**
-   * use only for test
-   * @returns 
-   */
-  private _getMockProperty(owner_email?: string): BehaviorSubject<IProperty[]> {
-    const properties: IProperty[] = [];
-    mockProperties.forEach((property: IProperty) => {
-      if (owner_email && property.owner_email !== owner_email) {
-        return;
-      }
-      properties.push(property);
-    });
-    
-    return new BehaviorSubject<IProperty[]>(properties);
+    this.propertySubject = new Subject<IProperty[]>();
+    this.propertyLoadingSubject = new BehaviorSubject<boolean>(false);
+    this.propertyObservable = this.propertySubject.asObservable();
+    this.propertyLoadingObservable = this.propertyLoadingSubject.asObservable();
+    this.ownerPropertySubject = new Subject<IProperty[]>();
+    this.ownerPropertyLoadingSubject = new BehaviorSubject<boolean>(false);
+    this.ownerPropertyObservable = this.ownerPropertySubject.asObservable();
+    this.ownerPropertyLoadingObservable = this.ownerPropertyLoadingSubject.asObservable();
   }
 
-  getProperties(owner_email?: string): Observable<IProperty[]> {
+  getProperties(): PropertyService {
+    if (this.propertySubscription) {
+      this.propertySubscription.unsubscribe();
+    }
     this.propertyLoadingSubject.next(true);
-    return this._getMockProperty(owner_email).pipe(map((properties) => {
-      this.properties = properties;
-      this.propertySubject.next(this.properties);
+    this.propertySubscription = this.http.get<IProperty[]>(`${environment.backEndUrl}/properties`).subscribe((properties) => {
+      this.propertySubject.next(properties);
       this.propertyLoadingSubject.next(false);
-      return this.properties;
-    })); // should use http client to get data from server
+    });
+    return this;
   }
 
-  getPropertyLoading(): Observable<boolean> {
-    return this.propertyLoadingSubject.asObservable();
+  getPropertyObservable(): Observable<IProperty[]> {
+    return this.propertyObservable;
+  }
+  getPropertyLoadingObservable(): Observable<boolean> {
+    return this.propertyLoadingObservable;
   }
 
+  getOwnerProperties(ownerEmail: string): PropertyService {
+    if (this.ownerPropertySubscription) {
+      this.ownerPropertySubscription.unsubscribe();
+    }
+    this.ownerPropertyLoadingSubject.next(true);
+    this.ownerPropertySubscription = this.http.get<IProperty[]>(`${environment.backEndUrl}/properties?owner_email=${ownerEmail}`)
+      .subscribe((properties) => {
+        this.ownerPropertySubject.next(properties);
+        this.ownerPropertyLoadingSubject.next(false);
+    });
+    return this;
+  }
+
+  getOwnerPropertyObservable(): Observable<IProperty[]> {
+    return this.ownerPropertyObservable;
+  }
+  getOwnerPropertyLoadingObservable(): Observable<boolean> {
+    return this.ownerPropertyLoadingObservable;
+  }
   addProperty(property: IProperty): Observable<IProperty> {
     return this._addProperty(property).pipe(map(() => {
       this.propertySubject.next(this.properties);

@@ -15,7 +15,7 @@ export class PropertyListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.propertyService.getProperties().subscribe((properties: IProperty[]) => {
+    this.propertyService.getProperties().getPropertyObservable().subscribe((properties: IProperty[]) => {
       this.properties = properties;
     });
   }

@@ -31,8 +31,8 @@ export class HostPropertyListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getPropertiesSub$ = this.propertyService.getProperties().subscribe((properties) => {
-      const userEmail = this.authService.profile?.email;
+    const userEmail = this.authService.profile!.email;
+    this.getPropertiesSub$ = this.propertyService.getOwnerProperties(userEmail).getOwnerPropertyObservable().subscribe((properties) => {
       this.propertyMap.clear();
       properties.forEach((property: IProperty) => {
         if (property.owner_email === userEmail) {
@@ -41,7 +41,7 @@ export class HostPropertyListComponent implements OnInit, OnDestroy {
       });
       this.properties = Array.from(this.propertyMap.values());
     });
-    this.getPropertyLoadingSub$ = this.propertyService.getPropertyLoading().subscribe((loading) => {
+    this.getPropertyLoadingSub$ = this.propertyService.getPropertyLoadingObservable().subscribe((loading) => {
       this.loading = loading;
     });
   }

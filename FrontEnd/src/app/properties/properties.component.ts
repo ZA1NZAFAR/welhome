@@ -42,7 +42,7 @@ export class PropertiesComponent implements OnInit, OnDestroy {
         this.locationService.back();
         return;
       }
-      this.getPropertySub$ = this.propertyService.getProperties().subscribe(properties => {
+      this.getPropertySub$ = this.propertyService.getProperties().getPropertyObservable().subscribe(properties => {
         const property = properties.find(p => p.id === id);
         if (property === undefined) {
           this.locationService.back();
