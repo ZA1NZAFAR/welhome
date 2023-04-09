@@ -6,7 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "mockdb": "json-server --watch mockBackEnd.json -d 500 --port 9092"
+    "mockdb": "json-server --watch mockBackend.json -d 500 --port 9092 --routes mockBackendRoutes.json"
   },
   "private": true,
   "dependencies": {

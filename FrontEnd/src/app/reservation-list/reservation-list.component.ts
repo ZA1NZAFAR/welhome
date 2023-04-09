@@ -5,7 +5,7 @@ import { ReservationService } from '../core/reservation/reservation.service';
 import { PropertyService } from '../core/property/property.service'
 import { IProperty } from '../core/property/property.model'
 import { ContextService } from '../core/context/context.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-reservation-list',
@@ -16,6 +16,10 @@ export class ReservationListComponent implements OnInit, OnDestroy {
   reservations: IReservation[] = [];
   propertyMap: Map<number, IProperty> = new Map();
   private propertySubscription: Subscription;
+  private reservationSubscription: Subscription;
+
+  ownerPropertyLoadingObservable$: Observable<boolean>;
+  reservationLoadingObservable$: Observable<boolean>;
 
   constructor(
     private reservationService: ReservationService,
@@ -39,9 +43,14 @@ export class ReservationListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const userEmail = this.authService.profile!.email;
-    this.reservationService.getReservations(this.contextService.isRenter ? userEmail : undefined).subscribe((reservations: IReservation[]) => {
-      this.reservations = reservations;
-    });
+    this.ownerPropertyLoadingObservable$ = this.propertyService.getOwnerProperties(userEmail).getOwnerPropertyLoadingObservable();
+    this.reservationLoadingObservable$ = this.reservationService.getReservations().getReservationLoadingObservable();
+    
+    this.reservationSubscription = this.reservationService.getReservations()
+      .getReservationObservable()
+      .subscribe((reservations) => {
+        this.reservations = reservations;
+      });
 
     const propertyObservable = this.contextService.isRenter ? this.propertyService.getProperties().getPropertyObservable() : this.propertyService.getOwnerProperties(userEmail).getOwnerPropertyObservable();
     this.propertySubscription = propertyObservable.subscribe((properties) => {
@@ -54,5 +63,6 @@ export class ReservationListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.propertySubscription.unsubscribe();
+    this.reservationSubscription.unsubscribe();
   }
 }
