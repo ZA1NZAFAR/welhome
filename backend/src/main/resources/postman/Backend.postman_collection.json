@@ -1,0 +1,1018 @@
+{
+	"info": {
+		"_postman_id": "8816e919-95b0-4bc8-b80f-281c222f9728",
+		"name": "Backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13742093"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Retrieve all users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/profiles",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"profiles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"bill.clinton@whitehouse.gov\",\r\n  \"firstName\": \"Bill\",\r\n  \"lastName\": \"Clinton\",\r\n  \"birthDate\": \"1946-08-19\",\r\n  \"phoneNumber\": \"1-202-456-1414\",\r\n  \"gender\": \"Non-Binary\",\r\n  \"registrationDate\": \"2023-04-05\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Backend}}/api/profiles",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"profiles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"vladimir.putin@kreml.gov\",\r\n  \"firstName\": \"Volodymyr\",\r\n  \"lastName\": \"Zelensky\",\r\n  \"birthDate\": \"1978-01-25\",\r\n  \"phoneNumber\": \"1-202-456-8787\",\r\n  \"gender\": \"Male\",\r\n  \"registrationDate\": \"2023-04-09\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Backend}}/api/profiles/vladimir.putin@kreml.gov",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"vladimir.putin@kreml.gov"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/profiles/vladimir.putin@kreml.gov",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"vladimir.putin@kreml.gov"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Properties",
+			"item": [
+				{
+					"name": "Retrieve all properties",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/properties",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"properties"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve properties by property category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/properties/property_category/Apartment",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"properties",
+								"property_category",
+								"Apartment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve property by price",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/properties/price/1186.00",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"properties",
+								"price",
+								"1186.00"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create property",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Charming beautiful house to fit your needs\",\r\n    \"description\": \"This villa is perfect for families or groups of friends.\",\r\n    \"propertyCategory\": \"House\",\r\n    \"address\": \"982 Dead end road\",\r\n    \"city\": \"Baguette\",\r\n    \"zipCode\": 94800,\r\n    \"state\": \"Quebec\",\r\n    \"country\": \"Fromage-land\",\r\n    \"price\": 1780000.00,\r\n    \"surfaceArea\": 118.99738,\r\n    \"floors\": 3,\r\n    \"capacity\": 1,\r\n    \"constructionDate\": \"1335-12-22\",\r\n    \"publishDate\": \"2022-11-15\",\r\n    \"ownerEmail\": \"bill.clinton@whitehouse.gouv\",\r\n    \"imageUrl\": \"https://www.monolithic.org/vault/img/2011/05/10/4dc92b6dc29e0684730009c1/large/house4.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Backend}}/api/properties",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"properties"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update property",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 130,\r\n    \"title\": \"Charming beautiful house to fit your needs\",\r\n    \"description\": \"This villa is perfect for families or groups of friends.\",\r\n    \"propertyCategory\": \"House\",\r\n    \"address\": \"982 Dead end road\",\r\n    \"city\": \"Baguette\",\r\n    \"zipCode\": 94800,\r\n    \"state\": \"Quebec\",\r\n    \"country\": \"Fromage-land\",\r\n    \"price\": 1780000.00,\r\n    \"surfaceArea\": 118.99738,\r\n    \"floors\": 3,\r\n    \"capacity\": 1,\r\n    \"constructionDate\": \"1835-12-22\",\r\n    \"publishDate\": \"1987-11-15\",\r\n    \"ownerEmail\": \"bill.clinton@whitehouse.gov\",\r\n    \"imageUrl\": \"https://www.monolithic.org/vault/img/2011/05/10/4dc92b6dc29e0684730009c1/large/house4.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Backend}}/api/properties/130",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"properties",
+								"130"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove property",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/properties/130",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"properties",
+								"130"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve properties based on multi category values",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/properties/categories?category=Apartment&category=Room",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"properties",
+								"categories"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "Apartment"
+								},
+								{
+									"key": "category",
+									"value": "Room"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve properties based on multi city values",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/properties/cities?city=Los Angeles&city=New York&city=Chicago",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"properties",
+								"cities"
+							],
+							"query": [
+								{
+									"key": "city",
+									"value": "Los Angeles"
+								},
+								{
+									"key": "city",
+									"value": "New York"
+								},
+								{
+									"key": "city",
+									"value": "Chicago"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve properties based on multi owner values",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/properties/owners?owner=mohamed.malak8471@hotmail.com&owner=jane.nouran3069@aol.com&owner=bill.clinton@whitehouse.gov",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"properties",
+								"owners"
+							],
+							"query": [
+								{
+									"key": "owner",
+									"value": "mohamed.malak8471@hotmail.com"
+								},
+								{
+									"key": "owner",
+									"value": "jane.nouran3069@aol.com"
+								},
+								{
+									"key": "owner",
+									"value": "bill.clinton@whitehouse.gov"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve all properties for given budget",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/properties/price_between?min=100.00&max=1000.00",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"properties",
+								"price_between"
+							],
+							"query": [
+								{
+									"key": "min",
+									"value": "100.00"
+								},
+								{
+									"key": "max",
+									"value": "1000.00"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve properties containing at least 1 image",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/properties/with_images?quantity=1",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"properties",
+								"with_images"
+							],
+							"query": [
+								{
+									"key": "quantity",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve properties containing at least 2 images",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/properties/with_images?quantity=2",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"properties",
+								"with_images"
+							],
+							"query": [
+								{
+									"key": "quantity",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve properties containing at least 3 images",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/properties/with_images?quantity=3",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"properties",
+								"with_images"
+							],
+							"query": [
+								{
+									"key": "quantity",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve properties not having any images",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/properties/with_images?quantity=0",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"properties",
+								"with_images"
+							],
+							"query": [
+								{
+									"key": "quantity",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve properties containing more than allowed number of images",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/properties/with_images?quantity=4",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"properties",
+								"with_images"
+							],
+							"query": [
+								{
+									"key": "quantity",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve property based on several different/optional attributes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/properties/property?category=Apartment&country=United States&city=Los Angeles&min_price=100&max_price=1000&min_surface_area=30&max_surface_area=100&min_floors=1&max_floors=7&min_capacity=1&max_capacity=10&min_construction_date=1900-01-01&max_construction_date=2020-05-06",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"properties",
+								"property"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "Apartment"
+								},
+								{
+									"key": "country",
+									"value": "United States"
+								},
+								{
+									"key": "city",
+									"value": "Los Angeles"
+								},
+								{
+									"key": "min_price",
+									"value": "100"
+								},
+								{
+									"key": "max_price",
+									"value": "1000"
+								},
+								{
+									"key": "min_surface_area",
+									"value": "30"
+								},
+								{
+									"key": "max_surface_area",
+									"value": "100"
+								},
+								{
+									"key": "min_floors",
+									"value": "1"
+								},
+								{
+									"key": "max_floors",
+									"value": "7"
+								},
+								{
+									"key": "min_capacity",
+									"value": "1"
+								},
+								{
+									"key": "max_capacity",
+									"value": "10"
+								},
+								{
+									"key": "min_construction_date",
+									"value": "1900-01-01"
+								},
+								{
+									"key": "max_construction_date",
+									"value": "2020-05-06"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reviews",
+			"item": [
+				{
+					"name": "Retrieve all reviews",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/reviews",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"reviews"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve review by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/reviews/3",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"reviews",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve review by rating",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/reviews/rating/5",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"reviews",
+								"rating",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve review by user comment",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/reviews/comment/Great place to stay!",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"reviews",
+								"comment",
+								"Great place to stay!"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve review by publish date",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/reviews/publish_date/2019-12-01",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"reviews",
+								"publish_date",
+								"2019-12-01"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve review by propertyID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/reviews/property_id/40",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"reviews",
+								"property_id",
+								"40"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve review by reviewerEmail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/reviews/reviewer_email/emily.hassan4312@yahoo.com",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"reviews",
+								"reviewer_email",
+								"emily.hassan4312@yahoo.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create review",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"rating\": 5,\r\n    \"reviewText\": \"Best thing ever.\",\r\n    \"publishDate\": \"2020-04-05\",\r\n    \"image\": \"https://www.example.com/image4.jpg\",\r\n    \"propertyId\": 1,\r\n    \"reviewerEmail\": \"bill.clinton@whitehouse.gov\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Backend}}/api/reviews",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"reviews"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update review",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"rating\": 0,\r\n    \"reviewText\": \"Eww. Garbage.\",\r\n    \"publishDate\": \"1990-04-05\",\r\n    \"image\": \"https://www.example.com/image4.jpg\",\r\n    \"propertyId\": 1,\r\n    \"reviewerEmail\": \"bill.clinton@whitehouse.gov\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Backend}}/api/reviews/113",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"reviews",
+								"113"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove review",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/reviews/113",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"reviews",
+								"113"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reservations",
+			"item": [
+				{
+					"name": "Retrieve all reservations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/reservations",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"reservations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve reservations by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/reservations/6",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"reservations",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve reservation by property ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/reservations/property_id/4",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"reservations",
+								"property_id",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve reservations by renter email",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/reservations/renter_email/noura.naoufel9825@aol.com",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"reservations",
+								"renter_email",
+								"noura.naoufel9825@aol.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve reservation by start date",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/reservations/start_date/2007-09-29",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"reservations",
+								"start_date",
+								"2007-09-29"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve reservation by end date",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/reservations/end_date/2017-04-02",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"reservations",
+								"end_date",
+								"2017-04-02"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve reservation by confirmed owner",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/reservations/confirmed_owner/true",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"reservations",
+								"confirmed_owner",
+								"true"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve reservation by confirmed renter",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/reservations/confirmed_renter/false",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"reservations",
+								"confirmed_renter",
+								"false"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create reservation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"propertyId\": 5,\r\n  \"renterEmail\": \"bill.clinton@whitehouse.gov\",\r\n  \"startDate\": \"1985-08-27\",\r\n  \"endDate\": \"2023-04-05\",\r\n  \"confirmedOwner\": true,\r\n  \"confirmedRenter\": false,\r\n  \"totalPrice\": 123.45\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Backend}}/api/reservations",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"reservations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update reservation",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"propertyId\": 7,\r\n  \"renterEmail\": \"bill.clinton@whitehouse.gov\",\r\n  \"startDate\": \"2023-01-01\",\r\n  \"endDate\": \"2023-04-05\",\r\n  \"confirmedOwner\": true,\r\n  \"confirmedRenter\": true,\r\n  \"totalPrice\": 678.90\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Backend}}/api/reservations/109",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"reservations",
+								"109"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove reservation",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{Backend}}/api/reservations/109",
+							"host": [
+								"{{Backend}}"
+							],
+							"path": [
+								"api",
+								"reservations",
+								"109"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
