@@ -57,19 +57,22 @@ export class AuthService implements OnInit {
       this.toast.showSuccess('Logged in');
       return;
     }
-    const loginWindow = window.open(environment.authUrl, 'Authentication', 'location=yes,height=300,width=300,scrollbars=yes,status=yes');
+    const loginWindow = window.open(`${environment.authUrl}/auth/google`, 'Authentication', 'height=800,width=600');
     if (loginWindow !== null) {
       loginWindow.focus();
       window.addEventListener('message', event => {
-        const data = event.data;
-        if (data.token !== undefined) {
+        if (event.source !== loginWindow) {
+          return;
+        }
+        const data = event.data.data;
+        if (data.accessToken !== undefined) {
           try {
-            this._payload = jwtDecode<ITokenPayload>(data.token);
+            this._payload = jwtDecode<ITokenPayload>(data.accessToken);
             if (!this.isValid(this._payload)) {
               this.toast.showError('Invalid token');
               throw new Error('Invalid token');
             }
-            localStorage.setItem('token', data.token);
+            localStorage.setItem('token', data.accessToken);
             this.toast.showSuccess('Logged in');
           } catch (err) {
             this.logout();
