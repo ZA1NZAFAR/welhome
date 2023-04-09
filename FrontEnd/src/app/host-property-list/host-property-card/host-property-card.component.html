@@ -10,12 +10,11 @@
       <p class="mb-1"><strong>Living area:</strong> {{property.surface_area}} m²</p>
       <p class="mb-1"><strong>Capacity:</strong> {{property.capacity}} {{property.capacity > 1 ? 'people' : 'person'}}</p>
       <p class="mb-1"><strong>Price:</strong> {{property.price}} €</p>
-
+    </div>
+    <div class="col-md-3 d-flex align-items-start flex-column">
+      <div class="mb-1"><strong>Rating:</strong> {{ this.rating }}</div>
       <button class="btn btn-primary" (click)="this.openEditForm()">Edit</button>
       <button class="btn btn-danger" (click)="this.deleteProperty()">Delete</button>
-    </div>
-    <div class="col-md-3">
-      <strong>Rating:</strong> {{ this.rating }}
     </div>
   </div>
 </div>

@@ -27,6 +27,6 @@ export class PropertyListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.propertySubscription.unsubscribe();
+    if (this.propertySubscription) this.propertySubscription.unsubscribe();
   }
 }

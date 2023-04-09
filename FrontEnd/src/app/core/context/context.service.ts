@@ -30,7 +30,6 @@ export class ContextService {
   }
 
   setContext(context: 'OWNER' | 'RENTER') {
-    console.log('setContext', context)
     window.localStorage.setItem('context', context);
   }
 }
