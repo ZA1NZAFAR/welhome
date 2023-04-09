@@ -3,7 +3,7 @@ import { AuthService } from '../core/auth/auth.service'
 import { IProperty } from '../core/property/property.model'
 import { PropertyService } from '../core/property/property.service'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { PropertyFormComponent } from '../property-form/property-form.component'
 
 @Component({
@@ -15,10 +15,9 @@ export class HostPropertyListComponent implements OnInit, OnDestroy {
   propertyMap: Map<number, IProperty> = new Map();
   properties: IProperty[] = [];
 
-  loading = false;
+  ownerPropertyLoadingObservable$: Observable<boolean>;
 
-  private getPropertiesSub$: Subscription;
-  private getPropertyLoadingSub$: Subscription;
+  private getOwnerPropertiesSub$: Subscription;
 
   constructor(
     private propertyService: PropertyService,
@@ -26,13 +25,13 @@ export class HostPropertyListComponent implements OnInit, OnDestroy {
     private modalService: NgbModal
   ) { }
   ngOnDestroy(): void {
-    this.getPropertiesSub$.unsubscribe();
-    this.getPropertyLoadingSub$.unsubscribe();
+    this.getOwnerPropertiesSub$.unsubscribe();
   }
 
   ngOnInit(): void {
     const userEmail = this.authService.profile!.email;
-    this.getPropertiesSub$ = this.propertyService.getOwnerProperties(userEmail).getOwnerPropertyObservable().subscribe((properties) => {
+    this.ownerPropertyLoadingObservable$ = this.propertyService.getOwnerPropertyLoadingObservable();
+    this.getOwnerPropertiesSub$ = this.propertyService.getOwnerProperties(userEmail).getOwnerPropertyObservable().subscribe((properties) => {
       this.propertyMap.clear();
       properties.forEach((property: IProperty) => {
         if (property.owner_email === userEmail) {
@@ -40,9 +39,6 @@ export class HostPropertyListComponent implements OnInit, OnDestroy {
         }
       });
       this.properties = Array.from(this.propertyMap.values());
-    });
-    this.getPropertyLoadingSub$ = this.propertyService.getPropertyLoadingObservable().subscribe((loading) => {
-      this.loading = loading;
     });
   }
 
