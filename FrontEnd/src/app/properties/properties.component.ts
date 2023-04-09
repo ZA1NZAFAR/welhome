@@ -1,16 +1,21 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
-import { Subscription, map } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { IProperty } from 'src/app/core/property/property.model';
 import { PropertyService } from 'src/app/core/property/property.service';
-import { PropertyFormComponent } from '../property-form/property-form.component'
 import { Location } from '@angular/common';
 import { AuthService } from '../core/auth/auth.service'
+import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
+import { ReservationService } from '../core/reservation/reservation.service';
+import { IReservation } from '../core/reservation/reservation.model';
+import { ContextService } from '../core/context/context.service';
 @Component({
   selector: 'app-properties',
   templateUrl: './properties.component.html',
-  styleUrls: ['./properties.component.scss']
+  styleUrls: ['./properties.component.scss'],
+  providers:[ { provide: MAT_DATE_LOCALE, useValue: 'fr' } ]
 })
 export class PropertiesComponent implements OnInit, OnDestroy {
   propertyData: IProperty;
@@ -19,23 +24,28 @@ export class PropertiesComponent implements OnInit, OnDestroy {
   getPropertySub$: Subscription;
   paramsSub$: Subscription;
   currentImageIndex: number = 0;
-  images = [
-    "https://media.istockphoto.com/id/1449364000/fr/photo/petite-chambre-de-style-minimaliste.jpg?s=612x612&w=is&k=20&c=LPjfaAJ5HPVU-CXvoaz14qNg13o8VVSuiQgEcPflu5Q=",
-    "https://media.istockphoto.com/id/943709096/fr/photo/salon-int%C3%A9rieur-illustration-3d.jpg?s=1024x1024&w=is&k=20&c=r5sjY84dqpuowRgnGM-di1pmVeK2Kcd6eZIDkn8T3PE=",
-    "https://media.istockphoto.com/id/1195597185/fr/photo/image-g%C3%A9n%C3%A9r%C3%A9e-par-ordinateur-du-salon-rendu-3d.jpg?s=1024x1024&w=is&k=20&c=iVxRtBR_k0CTUYyyivGJRckUC24ol1R_KtWzNx-Ty0U="
-  ]
+  images: string[] = [];
+
+  reservationGroup: FormGroup;
 
 
   constructor(
     private propertyService: PropertyService,
     private route: ActivatedRoute,
-    private modalService: NgbModal,
+    private reservationService: ReservationService,
     private locationService: Location,
-    private authService: AuthService
+    private authService: AuthService,
+    private adapter: DateAdapter<any>,
+    private contextService: ContextService
     
-  ) { }
+  ) {}
 
   ngOnInit(): void {
+    this.adapter.setLocale('fr');
+    this.reservationGroup = new FormGroup({
+      start_date: new FormControl('', [Validators.required, this.validateDate()]),
+      end_date: new FormControl('', [Validators.required, this.validateDate()])
+    });
     this.paramsSub$ = this.route.paramMap.subscribe(params => {
       const id = Number(params.get('id'));
       if (id === null) {
@@ -49,32 +59,42 @@ export class PropertiesComponent implements OnInit, OnDestroy {
           return;
         }
         this.propertyData = property;
+        this.images = [];
+        if (this.propertyData.image_url !== undefined) {
+          this.images.push(this.propertyData.image_url);
+        }
+        if (this.propertyData.image_url2 !== undefined) {
+          this.images.push(this.propertyData.image_url2);
+        }
+        if (this.propertyData.image_url3 !== undefined) {
+          this.images.push(this.propertyData.image_url3);
+        }   
       });
     });
     this.user_email = this.authService.profile?.email || '';
-    if (this.propertyData.image_url !== undefined) {
-      this.images.unshift(this.propertyData.image_url);
-    }
-    
+  }
+
+  validateDate(): ValidatorFn {
+    return (control: AbstractControl) => {
+      const date = control.value;
+      if (date !== null && date !== undefined && date < Date.now()) {
+        return { dateMinimum: true };
+      }
+      return null;
+    };
   }
 
   get isOwner(): boolean {
     return this.user_email === this.propertyData.owner_email;
   }
 
+  get isRenterContext(): boolean {
+    return this.contextService.isRenter;
+  }
+
   ngOnDestroy(): void {
     this.getPropertySub$.unsubscribe();
     this.paramsSub$.unsubscribe();
-  }
-
-  editProperty(): void {
-    const modal = this.modalService.open(PropertyFormComponent);
-    modal.componentInstance.selectedProperty = this.propertyData;
-    modal.componentInstance.owner_email = this.user_email;
-  }
-
-  deleteProperty(): void {
-    this.propertyService.deleteProperty(this.propertyData.id).subscribe();
   }
 
   nextImage() {
@@ -83,7 +103,29 @@ export class PropertiesComponent implements OnInit, OnDestroy {
       this.currentImageIndex = 0;
     }
   }
+
+  get userIsLoggedIn(): boolean {
+    return this.authService.isLoggedIn;
+  }
+
+  promptLogin(): void {
+    this.authService.login();
+  }
   
+  reserveProperty(): void {
+    if (this.reservationGroup.valid) {
+      const reservation: IReservation = {
+        ...this.reservationGroup.value,
+        renter_email: this.user_email,
+        property_id: this.propertyData.id,
+        confirmed_owner: false,
+        confirmed_renter: false
+      }
+      this.reservationService.addReservation(reservation).subscribe(() => {
+        this.reservationGroup.reset();
+      });
+    }
+  }
   
   /*
   $(document).ready(function() {

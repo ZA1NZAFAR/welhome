@@ -1,60 +1,68 @@
-<div class="main-div">
-  <div class="photos">
-    <img src="{{ this.images[this.currentImageIndex] }}" alt="Property image" class="main-photo">
-    <div class="maisons">
-      <img *ngFor="let image of this.images; let i = index" 
-           [src]="image" 
-           [alt]="'Maison ' + (i+1)" 
-           class="small-photo" 
-           (click)="this.currentImageIndex = i">
+<div>
+  <div *ngIf="!this.propertyData">
+    <div class="spinner-border" role="status"></div>
+  </div>
+  <div class="main-div" *ngIf="!!this.propertyData">
+    <div class="photos">
+      <img src="{{ this.images[this.currentImageIndex] }}" alt="Property image" class="main-photo">
+      <div class="maisons">
+        <img *ngFor="let image of this.images; let i = index" 
+            [src]="image" 
+            [alt]="'Maison ' + (i+1)" 
+            class="small-photo" 
+            (click)="this.currentImageIndex = i">
+      </div>
+      <button id="next-btn" (click)="nextImage()">Suivant</button>
     </div>
-    <button id="next-btn" (click)="nextImage()">Suivant</button>
+    
+    <div class="left-div">
+      <div class="infos">
+        <h1> {{this.propertyData.title}}</h1>
+        <p> <strong> Description : </strong>{{ this.propertyData.description }}</p>
+        <p><strong> Lieu : </strong>{{ this.propertyData.city}}, {{ this.propertyData.country}} </p>
+        <p> <strong> Surface : </strong>{{ this.propertyData.surface_area}}</p>
+        <p> <strong> Nombre d'étage : </strong>{{ this.propertyData.floors}}</p>
+        <p> <strong> Nombre de personne au maximum : </strong>{{ this.propertyData.capacity}}</p>
+      </div>
+
+    <div class="reservation-container" *ngIf="!this.isOwner && this.isRenterContext">
+      <h1> Réserver</h1>
+      <div class="row">
+        <div class="price col-lg-6">
+          <span class="price-value">{{ this.propertyData.price }} €</span> par nuit
+        </div>
+        <form class="col-lg-6" [formGroup]="this.reservationGroup">
+          <mat-form-field appearance="fill">
+            <mat-label>Enter a date range</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+              <input matStartDate placeholder="Start date" required formControlName="start_date">
+              <input matEndDate placeholder="End date" required formControlName="end_date">
+            </mat-date-range-input>
+            <mat-error *ngIf="this.reservationGroup.controls['start_date'].hasError('required') || this.reservationGroup.controls['end_date'].hasError('required')">
+              Date is required
+            </mat-error>
+            <mat-error *ngIf="this.reservationGroup.controls['start_date'].hasError('dateMinimum') || this.reservationGroup.controls['end_date'].hasError('dateMinimum')">
+              Date must be after today
+            </mat-error>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
+        </form>
+      </div>
+      
+      
+      <div class="btn-container" *ngIf="this.userIsLoggedIn;">
+        <div class="btn-container">
+          <button id="reservation-btn" (click)="this.reserveProperty()">Reserve</button>
+        </div>
+      </div>
+      <div class="btn-container" *ngIf="!this.userIsLoggedIn;">
+        <button id="reservation-btn" (click)="this.promptLogin()">Login to reserve</button>
+      </div>
+      <div class="total-container">
+        <h4>Total</h4>
+        <span>{{this.propertyData.price}} €</span>
+      </div>
+    </div>
   </div>
-  
-  <div class="left-div">
-  <div class="infos">
-    <h1> {{this.propertyData.title}}</h1>
-  <p> <strong> Description : </strong>{{ this.propertyData.description }}</p>
-  <p><strong> Lieu : </strong>{{ this.propertyData.city}}, {{ this.propertyData.country}} </p>
-  <p> <strong> Surface : </strong>{{ this.propertyData.surface_area}}</p>
-  <p> <strong> Nombre d'étage : </strong>{{ this.propertyData.floors}}</p>
-  <p> <strong> Nombre de personne au maximum : </strong>{{ this.propertyData.capacity}}</p>
-  <p> <strong> Prix : </strong>{{ this.propertyData.price}} €</p>
-  </div>
-
-
-<div class="reservation-container">
-  <h1> Réserver</h1>
-  <div class="price">
-    <span class="price-value">{{ this.propertyData.price }} €</span> par nuit
-  </div>
-  
-  <div class="date-container">
-    <label for="checkin">Arrivée:</label>
-    <input type="date" id="checkin" name="checkin">
-
-    <label for="checkout">Départ:</label>
-    <input type="date" id="checkout" name="checkout">
-  </div>
-
-  <div class="nb-voyageurs-container">
-    <label for="nb-voyageurs">Nombre de voyageurs :</label>
-    <input type="number" id="nb-voyageurs" name="nb-voyageurs" min="1" max="10">
-  </div>
-  
-
-  <div class="btn-container">
-    <button id="reservation-btn">Réserver</button>
-  </div>
-  <div class="total-container">
-    <h4>Total</h4>
-    <span>{{this.propertyData.price}} €</span>
-  </div>
-  
-</div>
-</div>
-
-
-
-
 </div>

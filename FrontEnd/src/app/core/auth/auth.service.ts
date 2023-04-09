@@ -4,6 +4,7 @@ import jwtDecode, { JwtPayload } from 'jwt-decode';
 import { IProfile, ITokenPayload } from './auth.model'
 import { environment } from 'src/environments/environment';
 import { ToastService } from 'src/app/utils/toast/toast.service'
+import { ContextService } from '../context/context.service';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +39,8 @@ export class AuthService implements OnInit {
 
   constructor(
     private router: Router,
-    private toast: ToastService
+    private toast: ToastService,
+    private contextService: ContextService
   ) { }
   ngOnInit(): void {
   }
@@ -105,6 +107,7 @@ export class AuthService implements OnInit {
 
   logout(): void {
     this.toast.showInfo('Logged out');
+    this.contextService.setContext('RENTER')
     localStorage.removeItem('token');
     this._payload = null;
     this.router.navigate(['/']);

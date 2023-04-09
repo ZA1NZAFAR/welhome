@@ -26,6 +26,15 @@
       "confirmed_owner": true,
       "confirmed_renter": false,
       "renter_email": "zzz@lmao.com"
+    },
+    {
+      "start_date": "2023-04-10T22:00:00.000Z",
+      "end_date": "2023-04-12T22:00:00.000Z",
+      "renter_email": "zain.zafar@gmail.com",
+      "property_id": 1,
+      "confirmed_owner": false,
+      "confirmed_renter": false,
+      "id": 4
     }
   ],
   "properties": [
@@ -43,6 +52,8 @@
       "capacity": 4,
       "construction_date": "",
       "image_url": "https://cdn.pixabay.com/photo/2016/11/18/17/46/house-1836070_960_720.jpg",
+      "image_url2": "https://media.istockphoto.com/id/1449364000/fr/photo/petite-chambre-de-style-minimaliste.jpg?s=612x612&w=is&k=20&c=LPjfaAJ5HPVU-CXvoaz14qNg13o8VVSuiQgEcPflu5Q=",
+      "image_url3": "https://media.istockphoto.com/id/943709096/fr/photo/salon-int%C3%A9rieur-illustration-3d.jpg?s=1024x1024&w=is&k=20&c=r5sjY84dqpuowRgnGM-di1pmVeK2Kcd6eZIDkn8T3PE=",
       "owner_email": "zain.zafar@gmail.com",
       "id": 1
     },
@@ -75,9 +86,11 @@
       "surface_area": 80,
       "floors": 4,
       "capacity": 2,
-      "image_url": "https://media.istockphoto.com/id/1165384568/fr/photo/complexe-moderne-europ%C3%A9en-de-b%C3%A2timents-r%C3%A9sidentiels.jpg?s=612x612&w=0&k=20&c=nvoIbiIffCt-nuj47Cc3I261Ke98iMouq_HefNM7Lz0="
+      "image_url": "https://media.istockphoto.com/id/1165384568/fr/photo/complexe-moderne-europ%C3%A9en-de-b%C3%A2timents-r%C3%A9sidentiels.jpg?s=612x612&w=0&k=20&c=nvoIbiIffCt-nuj47Cc3I261Ke98iMouq_HefNM7Lz0=",
+      "image_url2": "https://media.istockphoto.com/id/1195597185/fr/photo/image-g%C3%A9n%C3%A9r%C3%A9e-par-ordinateur-du-salon-rendu-3d.jpg?s=1024x1024&w=is&k=20&c=iVxRtBR_k0CTUYyyivGJRckUC24ol1R_KtWzNx-Ty0U="
     }
-  ], "reviews" : [
+  ],
+  "reviews": [
     {
       "id": 1,
       "property_id": 1,

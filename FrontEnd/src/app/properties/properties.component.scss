@@ -110,40 +110,6 @@
       box-shadow: 0 0 0 2px rgba(0,132,137,0.2);
     }
   
-//nb voyageur
-.nb-voyageurs-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-}
-
-.nb-voyageurs-container label {
-  font-size: 16px;
-  font-weight: 400;
-  margin-right: 16px;
-}
-
-.nb-voyageurs-container input[type="number"] {
-  width: 48%;
-  padding: 12px 16px;
-  border: 1px solid #e4e4e4;
-  border-radius: 4px;
-  font-size: 16px;
-  font-weight: 400;
-  color: #484848;
-  background-color: #fff;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-
-.nb-voyageurs-container input[type="number"]:hover, 
-.nb-voyageurs-container input[type="number"]:focus {
-  outline: none;
-  border-color: #4c68af;
-  box-shadow: 0 0 0 2px rgba(0,132,137,0.2);
-}
-
-  
   .btn-container {
     display: flex;
     flex-direction: row;
