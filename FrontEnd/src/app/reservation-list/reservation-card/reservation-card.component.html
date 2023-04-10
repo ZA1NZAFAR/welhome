@@ -11,23 +11,20 @@
     <p><strong>Arrival:</strong> {{ this.reservation.start_date | date: 'dd/MM/yyyy' }} </p>
     <p><strong>Departure:</strong> {{ this.reservation.end_date | date: 'dd/MM/yyyy' }} </p>
     <p> <strong>{{ this.ratingDescription }}:</strong> {{ this.ratingText }}</p>
-    <div class="col-md-2 action-btn">
-      <div class="d-flex justify-content-between align-items-center">
-        <div class="btn no-cursor" [ngClass]="this.buttonClass">
+  </div>
+  <div class="col-md-1">
+    <div class="container overflow-hidden">
+      <div class="row gy-2">
+        <button class="btn col-12" [ngClass]="this.buttonClass">
           {{ this.status }}
-        </div>
-        <div  class="col-md-3 d-flex align-items-center justify-content-center">
-          <button *ngIf="this.status === 'Confirmed' || this.status === 'Pending'" type="button" class="btn btn-danger">
-            Cancel
-          </button>
-        </div>
-        <button type="button" class="btn btn-info ml-3" (click)="this.goToProperty()">
+        </button>
+        <button *ngIf="this.status === 'Confirmed' || this.status === 'Pending'" type="button" class="btn col-12 btn-danger">
+          Cancel
+        </button>
+        <button type="button" class="btn col-12 btn-info" (click)="this.goToProperty()">
           Reviews
         </button>
-
       </div>
     </div>
-
   </div>
-</div>
 </div>
