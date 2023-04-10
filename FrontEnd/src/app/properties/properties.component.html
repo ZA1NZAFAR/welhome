@@ -52,25 +52,24 @@
     </div>
   </div>
 </div>
-<div class="reviews-container">
+<div *ngIf="reviewData && reviewData.length" class="reviews-container">
   <h1 class="reviews-title">Reviews</h1>
   <hr class="title-underline">
   <!-- Boucle pour parcourir chaque review -->
-  <div *ngFor="let review of this.reviewData" class="review">
+  <div *ngFor="let review of reviewData" class="review">
     <div class="review-header">
       <span class="review-author">{{review.reviewer_email}}</span>
       <span class="review-date">{{review.published_date}}</span>
 
       <!-- Boucle pour afficher le nombre d'étoiles correspondant à la note -->
       <div class="review-rating">
-        <ng-container *ngFor="let i of [].constructor(review.rating)">
-          <i class="fas fa-star"></i>
-        </ng-container>
-        <ng-container *ngFor="let i of [].constructor(5 - review.rating)">
-          <i class="far fa-star"></i>
-        </ng-container>
+        <i *ngFor="let star of getRatingStars(review.rating)" [class]="star"></i>
       </div>
+
     </div>
     <span class="review-text">{{review.review_text}}</span>
+
   </div>
 </div>
+
+

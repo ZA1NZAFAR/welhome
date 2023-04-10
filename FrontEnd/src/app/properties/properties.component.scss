@@ -234,3 +234,52 @@
   font-weight: 600;
   color: #4c68af;
 }
+.reviews-container {
+  .reviews-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .title-underline {
+    border: none;
+    border-top: 2px solid #ccc;
+    width: 10rem;
+    margin-bottom: 1rem;
+  }
+
+  .review {
+    margin-bottom: 2rem;
+
+    .review-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+
+      .review-author {
+        font-weight: bold;
+        margin-right: 1rem;
+      }
+
+      .review-date {
+        color: #777;
+      }
+
+      .review-rating {
+        margin-left: auto;
+        font-size: 1.5rem;
+
+        i {
+          color: #f7d64c;
+          margin-right: 0.5rem;
+        }
+      }
+    }
+
+    .review-text {
+      font-size: 1.2rem;
+      line-height: 1.5;
+    }
+  }
+}
+
+

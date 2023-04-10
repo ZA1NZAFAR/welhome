@@ -68,6 +68,7 @@ export class PropertiesComponent implements OnInit, OnDestroy {
             return;
           }
           this.reviewData = propertyReviews;
+          console.log(this.reviewData); // check reviews
         });
 
         this.images = [];
@@ -83,6 +84,14 @@ export class PropertiesComponent implements OnInit, OnDestroy {
       });
     });
     this.user_email = this.authService.profile?.email || '';
+  }
+  getRatingStars(rating: number): string[] {
+    const fullStars = Math.floor(rating);
+    const halfStar = rating % 1 >= 0.5 ? 1 : 0;
+    const emptyStars = 5 - fullStars - halfStar;
+    return Array(fullStars).fill('fas fa-star')
+      .concat(Array(halfStar).fill('fas fa-star-half-alt'))
+      .concat(Array(emptyStars).fill('far fa-star'));
   }
 
   validateDate(): ValidatorFn {
