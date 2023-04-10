@@ -64,7 +64,7 @@ public class QueriesController {
     @GetMapping("/owner_booked_properties")
     @Operation(summary = "This endpoint allows to retrieve all booked properties the owner has in possession", description = "Booking types [optional]: confirmed, pending, canceled")
     @ApiResponse(responseCode = "200", description = "Owner, their properties and bookings have been found")
-    @ApiResponse(responseCode = "404", description = "Booking type has not been properly formatted")
+    @ApiResponse(responseCode = "403", description = "Booking type has not been properly formatted")
     @ApiResponse(responseCode = "404", description = "Owner doesn't exist, no properties have been found and/or no bookings have been found")
     public ResponseEntity<?> getOwnerBookedProperties(@RequestParam(value="owner_email") String ownerEmail, @RequestParam(value="type") Optional<String> type) {
         ResponseGenerator<List<Property>> propertiesGenerator = new ResponseGenerator<>();
