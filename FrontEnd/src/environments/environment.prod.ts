@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  authUrl: 'http://zain.ovh:9094',
+  authUrl: 'https://backend.zain.ovh',
   backEndUrl: 'http://zain.ovh:9092/api',
 };
