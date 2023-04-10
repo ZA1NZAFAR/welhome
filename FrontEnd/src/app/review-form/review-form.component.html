@@ -1,0 +1,39 @@
+<div class="modal-header">
+  <h5 class="modal-title">Add Review</h5>
+  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('cancel')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="reviewForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="rating">Rating:</label>
+      <select class="form-control" id="rating" formControlName="rating" required>
+        <option value="">Select a rating</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="review_text">Review:</label>
+      <textarea class="form-control" id="review_text" formControlName="review_text" required></textarea>
+    </div>
+    <div class="form-group">
+      <label for="image">Image:</label>
+      <input type="file" class="form-control" id="image" (change)="handleImageUpload($event)">
+    </div>
+  </form>
+</div>
+<div *ngIf="reviewAdded" class="alert alert-success" role="alert">
+  Review added successfully!
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="modal.dismiss('cancel')">Cancel</button>
+  <button type="submit" class="btn btn-primary" [disabled]="!reviewForm.valid" (click)="onSubmit()">Submit</button>
+</div>
+
+
