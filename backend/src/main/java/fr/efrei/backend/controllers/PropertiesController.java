@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@CrossOrigin(origins = "*")
 @RestController
 @Tag(name = "Properties", description = "This API allows to perform a set of operations related to properties")
 @RequestMapping("/api/properties")

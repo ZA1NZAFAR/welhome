@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 @Tag(name = "Profiles", description = "This API allows to perform a set of tasks related to the user profile: renter & owner")
 @RequestMapping("/api/profiles")

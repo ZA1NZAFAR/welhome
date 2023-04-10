@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+@CrossOrigin(origins = "*")
 @RestController
 @Tag(name = "Reviews", description = "This API allows to give an opinion on a specific reservation made by the renters")
 @RequestMapping("/api/reviews")
