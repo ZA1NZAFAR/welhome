@@ -8,15 +8,26 @@
   <form [formGroup]="reviewForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="rating">Rating:</label>
-      <select class="form-control" id="rating" formControlName="rating" required>
-        <option value="">Select a rating</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-      </select>
+      <div class="rating">
+    <span (click)="setRating(1)" [ngClass]="{'selected': rating >= 1}">
+      <i class="bi bi-star"></i>
+    </span>
+        <span (click)="setRating(2)" [ngClass]="{'selected': rating >= 2}">
+      <i class="bi bi-star"></i>
+    </span>
+        <span (click)="setRating(3)" [ngClass]="{'selected': rating >= 3}">
+      <i class="bi bi-star"></i>
+    </span>
+        <span (click)="setRating(4)" [ngClass]="{'selected': rating >= 4}">
+      <i class="bi bi-star"></i>
+    </span>
+        <span (click)="setRating(5)" [ngClass]="{'selected': rating >= 5}">
+      <i class="bi bi-star"></i>
+    </span>
+      </div>
+      <input type="hidden" id="rating" formControlName="rating" [value]="rating">
     </div>
+
 
     <div class="form-group">
       <label for="review_text">Review:</label>

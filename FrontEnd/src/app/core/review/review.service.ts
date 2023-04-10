@@ -21,6 +21,10 @@ export class ReviewService {
     return this.http.get<IReview[]>(`${environment.backEndUrl}/reviews?property_id=${propertyId}`);
   }
 
+  getReviews(): Observable<IReview[]> {
+    return this.http.get<IReview[]>(`${environment.backEndUrl}/reviews`);
+  }
+
   addReview(review: IReview): Observable<IReview> {
     return this.http.post<IReview>(`${environment.backEndUrl}/reviews`, review).pipe(map((review) => {
       this.toastService.showSuccess('Review added successfully');

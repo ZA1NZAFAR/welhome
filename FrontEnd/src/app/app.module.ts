@@ -12,17 +12,19 @@ import { HostPropertyListModule } from './host-property-list/host-property-list.
 import { ReservationListModule } from './reservation-list/reservation-list.module'
 import { PropertiesModule } from './properties/properties.module';
 import { ToastComponent } from './utils/toast/toast.component';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { AuthInterceptor } from './core/auth/auth.interceptor';
 import { ErrorInterceptor } from './core/error/error.interceptor';
-
+import {ReviewFormComponent} from "./review-form/review-form.component";
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
     AppComponent,
     FooterComponent,
     NavbarComponent,
-    ToastComponent
+    ToastComponent,
+    ReviewFormComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +36,9 @@ import { ErrorInterceptor } from './core/error/error.interceptor';
     ReservationListModule,
     HttpClientModule,
     PropertiesModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
+    MatIconModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

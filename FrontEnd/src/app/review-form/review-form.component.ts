@@ -7,6 +7,7 @@ import jwt_decode from 'jwt-decode';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {AuthService} from "../core/auth/auth.service";
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-review-form',
@@ -34,26 +35,32 @@ export class ReviewFormComponent implements OnInit {
       image: ['']
     });
   }
+  setRating(rating: number): void {
+    this.rating = rating;
+    this.reviewForm.controls['rating'].setValue(rating);
+    const stars = document.querySelectorAll('.rating span');
+    stars.forEach((star, index) => {
+      if (index < rating) {
+        star.classList.add('filled');
+      } else {
+        star.classList.remove('filled');
+      }
+    });
+  }
 
   onSubmit(): void {
-    console.log("hello");
-    // const token = localStorage.getItem('access_token');
-    // // @ts-ignore
-    // const decodedToken: any = jwt_decode(token);
-    // const userEmail = decodedToken.email;
-
     const newReview: IReview = {
       id: 0, // will be set below
-      rating: this.reviewForm.value.rating,
+      rating: this.rating,
       review_text: this.reviewForm.value.review_text,
       published_date: new Date(),
       image: this.reviewForm.value.image,
       property_id: this.propertyId,
-      reviewer_email: this.authService.profile!.email
+      reviewer_email:this.authService.profile!.email
     };
 
     // Get the next available ID for the new review
-    this.reviewService.getPropertyReviews(this.propertyId).pipe(
+    this.reviewService.getReviews().pipe(
       map((reviews: IReview[]) => {
         const ids = reviews.map(review => review.id);
         return ids.length > 0 ? Math.max(...ids) + 1 : 1;
@@ -68,7 +75,9 @@ export class ReviewFormComponent implements OnInit {
         }, 2000);
       });
     });
+
   }
+
 
 
   handleImageUpload(event: Event) {

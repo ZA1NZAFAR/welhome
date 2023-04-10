@@ -8,6 +8,9 @@ import { ReviewService } from 'src/app/core/review/review.service';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { ContextService } from 'src/app/core/context/context.service';
 
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {ReviewFormComponent} from "../../review-form/review-form.component";
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-reservation-card',
@@ -17,9 +20,9 @@ import { ContextService } from 'src/app/core/context/context.service';
 export class ReservationCardComponent implements OnInit {
   @Input() reservation: IReservation;
   @Input() property: IProperty;
-
   @Input() status: string = 'Error';
-
+  
+  propertyId: string;
   rating: number = -1;
 
   constructor(
@@ -28,7 +31,8 @@ export class ReservationCardComponent implements OnInit {
     private router: Router,
     private reviewService: ReviewService,
     private authService: AuthService,
-    private contextService: ContextService
+    private contextService: ContextService,
+    private modalService: NgbModal
   ) { }
 
 
@@ -46,6 +50,27 @@ export class ReservationCardComponent implements OnInit {
   get ratingText(): string {
     if (this.rating === -1) {
       return 'No rating';
+    }
+    return this.rating.toString();
+  }
+
+  get ratingDescription(): string {
+    if (this.contextService.isRenter) {
+      return 'Your rating';
+    }
+    return 'Renter rating';
+  }
+
+  get status(): string {
+    if (this.reservation.end_date < new Date()) {
+      if (this.reservation.confirmed_renter) {
+        return 'Terminé';
+      }
+      if (this.reservation.confirmed_owner) {
+        return 'Annulé';
+      }
+      return 'Refusé';
+
     }
     return this.rating.toString();
   }
@@ -91,7 +116,16 @@ export class ReservationCardComponent implements OnInit {
     this.reservationService.updateReservation(this.reservation).subscribe();
   }
 
-  submitReject(): void {
+  openReviewForm(propertyId: number) {
+    const modalRef = this.modalService.open(ReviewFormComponent, { centered: true });
+    modalRef.componentInstance.propertyId = propertyId;
+    modalRef.result.then((result) => {
+      // Do something with the result if needed
+    }, (reason) => {
+      // Handle the modal dismissal if needed
+    });
+
+    submitReject(): void {
     if (!this.canReject) {
       return;
     }
