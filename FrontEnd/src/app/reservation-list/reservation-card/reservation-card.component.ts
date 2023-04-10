@@ -7,10 +7,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ReviewService } from 'src/app/core/review/review.service';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { ContextService } from 'src/app/core/context/context.service';
-
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {ReviewFormComponent} from "../../review-form/review-form.component";
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReviewFormComponent } from 'src/app/review-form/review-form.component';
+import { IReview } from 'src/app/core/review/review.model';
 
 @Component({
   selector: 'app-reservation-card',
@@ -22,17 +21,15 @@ export class ReservationCardComponent implements OnInit {
   @Input() property: IProperty;
   @Input() status: string = 'Error';
 
-  propertyId: string;
-  rating: number = -1;
+  review: IReview;
 
   constructor(
-    private propertyService: PropertyService,
+    private modalService: NgbModal,
     private reservationService: ReservationService,
     private router: Router,
     private reviewService: ReviewService,
     private authService: AuthService,
-    private contextService: ContextService,
-    private modalService: NgbModal
+    private contextService: ContextService
   ) { }
 
 
@@ -41,17 +38,24 @@ export class ReservationCardComponent implements OnInit {
     const reviewSub$ = this.reviewService.getPropertyReviews(this.property.id).subscribe(reviews => {
       const review = reviews.find(r => r.reviewer_email === email);
       if (review) {
-        this.rating = review.rating;
+        this.review = review;
       }
       reviewSub$.unsubscribe();
     });
   }
 
+  get canReview(): boolean {
+    return (this.status === 'Completed' ||
+            this.status === 'Rejected' ||
+            this.status === 'Cancelled') &&
+            this.contextService.isRenter;
+  }
+
   get ratingText(): string {
-    if (this.rating === -1) {
+    if (!this.review) {
       return 'No rating';
     }
-    return this.rating.toString();
+    return this.review.rating.toString();
   }
 
   get ratingDescription(): string {
@@ -109,16 +113,6 @@ export class ReservationCardComponent implements OnInit {
     this.reservationService.updateReservation(this.reservation).subscribe();
   }
 
-  openReviewForm(propertyId: number) {
-    const modalRef = this.modalService.open(ReviewFormComponent, { centered: true });
-    modalRef.componentInstance.propertyId = propertyId;
-    modalRef.result.then((result) => {
-      // Do something with the result if needed
-    }, (reason) => {
-      // Handle the modal dismissal if needed
-    })
-  }
-
     submitReject(): void {
     if (!this.canReject) {
       return;
@@ -135,5 +129,11 @@ export class ReservationCardComponent implements OnInit {
 
   goToProperty() {
     this.router.navigate(['properties', this.property.id]);
+  }
+
+  openReviewForm() {
+    const modalRef = this.modalService.open(ReviewFormComponent);
+    modalRef.componentInstance.property = this.property;
+    modalRef.componentInstance.review = this.review || undefined;
   }
 }

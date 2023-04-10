@@ -39,9 +39,6 @@
     </div>
   </form>
 </div>
-<div *ngIf="reviewAdded" class="alert alert-success" role="alert">
-  Review added successfully!
-</div>
 <div class="modal-footer">
   <button type="button" class="btn btn-secondary" (click)="modal.dismiss('cancel')">Cancel</button>
   <button type="submit" class="btn btn-primary" [disabled]="!reviewForm.valid" (click)="onSubmit()">Submit</button>

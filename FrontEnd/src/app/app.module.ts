@@ -23,8 +23,7 @@ import { MatIconModule } from '@angular/material/icon';
     AppComponent,
     FooterComponent,
     NavbarComponent,
-    ToastComponent,
-    ReviewFormComponent
+    ToastComponent
   ],
   imports: [
     BrowserModule,

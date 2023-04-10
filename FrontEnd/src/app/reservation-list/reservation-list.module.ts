@@ -5,6 +5,7 @@ import { ReservationCardComponent } from './reservation-card/reservation-card.co
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ReviewFormModule } from '../review-form/review-form.module';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     MatButtonToggleModule,
     MatButtonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ReviewFormModule
   ]
 })
 export class ReservationListModule { }

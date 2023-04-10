@@ -17,6 +17,12 @@ export class PropertyFormComponent implements OnInit {
 
   @Input() selectedProperty: IProperty;
 
+  imageIsFile = {
+    image_url: false,
+    image_url2: false,
+    image_url3: false
+  };
+
   constructor(
     public activeModal: NgbActiveModal,
     private adapter: DateAdapter<any>,
@@ -76,5 +82,22 @@ export class PropertyFormComponent implements OnInit {
         });
       }
     }
+  }
+
+  handleImageUpload(event: Event, control: 'image_url' | 'image_url2' | 'image_url3') {
+    const target = event.target as HTMLInputElement;
+    const file: File = (target.files as FileList)[0];
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    console.log(reader);
+    reader.onload = () => {
+      this.propertyGroup.controls[control].setValue(reader.result);
+    };
+  }
+
+  toggleUploadImage(control: 'image_url' | 'image_url2' | 'image_url3') {
+    this.propertyGroup.controls[control].setValue('');
+    this.imageIsFile[control] = !this.imageIsFile[control];
   }
 }

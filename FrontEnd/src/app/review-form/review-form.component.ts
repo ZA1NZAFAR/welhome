@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ReviewService } from '../core/review/review.service';
@@ -7,7 +7,7 @@ import jwt_decode from 'jwt-decode';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {AuthService} from "../core/auth/auth.service";
-import { ReactiveFormsModule } from '@angular/forms';
+import { IProperty } from '../core/property/property.model';
 
 @Component({
   selector: 'app-review-form',
@@ -15,10 +15,10 @@ import { ReactiveFormsModule } from '@angular/forms';
   styleUrls: ['./review-form.component.scss']
 })
 export class ReviewFormComponent implements OnInit {
-  propertyId: number;
+  @Input() property: IProperty;
+  @Input() review: IReview;
   reviewForm: FormGroup;
   rating: number;
-  reviewAdded = false;
 
   constructor(
     public modal: NgbActiveModal,
@@ -28,12 +28,14 @@ export class ReviewFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.rating = 3; // Set the default rating to 3 stars
     this.reviewForm = this.formBuilder.group({
-      rating: [null, Validators.required],
+      rating: [3, Validators.required], // Set the default rating to 3 stars
       review_text: ['', Validators.required],
       image: ['']
     });
+    if (this.review) {
+      this.reviewForm.patchValue(this.review);
+    }
   }
   setRating(rating: number): void {
     this.rating = rating;
@@ -49,33 +51,23 @@ export class ReviewFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const newReview: IReview = {
-      id: 0, // will be set below
-      rating: this.rating,
-      review_text: this.reviewForm.value.review_text,
+    const reviewData: IReview = {
+      ...this.reviewForm.value,
       published_date: new Date(),
-      image: this.reviewForm.value.image,
-      property_id: this.propertyId,
-      reviewer_email:this.authService.profile!.email
+      property_id: this.property.id,
+      reviewer_email: this.authService.profile!.email
     };
-
-    // Get the next available ID for the new review
-    this.reviewService.getReviews().pipe(
-      map((reviews: IReview[]) => {
-        const ids = reviews.map(review => review.id);
-        return ids.length > 0 ? Math.max(...ids) + 1 : 1;
-      })
-    ).subscribe(id => {
-      newReview.id = id;
-
-      this.reviewService.addReview(newReview).subscribe(() => {
-        this.reviewAdded = true; // set reviewAdded to true
-        setTimeout(() => {
-          this.modal.close('success');
-        }, 2000);
+    if (!this.review) {
+      this.reviewService.addReview(reviewData).subscribe(() => {
+        this.modal.close();;
       });
-    });
-
+    }
+    else {
+      this.reviewService.editReview(reviewData).subscribe(() => {
+        this.modal.close();
+      });
+    }
+    
   }
 
 
@@ -86,6 +78,7 @@ export class ReviewFormComponent implements OnInit {
 
     const reader = new FileReader();
     reader.readAsDataURL(file);
+    console.log(reader);
     reader.onload = () => {
       this.reviewForm.patchValue({
         image: reader.result

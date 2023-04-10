@@ -22,14 +22,11 @@
         <button *ngIf="this.canReject" type="button" class="btn col-12 btn-danger" (click)="this.submitReject">
           Cancel
         </button>
-        <button *ngIf="this.status === 'Completed' || this.status === 'Rejected' || this.status === 'Cancelled'" class="btn col-12 btn-primary">
+        <button *ngIf="this.canReview" class="btn col-12 btn-primary" (click)="this.openReviewForm()">
           Review
         </button>
         <button type="button" class="btn col-12 btn-secondary" (click)="this.goToProperty()">
           Details
-        </button>
-        <button type="button" class="btn btn-success" (click)="openReviewForm(this.property.id)">
-          Add Review
         </button>
       </div>
     </div>

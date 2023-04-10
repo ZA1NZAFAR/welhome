@@ -12,6 +12,8 @@ import { IReservation } from '../core/reservation/reservation.model';
 import { ContextService } from '../core/context/context.service';
 import {IReview} from "../core/review/review.model";
 import {ReviewService} from "../core/review/review.service";
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ReviewModalComponent } from './review-modal/review-modal.component';
 @Component({
   selector: 'app-properties',
   templateUrl: './properties.component.html',
@@ -20,7 +22,7 @@ import {ReviewService} from "../core/review/review.service";
 })
 export class PropertiesComponent implements OnInit, OnDestroy {
   propertyData: IProperty;
-  reviewData: IReview[];
+  reviewData: IReview[] = [];
 
   user_email: string;
   getPropertySub$: Subscription;
@@ -39,8 +41,8 @@ export class PropertiesComponent implements OnInit, OnDestroy {
     private locationService: Location,
     private authService: AuthService,
     private adapter: DateAdapter<any>,
-    private contextService: ContextService
-
+    private contextService: ContextService,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -165,5 +167,10 @@ export class PropertiesComponent implements OnInit, OnDestroy {
         this.reservationGroup.reset();
       });
     }
+  }
+
+  openImage(image: string): void {
+    const modalRef = this.modalService.open(ReviewModalComponent);
+    modalRef.componentInstance.image = image;
   }
 }

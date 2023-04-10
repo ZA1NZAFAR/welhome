@@ -67,7 +67,7 @@
           <span>{{this.totalPrice}} $</span>
         </div>
       </div>
-      <div *ngIf="reviewData && reviewData.length" class="reviews-container">
+      <div *ngIf="reviewData.length" class="reviews-container">
         <h1 class="reviews-title">Reviews</h1>
         <hr class="title-underline">
         <!-- Boucle pour parcourir chaque review -->
@@ -80,9 +80,17 @@
             <div class="review-rating">
               <i *ngFor="let star of getRatingStars(review.rating)" [class]="star"></i>
             </div>
+            
 
           </div>
-          <span class="review-text">{{review.review_text}}</span>
+          <div class="row">
+            <div class="col">
+              <span class="col review-text">{{review.review_text}}</span>
+            </div>
+            <div class="col">
+              <img [src]="this.review.image" class="small-photo" (click)="this.openImage(this.review.image)">
+            </div>
+          </div>
 
         </div>
       </div>
