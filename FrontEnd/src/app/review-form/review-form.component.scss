@@ -46,16 +46,56 @@
   padding: 1rem;
   border-top: 1px solid #e9ecef;
 }
-.rating span.active {
+
+.rating span.active, .rating span.filled, .rating span.half-filled {
   color: gold;
 }
-.rating span:not(.active) {
+
+.rating span:not(.active):not(.filled):not(.half-filled) {
   color: lightgray;
 }
+
 .rating {
-  font-size: 2rem;
+  display: inline-block;
+  position: relative;
+  height: 35px;
+  line-height: 35px;
+  font-size: 30px;
 }
 
-.rating .star {
-  font-size: 2rem;
+.rating input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+.rating label {
+  color: #ddd;
+  float: right;
+  cursor: pointer;
+}
+
+.rating label:before {
+  content: "\f005";
+  font-family: FontAwesome;
+  font-size: inherit;
+  display: inline-block;
+  width: 1em;
+  margin-right: 5px;
+}
+
+.rating input:checked ~ label:before,
+.rating input:checked ~ label ~ label:before {
+  content: "\f005";
+  color: black;
+}
+
+.rating:not(:checked) label:hover,
+.rating:not(:checked) label:hover ~ label {
+  color: #f70;
+}
+
+.rating .star:before {
+  font-family: FontAwesome;
 }
