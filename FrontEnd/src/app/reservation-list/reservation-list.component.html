@@ -1,22 +1,25 @@
 <div>
-  <div class="button-container">
-    <button class="btn-validated">Confirmed</button>
-    <button class="btn-cancelled">Cancelled</button>
-    <button class="btn-rejected">Rejected</button>
-    <button class="btn-completed">Completed</button>
-    <button class="btn-in-validation">Pending</button>
-  </div>
+
+  <mat-button-toggle-group class="button-container" [formControl]="this.filterControl" multiple>
+    <mat-button-toggle value="Confirmed" [className]="this.toggleFilterButtonColor('Confirmed')">Confirmed</mat-button-toggle>
+    <mat-button-toggle value="Cancelled" [className]="this.toggleFilterButtonColor('Cancelled')">Cancelled</mat-button-toggle>
+    <mat-button-toggle value="Rejected" [className]="this.toggleFilterButtonColor('Rejected')">Rejected</mat-button-toggle>
+    <mat-button-toggle value="Completed" [className]="this.toggleFilterButtonColor('Completed')">Completed</mat-button-toggle>
+    <mat-button-toggle value="Pending" [className]="this.toggleFilterButtonColor('Pending')">Pending</mat-button-toggle>
+  </mat-button-toggle-group>
 
   <div *ngIf="(this.ownerPropertyLoadingObservable$ | async) || (this.reservationLoadingObservable$ | async); else loaded">
     <div class="spinner-border" role="status"></div>
   </div>
   <ng-template #loaded>
-    <div class='d-flex flex-column mb-3'>
-      <div class='p-2' *ngFor='let reservation of this.reservations; index as i'>
-        <ng-template [ngIf]="this.propertyExists(reservation.property_id)">
+    <div class="d-flex flex-column mb-3">
+      <div *ngFor="let reservation of this.reservations; index as i">
+        <ng-template [ngIf]="this.propertyExists(reservation.property_id) && this.filterReservation(reservation)">
           <app-reservation-card
+            class="p-2"
             [reservation]='reservation'
-            [property]='this.getProperty(reservation.property_id)'>
+            [property]='this.getProperty(reservation.property_id)'
+            [status]="this.getStatus(reservation)">
           </app-reservation-card>
         </ng-template>
       </div>

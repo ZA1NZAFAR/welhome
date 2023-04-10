@@ -10,19 +10,23 @@
     <p><strong>Area:</strong> {{ this.property.surface_area }} m²</p>
     <p><strong>Arrival:</strong> {{ this.reservation.start_date | date: 'dd/MM/yyyy' }} </p>
     <p><strong>Departure:</strong> {{ this.reservation.end_date | date: 'dd/MM/yyyy' }} </p>
-    <p> <strong>{{ this.ratingDescription }}:</strong> {{ this.ratingText }}</p>
+    <p><strong>Status: </strong><span [ngClass]="this.textClass">{{ this.status }}</span></p>
+    <p><strong>{{ this.ratingDescription }}:</strong> {{ this.ratingText }}</p>
   </div>
   <div class="col-md-1">
     <div class="container overflow-hidden">
       <div class="row gy-2">
-        <button class="btn col-12" [ngClass]="this.buttonClass">
-          {{ this.status }}
+        <button *ngIf="this.canConfirm" type="button" class="btn col-12 btn-info" (click)="this.submitConfirm()">
+          Confirm
         </button>
-        <button *ngIf="this.status === 'Confirmed' || this.status === 'Pending'" type="button" class="btn col-12 btn-danger">
+        <button *ngIf="this.canReject" type="button" class="btn col-12 btn-danger" (click)="this.submitReject">
           Cancel
         </button>
-        <button type="button" class="btn col-12 btn-info" (click)="this.goToProperty()">
-          Reviews
+        <button *ngIf="this.status === 'Completed' || this.status === 'Rejected' || this.status === 'Cancelled'" class="btn col-12 btn-primary">
+          Review
+        </button>
+        <button type="button" class="btn col-12 btn-secondary" (click)="this.goToProperty()">
+          Details
         </button>
       </div>
     </div>

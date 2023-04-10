@@ -6,6 +6,7 @@ import { PropertyService } from '../core/property/property.service'
 import { IProperty } from '../core/property/property.model'
 import { ContextService } from '../core/context/context.service';
 import { Observable, Subscription } from 'rxjs';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-reservation-list',
@@ -18,6 +19,8 @@ export class ReservationListComponent implements OnInit, OnDestroy {
   private propertySubscription: Subscription;
   private reservationSubscription: Subscription;
 
+  filterControl: FormControl;
+
   ownerPropertyLoadingObservable$: Observable<boolean>;
   reservationLoadingObservable$: Observable<boolean>;
 
@@ -28,6 +31,60 @@ export class ReservationListComponent implements OnInit, OnDestroy {
     private contextService: ContextService
   ) {
 
+  }
+
+  filterReservation(reservation: IReservation): boolean {
+    const filters: string[] = this.filterControl.value;
+    if (filters.includes(this.getStatus(reservation))) {
+      return true;
+    }
+    return false;
+  }
+
+  getStatus(reservation: IReservation): string {
+    if (!reservation.confirmed_owner && reservation.confirmed_renter) {
+      return 'Rejected';
+    }
+    if (!reservation.confirmed_renter && reservation.confirmed_owner) {
+      return 'Cancelled';
+    }
+    if (new Date(reservation.end_date) < new Date()) {
+      if (reservation.confirmed_renter && reservation.confirmed_owner) {
+        return 'Completed';
+      }
+      return 'Rejected';
+    }
+    if (reservation.confirmed_renter && reservation.confirmed_owner) {
+      return 'Confirmed';
+    }
+    return 'Pending';
+  }
+
+
+  toggleFilterButtonColor(buttonString: string) {
+    let className = 'btn-group';
+    switch (buttonString) {
+      case 'Confirmed':
+        className = 'btn-confirmed btn-active';
+        break;
+      case 'Pending':
+        className = 'btn-pending btn-active';
+        break;
+      case 'Rejected':
+        className = 'btn-rejected btn-active';
+        break;
+      case 'Cancelled':
+        className = 'btn-cancelled btn-active';
+        break;
+      case 'Completed':
+        className = 'btn-completed btn-active';
+        break;
+    };
+    const filters: string[] = this.filterControl.value;
+    if (filters.includes(buttonString)) {
+      return className;
+    }
+    return 'btn-group';
   }
 
   propertyExists(propertyId: number): boolean {
@@ -42,6 +99,7 @@ export class ReservationListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.filterControl = new FormControl(['Confirmed', 'Pending', 'Rejected', 'Cancelled', 'Completed']);
     const userEmail = this.authService.profile!.email;
     this.ownerPropertyLoadingObservable$ = this.propertyService.getOwnerProperties(userEmail).getOwnerPropertyLoadingObservable();
     this.reservationLoadingObservable$ = this.reservationService.getReservations().getReservationLoadingObservable();

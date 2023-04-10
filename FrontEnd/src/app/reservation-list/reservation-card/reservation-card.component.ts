@@ -18,6 +18,8 @@ export class ReservationCardComponent implements OnInit {
   @Input() reservation: IReservation;
   @Input() property: IProperty;
 
+  @Input() status: string = 'Error';
+
   rating: number = -1;
 
   constructor(
@@ -28,6 +30,7 @@ export class ReservationCardComponent implements OnInit {
     private authService: AuthService,
     private contextService: ContextService
   ) { }
+
 
   ngOnInit() {
     const email = this.contextService.isRenter ? this.authService.profile!.email : this.reservation.renter_email;
@@ -54,45 +57,55 @@ export class ReservationCardComponent implements OnInit {
     return 'Renter rating';
   }
 
-  get status(): string {
-    if (new Date(this.reservation.end_date) < new Date()) {
-      if (this.reservation.confirmed_renter) {
-        return 'Completed';
-      }
-      if (this.reservation.confirmed_owner) {
-        return 'Cancelled';
-      }
-      return 'Rejected';
-    }
-    if (!this.reservation.confirmed_renter) {
-      if (this.reservation.confirmed_owner) {
-        return 'Confirmed';
-      }
-      return 'Pending';
-    }
-    return `Error`;
-  }
-
-  get buttonClass(): string {
+  get textClass(): string {
     switch (this.status) {
       case 'Completed':
-        return 'btn-success';
+        return 'text-success';
       case 'Confirmed':
-        return 'btn-info';
+        return 'text-primary';
       case 'Pending':
-        return 'btn-warning';
+        return 'text-info';
       case 'Rejected':
-        return 'btn-danger';
+        return 'text-danger';
       case 'Cancelled':
-        return 'btn-secondary';
+        return 'text-warning';
       default:
-        return 'btn-primary';
+        return 'text-secondary';
     }
+  }
+
+  get canConfirm(): boolean {
+    return !this.contextService.isRenter && this.status === 'Pending';
+  }
+
+  get canReject(): boolean {
+    return this.status === 'Confirmed' || this.status === 'Pending';
+  }
+
+  submitConfirm(): void {
+    if (!this.canConfirm) {
+      return;
+    }
+    this.reservation.confirmed_owner = true;
+    this.reservation.confirmed_renter = true;
+    this.reservationService.updateReservation(this.reservation).subscribe();
+  }
+
+  submitReject(): void {
+    if (!this.canReject) {
+      return;
+    }
+    if (this.contextService.isRenter) {
+      this.reservation.confirmed_renter = false;
+      this.reservation.confirmed_owner = true;
+    } else {
+      this.reservation.confirmed_renter = true;
+      this.reservation.confirmed_owner = false;
+    }
+    this.reservationService.updateReservation(this.reservation).subscribe();
   }
 
   goToProperty() {
     this.router.navigate(['properties', this.property.id]);
   }
-
-
 }
