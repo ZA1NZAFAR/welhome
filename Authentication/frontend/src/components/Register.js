@@ -101,7 +101,7 @@ const Register = (props) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(`http://localhost:3001/register`, {
+      const response = await fetch(`https://backend.zain.ovh/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -114,7 +114,9 @@ const Register = (props) => {
       console.log(data)
       if (response.ok) {
         // Send the access token to the main window using postMessage
-        window.opener.postMessage({ type: 'access_token', data: { accessToken } }, process.env.REACT_APP_FRONTEND_URL);
+        // Try one or the other if it doesn't work
+        window.opener.postMessage({ type: 'access_token', data: { accessToken } }, "https://backend.zain.ovh/auth/google/callback");
+        //window.parent.postMessage({ type: 'access_token', data: { accessToken } }, "https://backend.zain.ovh/auth/google/callback");
         
         // Close the popup window
         window.close();

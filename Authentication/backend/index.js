@@ -13,7 +13,7 @@ const app = express();
 
 app.use(express.json());
 
-const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET);
+const googleClient = new OAuth2Client("203530020577-ngl05517r4rdn6fv8nudhgaod7p8itrt.apps.googleusercontent.com", "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");
 const secretKey = process.env.SECRET_KEY;
 app.use(cors({
   origin: 'http://localhost:3000',
@@ -21,7 +21,8 @@ app.use(cors({
 }));
 
 app.get('/auth/google', (req, res) => {
-  const googleAuthURL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_uri=${process.env.GOOGLE_REDIRECT_URI}&response_type=code&scope=profile%20email&access_type=offline`;
+  //const googleAuthURL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_uri=${process.env.GOOGLE_REDIRECT_URI}&response_type=code&scope=profile%20email&access_type=offline`;
+  const googleAuthURL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=203530020577-ngl05517r4rdn6fv8nudhgaod7p8itrt.apps.googleusercontent.com&redirect_uri=https://backend.zain.ovh/auth/google/callback&response_type=code&scope=profile%20email&access_type=offline`;
   res.redirect(googleAuthURL);
 });
   
@@ -33,7 +34,7 @@ app.get('/auth/google/callback', async (req, res) => {
     // Exchange the code for an access token
     const { tokens } = await googleClient.getToken({
       code: code,
-      redirect_uri: process.env.GOOGLE_REDIRECT_URI,
+      redirect_uri: "https://backend.zain.ovh/auth/google/callback",
     });
     googleClient.setCredentials(tokens);
 
@@ -43,8 +44,10 @@ app.get('/auth/google/callback', async (req, res) => {
         // Use the refresh token to get a new access token
         const { data } = await axios.post('https://accounts.google.com/o/oauth2/token', {
           grant_type: 'refresh_token',
-          client_id: process.env.GOOGLE_CLIENT_ID,
-          client_secret: process.env.GOOGLE_CLIENT_SECRET,
+          //client_id: process.env.GOOGLE_CLIENT_ID,
+          //client_secret: process.env.GOOGLE_CLIENT_SECRET,
+          client_id: "203530020577-ngl05517r4rdn6fv8nudhgaod7p8itrt.apps.googleusercontent.com",
+          client_secret: "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",
           refresh_token: tokens.refresh_token,
         });
 
@@ -67,7 +70,7 @@ app.get('/auth/google/callback', async (req, res) => {
     // Check if user exists in the database
     let userResponse;
     try {
-      userResponse = await axios.get(`${process.env.DATABASE_URL}/profiles/${data.email}`);
+      userResponse = await axios.get(`http://zain.ovh:9090/api/profiles/${data.email}`);
     } catch (error) {
       if (error.response.status === 404) {
         userResponse = { data: null };
@@ -79,7 +82,7 @@ app.get('/auth/google/callback', async (req, res) => {
     // If not, we redirect to the registration form with prefilled fields (email, first name and last name).
     if (!userResponse.data) {
       res.redirect(
-        `${process.env.REACT_APP_FRONTEND_URL}/register?email=${encodeURIComponent(data.email)}&first_name=${encodeURIComponent(
+        `https://frontend.zain.ovh/register?email=${encodeURIComponent(data.email)}&first_name=${encodeURIComponent(
           data.given_name
         )}&last_name=${encodeURIComponent(data.family_name)}&access_token=${encodeURIComponent(tokens.access_token)}`
       );
@@ -90,7 +93,9 @@ app.get('/auth/google/callback', async (req, res) => {
         type: 'access_token',
         data: { accessToken },
       };
-      res.send(`<script>window.opener.postMessage(${JSON.stringify(message)}, '${process.env.REACT_APP_FRONTEND_URL}'); window.close();</script>`);
+      const parentUrl = new URL(req.headers.referer).origin;
+      // res.send(`<script>window.opener.postMessage(${JSON.stringify(message)}, 'https://frontend.zain.ovh/'); window.close();</script>`);
+      res.send(`<script>window.parent.postMessage(${JSON.stringify(message)}, ${parentUrl}'); window.close();</script>`);
     }
   } catch (error) {
     console.error(error);
@@ -103,7 +108,7 @@ app.post('/register', async (req, res) => {
 
   try {
     // Send a POST request to the /profiles endpoint to create a new profile
-    const result = await axios.post(`${process.env.DATABASE_URL}/profiles`, {
+    const result = await axios.post(`http://zain.ovh:9090/api/profiles`, {
       email,
       firstName,
       lastName,

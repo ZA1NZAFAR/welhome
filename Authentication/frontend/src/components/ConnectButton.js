@@ -5,7 +5,7 @@ function ConnectButton() {
 
   async function refreshToken() {
     try {
-      const response = await fetch('http://localhost:3001/auth/refresh-token');
+      const response = await fetch('https://backend.zain.ovh/auth/refresh-token');
       const data = await response.json();
   
       // Update the access token in local storage
@@ -20,7 +20,7 @@ function ConnectButton() {
 
   const handleConnect = async () => {
     try {
-      const popup = window.open(`http://localhost:3001/auth/google`, 'googleLogin', 'height=800,width=600');
+      const popup = window.open(`https://backend.zain.ovh/auth/google`, 'googleLogin', 'height=800,width=600');
   
       // Listen for messages from the popup window
       window.addEventListener('message', event => {
