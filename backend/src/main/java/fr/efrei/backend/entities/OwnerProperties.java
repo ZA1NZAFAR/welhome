@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class UserProperties {
-    private Profile user;
+public class OwnerProperties {
+    private Profile owner;
     private List<Property> properties;
 }
