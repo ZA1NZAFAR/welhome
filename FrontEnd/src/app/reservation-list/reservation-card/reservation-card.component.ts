@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ReviewService } from 'src/app/core/review/review.service';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { ContextService } from 'src/app/core/context/context.service';
+
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {ReviewFormComponent} from "../../review-form/review-form.component";
 import { ReactiveFormsModule } from '@angular/forms';
@@ -19,8 +20,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 export class ReservationCardComponent implements OnInit {
   @Input() reservation: IReservation;
   @Input() property: IProperty;
+  @Input() status: string = 'Error';
+  
   propertyId: string;
   rating: number = -1;
+
   constructor(
     private propertyService: PropertyService,
     private reservationService: ReservationService,
@@ -31,6 +35,7 @@ export class ReservationCardComponent implements OnInit {
     private modalService: NgbModal
   ) { }
 
+
   ngOnInit() {
     const email = this.contextService.isRenter ? this.authService.profile!.email : this.reservation.renter_email;
     const reviewSub$ = this.reviewService.getPropertyReviews(this.property.id).subscribe(reviews => {
@@ -39,7 +44,7 @@ export class ReservationCardComponent implements OnInit {
         this.rating = review.rating;
       }
       reviewSub$.unsubscribe();
-    });
+    });  
   }
 
   get ratingText(): string {
@@ -65,35 +70,50 @@ export class ReservationCardComponent implements OnInit {
         return 'Annulé';
       }
       return 'Refusé';
+
     }
-    if (!this.reservation.confirmed_renter) {
-      if (this.reservation.confirmed_owner) {
-        return 'Validé';
-      }
-      return 'En cours';
-    }
-    return 'Error';
+    return this.rating.toString();
   }
 
-  get buttonClass(): string {
+  get ratingDescription(): string {
+    if (this.contextService.isRenter) {
+      return 'Your rating';
+    }
+    return 'Renter rating';
+  }
+
+  get textClass(): string {
     switch (this.status) {
-      case 'Terminé':
-        return 'btn-success';
-      case 'Validé':
-        return 'btn-info';
-      case 'En cours':
-        return 'btn-warning';
-      case 'Refusé':
-        return 'btn-danger';
-      case 'Annulé':
-        return 'btn-secondary';
+      case 'Completed':
+        return 'text-success';
+      case 'Confirmed':
+        return 'text-primary';
+      case 'Pending':
+        return 'text-info';
+      case 'Rejected':
+        return 'text-danger';
+      case 'Cancelled':
+        return 'text-warning';
       default:
-        return 'btn-primary';
+        return 'text-secondary';
     }
   }
 
-  goToProperty() {
-    this.router.navigate(['properties', this.property.id]);
+  get canConfirm(): boolean {
+    return !this.contextService.isRenter && this.status === 'Pending';
+  }
+
+  get canReject(): boolean {
+    return this.status === 'Confirmed' || this.status === 'Pending';
+  }
+
+  submitConfirm(): void {
+    if (!this.canConfirm) {
+      return;
+    }
+    this.reservation.confirmed_owner = true;
+    this.reservation.confirmed_renter = true;
+    this.reservationService.updateReservation(this.reservation).subscribe();
   }
 
   openReviewForm(propertyId: number) {
@@ -104,5 +124,22 @@ export class ReservationCardComponent implements OnInit {
     }, (reason) => {
       // Handle the modal dismissal if needed
     });
+
+    submitReject(): void {
+    if (!this.canReject) {
+      return;
+    }
+    if (this.contextService.isRenter) {
+      this.reservation.confirmed_renter = false;
+      this.reservation.confirmed_owner = true;
+    } else {
+      this.reservation.confirmed_renter = true;
+      this.reservation.confirmed_owner = false;
+    }
+    this.reservationService.updateReservation(this.reservation).subscribe();
+  }
+
+  goToProperty() {
+    this.router.navigate(['properties', this.property.id]);
   }
 }

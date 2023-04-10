@@ -6,16 +6,17 @@
     <div class="col-md-6 d-flex align-items-start flex-column infos">
       <h3>{{property.title}}</h3>
       <p class="mb-2">{{property.description}}</p>
-      <p class="mb-2"><strong>Lieu :</strong> {{property.city}}</p>
-      <p class="mb-2"><strong>Surface :</strong> {{property.surface_area}} m²</p>
-      <p class="mb-2"><strong>Capacité:</strong> {{property.capacity}} personne(s)</p>
-      <p class="mb-2"><strong>Prix :</strong> {{property.price}} €</p>
+      <p class="mb-2"><strong>Location :</strong> {{property.city}}</p>
+      <p class="mb-2"><strong>Area :</strong> {{property.surface_area}} m²</p>
+      <p class="mb-2"><strong>Capacity:</strong> {{property.capacity}} people</p>
+      <p class="mb-2"><strong>Price :</strong> {{property.price}} $</p>
       <p class="mb-2"><strong>Rating:</strong> {{ this.rating }}</p>
 
       <div class="action-btn">
-        <button class="btn btn-primary" (click)="openEditForm()">Modifier</button>
-        <button class="btn btn-danger" (click)="this.deleteProperty()">Supprimer</button>
+        <button class="btn btn-primary" (click)="openEditForm()">Modify</button>
+        <button class="btn btn-danger" (click)="this.deleteProperty()">Delete</button>
       </div>
 
   </div>
+</div>
 </div>

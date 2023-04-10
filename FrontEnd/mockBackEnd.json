@@ -19,6 +19,15 @@
       "renter_email": "zain.zafar@gmail.com"
     },
     {
+      "id": 2,
+      "property_id": 3,
+      "start_date": "2022-03-15T09:00:00.594Z",
+      "end_date": "2022-03-18T09:00:00.594Z",
+      "confirmed_owner": false,
+      "confirmed_renter": false,
+      "renter_email": "zain.zafar@gmail.com"
+    },
+    {
       "id": 3,
       "property_id": 2,
       "start_date": "2023-04-15T09:00:00.594Z",
@@ -32,9 +41,27 @@
       "end_date": "2023-04-12T22:00:00.000Z",
       "renter_email": "zain.zafar@gmail.com",
       "property_id": 1,
-      "confirmed_owner": false,
+      "confirmed_owner": true,
       "confirmed_renter": false,
       "id": 4
+    },
+    {
+      "start_date": "2023-04-11T22:00:00.000Z",
+      "end_date": "2023-04-14T22:00:00.000Z",
+      "renter_email": "",
+      "property_id": 3,
+      "confirmed_owner": false,
+      "confirmed_renter": false,
+      "id": 5
+    },
+    {
+      "start_date": "2023-04-11T22:00:00.000Z",
+      "end_date": "2023-04-18T22:00:00.000Z",
+      "renter_email": "zain.zafar@gmail.com",
+      "property_id": 3,
+      "confirmed_owner": false,
+      "confirmed_renter": false,
+      "id": 6
     }
   ],
   "properties": [

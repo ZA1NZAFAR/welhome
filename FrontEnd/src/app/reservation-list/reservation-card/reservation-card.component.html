@@ -6,30 +6,32 @@
 
   <div class="col-md-7 infos">
     <h1>{{ this.property.title }}</h1>
-    <p><strong>Lieu :</strong> {{ this.property.city }}</p>
-    <p><strong>Surface du logement :</strong> {{ this.property.surface_area }} m²</p>
-    <p><strong>Arrivée :</strong> {{ this.reservation.start_date | date: 'dd/MM/yyyy' }} </p>
-    <p><strong>Départ :</strong> {{ this.reservation.end_date | date: 'dd/MM/yyyy' }} </p>
-    <p> <strong>Ma note : </strong> ...</p>
-    <div class="col-md-2 action-btn">
-      <div class="d-flex justify-content-between align-items-center">
-        <div class="btn no-cursor" [ngClass]="this.buttonClass">
-          {{ this.status }}
-        </div>
-        <div  class="col-md-3 d-flex align-items-center justify-content-center">
-          <button *ngIf="this.status === 'Validé' || this.status === 'En cours'" type="button" class="btn btn-danger">
-            Cancel
-          </button>
-        </div>
-        <button type="button" class="btn btn-info ml-3" [routerLink]="['/properties', this.property.id]">
-          Reviews
+    <p><strong>Location:</strong> {{ this.property.city }}</p>
+    <p><strong>Area:</strong> {{ this.property.surface_area }} m²</p>
+    <p><strong>Arrival:</strong> {{ this.reservation.start_date | date: 'dd/MM/yyyy' }} </p>
+    <p><strong>Departure:</strong> {{ this.reservation.end_date | date: 'dd/MM/yyyy' }} </p>
+    <p><strong>Status: </strong><span [ngClass]="this.textClass">{{ this.status }}</span></p>
+    <p><strong>{{ this.ratingDescription }}:</strong> {{ this.ratingText }}</p>
+  </div>
+  <div class="col-md-1">
+    <div class="container overflow-hidden">
+      <div class="row gy-2">
+        <button *ngIf="this.canConfirm" type="button" class="btn col-12 btn-info" (click)="this.submitConfirm()">
+          Confirm
+        </button>
+        <button *ngIf="this.canReject" type="button" class="btn col-12 btn-danger" (click)="this.submitReject">
+          Cancel
+        </button>
+        <button *ngIf="this.status === 'Completed' || this.status === 'Rejected' || this.status === 'Cancelled'" class="btn col-12 btn-primary">
+          Review
+        </button>
+        <button type="button" class="btn col-12 btn-secondary" (click)="this.goToProperty()">
+          Details
         </button>
         <button type="button" class="btn btn-success" (click)="openReviewForm(this.property.id)">
           Add Review
         </button>
       </div>
     </div>
-
   </div>
-</div>
 </div>

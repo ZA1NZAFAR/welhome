@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReservationListComponent } from './reservation-list.component';
 import { ReservationCardComponent } from './reservation-card/reservation-card.component';
-import {RouterModule} from "@angular/router";
-
-
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatButtonModule } from '@angular/material/button';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -13,7 +13,9 @@ import {RouterModule} from "@angular/router";
   ],
   imports: [
     CommonModule,
-    RouterModule
+    MatButtonToggleModule,
+    MatButtonModule,
+    ReactiveFormsModule
   ]
 })
 export class ReservationListModule { }
