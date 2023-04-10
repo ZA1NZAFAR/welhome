@@ -62,13 +62,9 @@ export class PropertiesComponent implements OnInit, OnDestroy {
           return;
         }
         this.propertyData = property;
-        this.reviewService.getPropertyReviews(property.id).subscribe(reviews => {
-          const propertyReviews = reviews.filter(r => r.property_id === property.id);
-          if (propertyReviews.length === 0) {
-            return;
-          }
-          this.reviewData = propertyReviews;
-          console.log(this.reviewData); // check reviews
+        const reviewSub$ = this.reviewService.getPropertyReviews(property.id).subscribe(reviews => {
+          this.reviewData = reviews;
+          reviewSub$.unsubscribe();
         });
 
         this.images = [];
@@ -94,6 +90,17 @@ export class PropertiesComponent implements OnInit, OnDestroy {
       .concat(Array(emptyStars).fill('far fa-star'));
   }
 
+  get dateRequiredError(): boolean {
+    return this.reservationGroup.controls['start_date'].hasError('required') ||
+           this.reservationGroup.controls['end_date'].hasError('required');
+  }
+
+  get dateMinimumError(): boolean {
+    return !this.dateRequiredError && (
+      this.reservationGroup.controls['start_date'].hasError('dateMinimum') || 
+      this.reservationGroup.controls['end_date'].hasError('dateMinimum'));
+  }
+
   validateDate(): ValidatorFn {
     return (control: AbstractControl) => {
       const date = control.value;
@@ -102,6 +109,19 @@ export class PropertiesComponent implements OnInit, OnDestroy {
       }
       return null;
     };
+  }
+
+  get days(): number {
+    const start = new Date(this.reservationGroup.value.start_date);
+    const end = new Date(this.reservationGroup.value.end_date);
+    if (isNaN(start.getTime()) || isNaN(end.getTime()) || start.getTime() > end.getTime()) {
+      return 0;
+    }
+    return (end.getTime() - start.getTime()) / (1000 * 3600 * 24);
+  }
+
+  get totalPrice(): number {
+    return this.days * this.propertyData.price;
   }
 
   get isOwner(): boolean {
@@ -146,32 +166,4 @@ export class PropertiesComponent implements OnInit, OnDestroy {
       });
     }
   }
-
-  /*
-  $(document).ready(function() {
-    var currentPhoto = 1;
-    var numPhotos = $('.small-photo').length;
-
-    function showPhoto(photoNum) {
-      $('.main-photo').attr('src', $('.small-photo:eq(' + (photoNum-1) + ')').attr('src'));
-      $('.small-photo').removeClass('active');
-      $('.small-photo:eq(' + (photoNum-1) + ')').addClass('active');
-    }
-
-    $('.small-photo').click(function() {
-      currentPhoto = $(this).index() + 1;
-      showPhoto(currentPhoto);
-    });
-
-    $('#next-btn').click(function() {
-      currentPhoto++;
-      if (currentPhoto > numPhotos) {
-        currentPhoto = 1;
-      }
-      showPhoto(currentPhoto);
-    });
-
-    showPhoto(currentPhoto);
-  });
-  */
 }

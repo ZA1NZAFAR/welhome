@@ -35,6 +35,15 @@
       "confirmed_owner": false,
       "confirmed_renter": false,
       "id": 4
+    },
+    {
+      "start_date": "2023-04-11T22:00:00.000Z",
+      "end_date": "2023-04-14T22:00:00.000Z",
+      "renter_email": "",
+      "property_id": 3,
+      "confirmed_owner": false,
+      "confirmed_renter": false,
+      "id": 5
     }
   ],
   "properties": [
@@ -119,41 +128,9 @@
       "id": 4,
       "property_id": 3,
       "reviewer_email": "zerty@gmail.com",
-      "review_text": "Good place !",
-      "rating": 4,
-      "published_date": "2021-03-22:34:04.594Z"
-    },
-    {
-      "id": 5,
-      "property_id": 1,
-      "reviewer_email": "john.doe@example.com",
-      "review_text": "Not great, not terrible.",
+      "review_text": "What ?! AWESOME !",
       "rating": 3.5,
-      "published_date": "2022-02-01T10:30:00.000Z"
-    },
-    {
-      "id": 6,
-      "property_id": 2,
-      "reviewer_email": "jane.doe@example.com",
-      "review_text": "Fantastic place!",
-      "rating": 4.8,
-      "published_date": "2022-01-15T12:00:00.000Z"
-    },
-    {
-      "id": 7,
-      "property_id": 3,
-      "reviewer_email": "bob.smith@example.com",
-      "review_text": "It was alright, nothing special.",
-      "rating": 2.5,
-      "published_date": "2022-02-28T14:00:00.000Z"
-    },
-    {
-      "id": 8,
-      "property_id": 2,
-      "reviewer_email": "jane.doe@example.com",
-      "review_text": "Average experience.",
-      "rating": 3,
-      "published_date": "2022-03-05T09:30:00.000Z"
+      "published_date": "2021-03-22:34:04.594Z"
     }
   ]
 }

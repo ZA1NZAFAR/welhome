@@ -1,10 +1,10 @@
 <div>
   <div class="button-container">
-    <button class="btn-validated">Validated</button>
+    <button class="btn-validated">Confirmed</button>
     <button class="btn-cancelled">Cancelled</button>
     <button class="btn-rejected">Rejected</button>
     <button class="btn-completed">Completed</button>
-    <button class="btn-in-validation">In Validation</button>
+    <button class="btn-in-validation">Pending</button>
   </div>
 
   <div *ngIf="(this.ownerPropertyLoadingObservable$ | async) || (this.reservationLoadingObservable$ | async); else loaded">

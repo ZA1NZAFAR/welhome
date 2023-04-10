@@ -3,7 +3,10 @@ import { IProperty } from 'src/app/core/property/property.model'
 import { PropertyService } from 'src/app/core/property/property.service'
 import { IReservation } from 'src/app/core/reservation/reservation.model';
 import { ReservationService } from 'src/app/core/reservation/reservation.service'
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ReviewService } from 'src/app/core/review/review.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
+import { ContextService } from 'src/app/core/context/context.service';
 
 
 @Component({
@@ -14,55 +17,81 @@ import { ActivatedRoute } from '@angular/router';
 export class ReservationCardComponent implements OnInit {
   @Input() reservation: IReservation;
   @Input() property: IProperty;
-  propertyId: string;
+
+  rating: number = -1;
 
   constructor(
     private propertyService: PropertyService,
     private reservationService: ReservationService,
-    private route: ActivatedRoute
+    private router: Router,
+    private reviewService: ReviewService,
+    private authService: AuthService,
+    private contextService: ContextService
   ) { }
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      this.propertyId = params['propertyId'];
-      console.log("ici");
-    });
+    const email = this.contextService.isRenter ? this.authService.profile!.email : this.reservation.renter_email;
+    const reviewSub$ = this.reviewService.getPropertyReviews(this.property.id).subscribe(reviews => {
+      const review = reviews.find(r => r.reviewer_email === email);
+      if (review) {
+        this.rating = review.rating;
+      }
+      reviewSub$.unsubscribe();
+    });  
+  }
+
+  get ratingText(): string {
+    if (this.rating === -1) {
+      return 'No rating';
+    }
+    return this.rating.toString();
+  }
+
+  get ratingDescription(): string {
+    if (this.contextService.isRenter) {
+      return 'Your rating';
+    }
+    return 'Renter rating';
   }
 
   get status(): string {
-    if (this.reservation.end_date < new Date()) {
+    if (new Date(this.reservation.end_date) < new Date()) {
       if (this.reservation.confirmed_renter) {
-        return 'Terminé';
+        return 'Completed';
       }
       if (this.reservation.confirmed_owner) {
-        return 'Annulé';
+        return 'Cancelled';
       }
-      return 'Refusé';
+      return 'Rejected';
     }
     if (!this.reservation.confirmed_renter) {
       if (this.reservation.confirmed_owner) {
-        return 'Validé';
+        return 'Confirmed';
       }
-      return 'En cours';
+      return 'Pending';
     }
-    return 'Error';
+    return `Error`;
   }
 
   get buttonClass(): string {
     switch (this.status) {
-      case 'Terminé':
+      case 'Completed':
         return 'btn-success';
-      case 'Validé':
+      case 'Confirmed':
         return 'btn-info';
-      case 'En cours':
+      case 'Pending':
         return 'btn-warning';
-      case 'Refusé':
+      case 'Rejected':
         return 'btn-danger';
-      case 'Annulé':
+      case 'Cancelled':
         return 'btn-secondary';
       default:
         return 'btn-primary';
     }
+  }
+
+  goToProperty() {
+    this.router.navigate(['properties', this.property.id]);
   }
 
 
