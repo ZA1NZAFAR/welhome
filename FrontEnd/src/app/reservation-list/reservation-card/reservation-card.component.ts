@@ -3,10 +3,6 @@ import { IProperty } from 'src/app/core/property/property.model'
 import { PropertyService } from 'src/app/core/property/property.service'
 import { IReservation } from 'src/app/core/reservation/reservation.model';
 import { ReservationService } from 'src/app/core/reservation/reservation.service'
-<<<<<<< Updated upstream
-import { ActivatedRoute } from '@angular/router';
-
-=======
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReviewService } from 'src/app/core/review/review.service';
 import { AuthService } from 'src/app/core/auth/auth.service';
@@ -14,7 +10,6 @@ import { ContextService } from 'src/app/core/context/context.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {ReviewFormComponent} from "../../review-form/review-form.component";
 import { ReactiveFormsModule } from '@angular/forms';
->>>>>>> Stashed changes
 
 @Component({
   selector: 'app-reservation-card',
@@ -25,20 +20,10 @@ export class ReservationCardComponent implements OnInit {
   @Input() reservation: IReservation;
   @Input() property: IProperty;
   propertyId: string;
-
+  rating: number = -1;
   constructor(
     private propertyService: PropertyService,
     private reservationService: ReservationService,
-<<<<<<< Updated upstream
-    private route: ActivatedRoute
-  ) { }
-
-  ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      this.propertyId = params['propertyId'];
-      console.log("ici");
-    });
-=======
     private router: Router,
     private reviewService: ReviewService,
     private authService: AuthService,
@@ -69,7 +54,6 @@ export class ReservationCardComponent implements OnInit {
       return 'Your rating';
     }
     return 'Renter rating';
->>>>>>> Stashed changes
   }
 
   get status(): string {
@@ -108,8 +92,6 @@ export class ReservationCardComponent implements OnInit {
     }
   }
 
-<<<<<<< Updated upstream
-=======
   goToProperty() {
     this.router.navigate(['properties', this.property.id]);
   }
@@ -123,6 +105,4 @@ export class ReservationCardComponent implements OnInit {
       // Handle the modal dismissal if needed
     });
   }
->>>>>>> Stashed changes
-
 }
