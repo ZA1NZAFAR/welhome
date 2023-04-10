@@ -185,6 +185,15 @@
       "image": "",
       "property_id": 3,
       "reviewer_email": "zain.zafar@gmail.com"
+    },
+    {
+      "id": 9,
+      "rating": 1,
+      "review_text": "nul",
+      "published_date": "2023-04-10T13:56:35.204Z",
+      "image": "",
+      "property_id": 3,
+      "reviewer_email": "zain.zafar@gmail.com"
     }
   ]
 }

@@ -21,7 +21,7 @@ export class ReservationCardComponent implements OnInit {
   @Input() reservation: IReservation;
   @Input() property: IProperty;
   @Input() status: string = 'Error';
-  
+
   propertyId: string;
   rating: number = -1;
 
@@ -44,7 +44,7 @@ export class ReservationCardComponent implements OnInit {
         this.rating = review.rating;
       }
       reviewSub$.unsubscribe();
-    });  
+    });
   }
 
   get ratingText(): string {
@@ -61,26 +61,19 @@ export class ReservationCardComponent implements OnInit {
     return 'Renter rating';
   }
 
-  get status(): string {
-    if (this.reservation.end_date < new Date()) {
-      if (this.reservation.confirmed_renter) {
-        return 'Terminé';
-      }
-      if (this.reservation.confirmed_owner) {
-        return 'Annulé';
-      }
-      return 'Refusé';
-
-    }
-    return this.rating.toString();
-  }
-
-  get ratingDescription(): string {
-    if (this.contextService.isRenter) {
-      return 'Your rating';
-    }
-    return 'Renter rating';
-  }
+  // get status(): string {
+  //   if (this.reservation.end_date < new Date()) {
+  //     if (this.reservation.confirmed_renter) {
+  //       return 'Terminé';
+  //     }
+  //     if (this.reservation.confirmed_owner) {
+  //       return 'Annulé';
+  //     }
+  //     return 'Refusé';
+  //
+  //   }
+  //   return this.rating.toString();
+  // }
 
   get textClass(): string {
     switch (this.status) {
@@ -123,7 +116,8 @@ export class ReservationCardComponent implements OnInit {
       // Do something with the result if needed
     }, (reason) => {
       // Handle the modal dismissal if needed
-    });
+    })
+  }
 
     submitReject(): void {
     if (!this.canReject) {
