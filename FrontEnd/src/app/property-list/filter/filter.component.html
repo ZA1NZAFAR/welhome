@@ -1,5 +1,5 @@
 <button id="mon-bouton" class="bouton-primary" (click)="openFilterModal(template)">
-  Filtre
+  Filter
 </button>
 
 <ng-template #template>
@@ -12,22 +12,24 @@
   <div class="modal-body">
     <form>
 <div class="form-group">
+  <!--
   <label for="prix-range">Fourchette de prix :</label>
+  -->
   <div class="range-input">
     <input type="range" id="prix-min" (input)="onPrixMinChange($event)" (change)="onPrixMinChange($event)" min="0" max="1000" step="10">
     <input type="range" id="prix-max" (input)="onPrixMaxChange($event)" min="0" max="1000" step="-10" style="transform: scaleX(-1);">
   </div>
   <div class="range-labels">
-    <span>{{rangePrixMin}} €</span>
-    <span>{{rangePrixMax}} €</span>
+    <span>{{rangePrixMin}} $</span>
+    <span>{{rangePrixMax}} $</span>
   </div>
 </div>
 
-      
-      
-      
-      
-      
+
+
+
+
+
 
       <div class="form-group">
         <label for="type-de-bien">Type de bien :</label>
@@ -37,7 +39,9 @@
         </select>
       </div>
       <div class="form-group">
+        <!--
         <label for="dates-de-disponibilite">Dates de disponibilité :</label>
+        -->
         <input type="date" class="fo rm-control" >
         <span>à</span>
         <input type="date" class="form-control" >

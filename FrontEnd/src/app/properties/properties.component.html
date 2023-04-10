@@ -14,7 +14,7 @@
             class="small-photo"
             (click)="this.currentImageIndex = i">
       </div>
-      <button id="next-btn" (click)="nextImage()">Next image</button>
+      <button id="next-btn" (click)="nextImage()"><i class="fas fa-exchange-alt"></i></button>
     </div>
 
     <div class="left-div">
@@ -28,10 +28,11 @@
       </div>
 
       <div class="reservation-container" *ngIf="!this.isOwner && this.isRenterContext">
-        <h1> Réserver</h1>
+        <h1> Book</h1>
+        <br>
         <div class="row form-container">
           <div class="price col-lg-6">
-            <span class="price-value">{{ this.propertyData.price }} €</span> per night
+            <span class="price-value">{{ this.propertyData.price }} $</span> per night
           </div>
           <form class="col-lg-6" [formGroup]="this.reservationGroup">
             <mat-form-field appearance="fill">
@@ -55,15 +56,15 @@
 
         <div class="btn-container" *ngIf="this.userIsLoggedIn;">
           <div class="btn-container">
-            <button id="reservation-btn" (click)="this.reserveProperty()" [disabled]="!this.reservationGroup.valid">Reserve</button>
+            <button class="reservation-btn" (click)="this.reserveProperty()" [disabled]="!this.reservationGroup.valid"><i class="fas fa-check"></i></button>
           </div>
         </div>
         <div class="btn-container" *ngIf="!this.userIsLoggedIn;">
-          <button id="reservation-btn" (click)="this.promptLogin()">Login to reserve</button>
+          <button class="reservation-btn" (click)="this.promptLogin()">Login to book</button>
         </div>
         <div class="total-container">
           <h4>Total ({{ this.days }} day{{ this.days > 1 ? 's' : '' }})</h4>
-          <span>{{this.totalPrice}} €</span>
+          <span>{{this.totalPrice}} $</span>
         </div>
       </div>
       <div *ngIf="reviewData && reviewData.length" class="reviews-container">
@@ -74,19 +75,19 @@
           <div class="review-header">
             <span class="review-author">{{review.reviewer_email}}</span>
             <span class="review-date">{{review.published_date}}</span>
-    
+
             <!-- Boucle pour afficher le nombre d'étoiles correspondant à la note -->
             <div class="review-rating">
               <i *ngFor="let star of getRatingStars(review.rating)" [class]="star"></i>
             </div>
-    
+
           </div>
           <span class="review-text">{{review.review_text}}</span>
-    
+
         </div>
       </div>
     </div>
   </div>
-  
+
 </div>
 
