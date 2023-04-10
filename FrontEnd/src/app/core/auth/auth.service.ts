@@ -5,6 +5,11 @@ import { IProfile, ITokenPayload } from './auth.model'
 import { environment } from 'src/environments/environment';
 import { ToastService } from 'src/app/utils/toast/toast.service'
 import { ContextService } from '../context/context.service';
+import { HttpClient } from '@angular/common/http';
+
+interface IRefreshToken {
+  accessToken: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -40,49 +45,45 @@ export class AuthService implements OnInit {
   constructor(
     private router: Router,
     private toast: ToastService,
-    private contextService: ContextService
+    private contextService: ContextService,
+    private http: HttpClient
   ) { }
-  ngOnInit(): void {
+  ngOnInit( ): void {
+    setInterval(this.refreshToken, 5 * 60 * 1000);
   }
-
+  refreshToken() {
+      this.http.get<IRefreshToken>('http://localhost:3001/auth/refresh-token').subscribe((data) => {
+        localStorage.setItem('token', data.accessToken);
+      });
+  }
+  
   startupToken(): void {
     const token = localStorage.getItem('token');
-    if (token) {
-      this._payload = jwtDecode<ITokenPayload>(token);
-    }
   }
 
   login(): void {
     if (!environment.production) {
       localStorage.setItem('token', this._token);
-      this._payload = jwtDecode<ITokenPayload>(this._token);
       this.toast.showSuccess('Logged in');
       return;
     }
     const loginWindow = window.open(`${environment.authUrl}/auth/google`, 'Authentication', 'height=800,width=600');
+    console.log('loginWindow', loginWindow)
     if (loginWindow !== null) {
-      loginWindow.focus();
+      //loginWindow.focus();
       window.addEventListener('message', event => {
+        console.log('event', event)
         if (event.source !== loginWindow) {
           return;
         }
+        console.log('data', event.data)
         const data = event.data.data;
         if (data.accessToken !== undefined) {
-          try {
-            this._payload = jwtDecode<ITokenPayload>(data.accessToken);
-            if (!this.isValid(this._payload)) {
-              this.toast.showError('Invalid token');
-              throw new Error('Invalid token');
-            }
-            localStorage.setItem('token', data.accessToken);
-            this.toast.showSuccess('Logged in');
-          } catch (err) {
-            this.logout();
-            console.error(err);
-          }
-          loginWindow.close();
+          localStorage.setItem('token', data.accessToken);
+          this.toast.showSuccess('Logged in');
         }
-      });
+        loginWindow.close();
+      }, { once: false });
     }
     
   }
@@ -109,35 +110,10 @@ export class AuthService implements OnInit {
     this.toast.showInfo('Logged out');
     this.contextService.setContext('RENTER')
     localStorage.removeItem('token');
-    this._payload = null;
     this.router.navigate(['/']);
   }
 
   get isLoggedIn(): boolean {
-    return !!this._payload;
-  }
-
-
-  get isExpired(): boolean {
-    if (!this.isValid(this._payload)) {
-      return true;
-    }
-    this.logout();
-    return false;
-  }
-
-  isValid(payload: ITokenPayload | null): boolean {
-    if (!payload) {
-      return false
-    }
-    if (!payload.iat || !payload.exp) {
-      return false
-    }
-    const tokenIssuedDateIsValid = payload.iat < Date.now() / 1000;
-    const tokenIsNotExpired = payload.exp > Date.now() / 1000;
-    if (!tokenIssuedDateIsValid || !tokenIsNotExpired) {
-      return false
-    }
-    return true;
+    return !!this.token;
   }
 }
