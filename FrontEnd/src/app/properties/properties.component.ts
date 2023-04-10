@@ -47,6 +47,7 @@ export class PropertiesComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.adapter.setLocale('fr');
+    this.images = [];
     this.reservationGroup = new FormGroup({
       start_date: new FormControl('', [Validators.required, this.validateDate()]),
       end_date: new FormControl('', [Validators.required, this.validateDate()])
@@ -69,14 +70,14 @@ export class PropertiesComponent implements OnInit, OnDestroy {
           reviewSub$.unsubscribe();
         });
 
-        this.images = [];
-        if (this.propertyData.image_url !== undefined) {
+        
+        if (!!this.propertyData.image_url) {
           this.images.push(this.propertyData.image_url);
         }
-        if (this.propertyData.image_url2 !== undefined) {
+        if (!!this.propertyData.image_url2) {
           this.images.push(this.propertyData.image_url2);
         }
-        if (this.propertyData.image_url3 !== undefined) {
+        if (!!this.propertyData.image_url3) {
           this.images.push(this.propertyData.image_url3);
         }
       });

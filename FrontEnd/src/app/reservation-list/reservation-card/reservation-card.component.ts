@@ -65,20 +65,6 @@ export class ReservationCardComponent implements OnInit {
     return 'Renter rating';
   }
 
-  // get status(): string {
-  //   if (this.reservation.end_date < new Date()) {
-  //     if (this.reservation.confirmed_renter) {
-  //       return 'Terminé';
-  //     }
-  //     if (this.reservation.confirmed_owner) {
-  //       return 'Annulé';
-  //     }
-  //     return 'Refusé';
-  //
-  //   }
-  //   return this.rating.toString();
-  // }
-
   get textClass(): string {
     switch (this.status) {
       case 'Completed':

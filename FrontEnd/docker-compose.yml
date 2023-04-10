@@ -7,5 +7,16 @@ services:
       context: .
       dockerfile: Dockerfile
       no_cache: true
+    networks:
+      front:
+        ipv4_address: 172.18.0.2
     ports:
-      - 9091:80
+      - 3003:3003
+
+networks:
+  front:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 172.18.0.0/24
+         gateway: 172.18.0.1
