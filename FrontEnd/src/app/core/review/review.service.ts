@@ -18,7 +18,7 @@ export class ReviewService {
   ) {
   }
   getPropertyReviews(propertyId: number): Observable<IReview[]> {
-    return this.http.get<IReview[]>(`${environment.backEndUrl}/reviews?property_id=${propertyId}`);
+    return this.http.get<IReview[]>(`${environment.backEndUrl}/reviews?propertyId=${propertyId}`);
   }
 
   getReviews(): Observable<IReview[]> {
@@ -38,7 +38,7 @@ export class ReviewService {
       throw new Error('User not logged in');
     }
     const userEmail = this.authService.profile!.email;
-    if (userEmail !== review.reviewer_email) {
+    if (userEmail !== review.reviewerEmail) {
       this.toastService.showError('User not authorized to edit this review');
       throw new Error('User not authorized to edit this review');
     }
@@ -54,7 +54,7 @@ export class ReviewService {
       throw new Error('User not logged in');
     }
     const userEmail = this.authService.profile!.email;
-    if (userEmail !== review.reviewer_email) {
+    if (userEmail !== review.reviewerEmail) {
       this.toastService.showError('User not authorized to delete this review');
       throw new Error('User not authorized to delete this review');
     }

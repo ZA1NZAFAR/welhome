@@ -2,12 +2,12 @@ import { JwtPayload } from 'jwt-decode'
 
 export interface IProfile {
   email: string;
-  first_name?: string;
-  last_name?: string;
-  birth_date?: Date;
+  firstName?: string;
+  lastName?: string;
+  birthDate?: Date;
   phone_number?: string;
   gender?: 'Male' | 'Female' | 'Non-Binary'
-  registration_date?: Date;
+  registrationDate?: Date;
 }
 
 export type ITokenPayload = IProfile & JwtPayload;

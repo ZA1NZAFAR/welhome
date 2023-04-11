@@ -14,11 +14,11 @@
   <ng-template #loaded>
     <div class="d-flex flex-column mb-3">
       <div *ngFor="let reservation of this.reservations; index as i">
-        <ng-template [ngIf]="this.propertyExists(reservation.property_id) && this.filterReservation(reservation)">
+        <ng-template [ngIf]="this.propertyExists(reservation.propertyId) && this.filterReservation(reservation)">
           <app-reservation-card
             class="p-2"
             [reservation]='reservation'
-            [property]='this.getProperty(reservation.property_id)'
+            [property]='this.getProperty(reservation.propertyId)'
             [status]="this.getStatus(reservation)">
           </app-reservation-card>
         </ng-template>

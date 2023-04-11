@@ -25,7 +25,7 @@
       <div class="row">
         <label class="col-lg-5">Category</label>
         <div class="col-lg-7">
-          <mat-button-toggle-group formControlName="property_category" name="fontStyle" aria-label="Font Style">
+          <mat-button-toggle-group formControlName="propertyCategory" name="fontStyle" aria-label="Font Style">
             <mat-button-toggle value="House">House</mat-button-toggle>
             <mat-button-toggle value="Apartment">Apartment</mat-button-toggle>
             <mat-button-toggle value="Room">Room</mat-button-toggle>
@@ -80,7 +80,7 @@
         <div class="col-lg-3">
           <mat-form-field>
             <mat-label>Surface Area</mat-label>
-            <input matInput placeholder="Surface Area" formControlName="surface_area"/>
+            <input matInput placeholder="Surface Area" formControlName="surfaceArea"/>
           </mat-form-field>
         </div>
         <div class="col-lg-3">
@@ -106,53 +106,23 @@
         <div class="col-lg-6">
           <div class="container">
             <div class="row">
-              <div class="col-lg-2">
-                <button mat-icon-button (click)="this.toggleUploadImage('image_url')">
-                  <mat-icon *ngIf="!this.imageIsFile['image_url']">upload_file</mat-icon>
-                  <mat-icon *ngIf="this.imageIsFile['image_url']">close</mat-icon>
-                </button>
-              </div>
-              <div class="col-lg-10">
-                <mat-form-field class="col-lg-10" *ngIf="!this.imageIsFile['image_url']">
+              <div class="col">
+                <mat-form-field class="col-lg-10">
                   <mat-label>URL to a photo of your property</mat-label>
-                  <input matInput placeholder="Image URL" formControlName="image_url"/>
+                  <input matInput placeholder="Image URL" formControlName="imageUrl1"/>
                 </mat-form-field>
-                <div *ngIf="this.imageIsFile['image_url']">
-                  <mat-label>Upload a photo of your property</mat-label>
-                  <input type="file" (change)="handleImageUpload($event, 'image_url')" formControlName="image_url" />
-                </div>
               </div>
-              <div class="col-lg-2">
-                <button mat-icon-button (click)="this.toggleUploadImage('image_url2')">
-                  <mat-icon *ngIf="!this.imageIsFile['image_url2']">upload_file</mat-icon>
-                  <mat-icon *ngIf="this.imageIsFile['image_url2']">close</mat-icon>
-                </button>
-              </div>
-              <div class="col-lg-10">
-                <mat-form-field class="col-lg-10" *ngIf="!this.imageIsFile['image_url2']">
+              <div class="col">
+                <mat-form-field class="col-lg-10">
                   <mat-label>URL to a photo of your property</mat-label>
-                  <input matInput placeholder="Image URL" formControlName="image_url2"/>
+                  <input matInput placeholder="Image URL" formControlName="imageUrl2"/>
                 </mat-form-field>
-                <div *ngIf="this.imageIsFile['image_url2']">
-                  <mat-label>Upload a photo of your property</mat-label>
-                  <input type="file" (change)="handleImageUpload($event, 'image_url2')" formControlName="image_url2" />
-                </div>
               </div>
-              <div class="col-lg-2">
-                <button mat-icon-button (click)="this.toggleUploadImage('image_url3')">
-                  <mat-icon *ngIf="!this.imageIsFile['image_url3']">upload_file</mat-icon>
-                  <mat-icon *ngIf="this.imageIsFile['image_url3']">close</mat-icon>
-                </button>
-              </div>
-              <div class="col-lg-10">
-                <mat-form-field class="col-lg-10" *ngIf="!this.imageIsFile['image_url3']">
+              <div class="col">
+                <mat-form-field class="col-lg-10">
                   <mat-label>URL to a photo of your property</mat-label>
-                  <input matInput placeholder="Image URL" formControlName="image_url3"/>
+                  <input matInput placeholder="Image URL" formControlName="imageUrl3"/>
                 </mat-form-field>
-                <div *ngIf="this.imageIsFile['image_url3']">
-                  <mat-label>Upload a photo of your property</mat-label>
-                  <input type="file" (change)="handleImageUpload($event, 'image_url3')" formControlName="image_url3" />
-                </div>
               </div>
             </div>
           </div>
@@ -160,7 +130,7 @@
         <div class="col-lg-6">
           <mat-form-field appearance="fill">
             <mat-label>Construction Date</mat-label>
-            <input matInput formControlName="construction_date" [matDatepicker]="picker">
+            <input matInput formControlName="constructionDate" [matDatepicker]="picker">
             <mat-hint>DD/MM/YYYY</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>

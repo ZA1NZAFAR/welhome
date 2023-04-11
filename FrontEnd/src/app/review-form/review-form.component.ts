@@ -3,9 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ReviewService } from '../core/review/review.service';
 import { IReview } from '../core/review/review.model';
-import jwt_decode from 'jwt-decode';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import {AuthService} from "../core/auth/auth.service";
 import { IProperty } from '../core/property/property.model';
 
@@ -30,7 +27,7 @@ export class ReviewFormComponent implements OnInit {
   ngOnInit(): void {
     this.reviewForm = this.formBuilder.group({
       rating: [3, Validators.required], // Set the default rating to 3 stars
-      review_text: ['', Validators.required],
+      reviewText: ['', Validators.required],
       image: ['']
     });
     if (this.review) {
@@ -53,9 +50,9 @@ export class ReviewFormComponent implements OnInit {
   onSubmit(): void {
     const reviewData: IReview = {
       ...this.reviewForm.value,
-      published_date: new Date(),
-      property_id: this.property.id,
-      reviewer_email: this.authService.profile!.email
+      publishedDate: new Date(),
+      propertyId: this.property.id,
+      reviewerEmail: this.authService.profile!.email
     };
     if (!this.review) {
       this.reviewService.addReview(reviewData).subscribe(() => {

@@ -1,9 +1,9 @@
 export interface IReview {
   id: number;
   rating: number;
-  review_text: string;
-  published_date: Date;
+  reviewText: string;
+  publishedDate: Date;
   image: string;
-  property_id: number;
-  reviewer_email: string;
+  propertyId: number;
+  reviewerEmail: string;
 }

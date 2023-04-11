@@ -1,11 +1,11 @@
 export interface IReservation {
     id: number,
-    property_id :  number,
-    renter_email : string,
-    start_date : Date,
-    end_date : Date,
-    confirmed_owner : boolean,
-    confirmed_renter : boolean
+    propertyId :  number,
+    renterEmail : string,
+    startDate : Date,
+    endDate : Date,
+    confirmedOwner : boolean,
+    confirmedRenter : boolean
 }
 
 /**

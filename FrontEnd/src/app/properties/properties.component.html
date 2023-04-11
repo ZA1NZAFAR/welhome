@@ -22,9 +22,9 @@
         <h1> {{this.propertyData.title}}</h1>
         <p> <strong> Description : </strong>{{ this.propertyData.description }}</p>
         <p><strong> Location : </strong>{{ this.propertyData.city}}, {{ this.propertyData.country}} </p>
-        <p> <strong> Area : </strong>{{ this.propertyData.surface_area}}</p>
+        <p> <strong> Area : </strong>{{ this.propertyData.surfaceArea}}</p>
         <p> <strong> Floors : </strong>{{ this.propertyData.floors}}</p>
-        <p> <strong> {{ this.propertyData.property_category }} capacity : </strong>{{ this.propertyData.capacity}}</p>
+        <p> <strong> {{ this.propertyData.propertyCategory }} capacity : </strong>{{ this.propertyData.capacity}}</p>
       </div>
 
       <div class="reservation-container" *ngIf="!this.isOwner && this.isRenterContext">
@@ -38,8 +38,8 @@
             <mat-form-field appearance="fill">
               <mat-label>Enter a date range</mat-label>
               <mat-date-range-input [min]="this.minStartDate" [rangePicker]="picker">
-                <input matStartDate [errorStateMatcher]="this.errorDateMatcher" placeholder="Start date" required formControlName="start_date">
-                <input matEndDate [errorStateMatcher]="this.errorDateMatcher" placeholder="End date" required formControlName="end_date">
+                <input matStartDate [errorStateMatcher]="this.errorDateMatcher" placeholder="Start date" required formControlName="startDate">
+                <input matEndDate [errorStateMatcher]="this.errorDateMatcher" placeholder="End date" required formControlName="endDate">
               </mat-date-range-input>
               <mat-error *ngIf="this.reservationGroup.hasError('required');">
                 Date is required
@@ -76,8 +76,8 @@
         <!-- Boucle pour parcourir chaque review -->
         <div *ngFor="let review of reviewData" class="review">
           <div class="review-header">
-            <span class="review-author">{{review.reviewer_email}}</span>
-            <span class="review-date">{{review.published_date}}</span>
+            <span class="review-author">{{review.reviewerEmail}}</span>
+            <span class="review-date">{{review.publishedDate}}</span>
 
             <!-- Boucle pour afficher le nombre d'étoiles correspondant à la note -->
             <div class="review-rating">
@@ -88,7 +88,7 @@
           </div>
           <div class="row">
             <div class="col">
-              <span class="col review-text">{{review.review_text}}</span>
+              <span class="col review-text">{{review.reviewText}}</span>
             </div>
             <div class="col">
               <img [src]="this.review.image" class="small-photo" (click)="this.openImage(this.review.image)">

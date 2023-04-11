@@ -32,7 +32,7 @@ export class PropertiesComponent implements OnInit, OnDestroy {
 
   minStartDate: Date;
 
-  user_email: string;
+  userEmail: string;
   getPropertySub$: Subscription;
   paramsSub$: Subscription;
   currentImageIndex: number = 0;
@@ -63,8 +63,8 @@ export class PropertiesComponent implements OnInit, OnDestroy {
     this.images = [];
     this.errorDateMatcher = new DateErrorMatcher();
     this.reservationGroup = new FormGroup({
-      start_date: new FormControl('', [Validators.required]),
-      end_date: new FormControl('', [Validators.required])
+      startDate: new FormControl('', [Validators.required]),
+      endDate: new FormControl('', [Validators.required])
     }, { validators: [this.validateDate()]});
     this.paramsSub$ = this.route.paramMap.subscribe(params => {
       const id = Number(params.get('id'));
@@ -85,18 +85,18 @@ export class PropertiesComponent implements OnInit, OnDestroy {
         });
 
         
-        if (!!this.propertyData.image_url) {
-          this.images.push(this.propertyData.image_url);
+        if (!!this.propertyData.imageUrl1) {
+          this.images.push(this.propertyData.imageUrl1);
         }
-        if (!!this.propertyData.image_url2) {
-          this.images.push(this.propertyData.image_url2);
+        if (!!this.propertyData.imageUrl2) {
+          this.images.push(this.propertyData.imageUrl2);
         }
-        if (!!this.propertyData.image_url3) {
-          this.images.push(this.propertyData.image_url3);
+        if (!!this.propertyData.imageUrl3) {
+          this.images.push(this.propertyData.imageUrl3);
         }
       });
     });
-    this.user_email = this.authService.profile?.email || '';
+    this.userEmail = this.authService.profile?.email || '';
   }
   getRatingStars(rating: number): string[] {
     const fullStars = Math.floor(rating);
@@ -112,8 +112,8 @@ export class PropertiesComponent implements OnInit, OnDestroy {
       if (!this.reservationGroup) {
         return null;
       }
-      const startDate = this.reservationGroup.value.start_date;
-      const endDate = this.reservationGroup.value.end_date;
+      const startDate = this.reservationGroup.value.startDate;
+      const endDate = this.reservationGroup.value.endDate;
       if (!startDate || !endDate) {
         return { required: true };
       }
@@ -131,8 +131,8 @@ export class PropertiesComponent implements OnInit, OnDestroy {
   }
 
   get days(): number {
-    const start = new Date(this.reservationGroup.value.start_date);
-    const end = new Date(this.reservationGroup.value.end_date);
+    const start = new Date(this.reservationGroup.value.startDate);
+    const end = new Date(this.reservationGroup.value.endDate);
     if (isNaN(start.getTime()) || isNaN(end.getTime()) || start.getTime() > end.getTime()) {
       return 0;
     }
@@ -144,7 +144,7 @@ export class PropertiesComponent implements OnInit, OnDestroy {
   }
 
   get isOwner(): boolean {
-    return this.user_email === this.propertyData.owner_email;
+    return this.userEmail === this.propertyData.ownerEmail;
   }
 
   get isRenterContext(): boolean {
@@ -175,10 +175,10 @@ export class PropertiesComponent implements OnInit, OnDestroy {
     if (this.reservationGroup.valid) {
       const reservation: IReservation = {
         ...this.reservationGroup.value,
-        renter_email: this.user_email,
-        property_id: this.propertyData.id,
-        confirmed_owner: false,
-        confirmed_renter: false
+        renterEmail: this.userEmail,
+        propertyId: this.propertyData.id,
+        confirmedOwner: false,
+        confirmedRenter: false
       }
       this.reservationService.addReservation(reservation).subscribe(() => {
         this.reservationGroup.reset();
