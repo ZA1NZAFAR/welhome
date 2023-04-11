@@ -33,7 +33,7 @@ export class ReviewFormComponent implements OnInit {
     if (this.review) {
       this.reviewForm.patchValue(this.review);
     }
-    this.setRating(this.reviewForm.controls['rating'].value);
+    this.setRating(this.reviewForm.controls['rating'].value); 
   }
   setRating(rating: number): void {
     this.rating = rating;

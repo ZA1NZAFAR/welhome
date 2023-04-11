@@ -1,11 +1,9 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { IProperty } from 'src/app/core/property/property.model'
 import { PropertyService } from 'src/app/core/property/property.service'
 import { IReview } from 'src/app/core/review/review.model';
-import { ReviewService } from 'src/app/core/review/review.service';
 import { PropertyFormComponent } from 'src/app/property-form/property-form.component';
 
 @Component({
@@ -13,14 +11,12 @@ import { PropertyFormComponent } from 'src/app/property-form/property-form.compo
   templateUrl: './host-property-card.component.html',
   styleUrls: ['./host-property-card.component.scss']
 })
-export class HostPropertyCardComponent implements OnInit, OnDestroy {
+export class HostPropertyCardComponent implements OnInit {
 
   @Input() property: IProperty;
   @Input() reviews: IReview[] | undefined;
 
   rating: string;
-
-  private reviewSubsription: Subscription;
 
   constructor(
     private propertyService: PropertyService,
@@ -38,10 +34,6 @@ export class HostPropertyCardComponent implements OnInit, OnDestroy {
     } else {
       this.rating = 'No reviews yet';
     }
-  }
-
-  ngOnDestroy(): void {
-    this.reviewSubsription.unsubscribe();
   }
   openEditForm() {
     const modal = this.modalService.open(PropertyFormComponent);

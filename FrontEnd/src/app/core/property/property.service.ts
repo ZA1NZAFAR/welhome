@@ -80,8 +80,7 @@ export class PropertyService {
   }
   addProperty(property: IProperty): Observable<IProperty> {
     return this.http.post<IProperty>(`${environment.backEndUrl}/properties`, property).pipe(map((property) => {
-      this.getProperties();
-      this.getOwnerProperties(property.ownerEmail);
+      this.getOwnerProperties(this.authService.profile!.email);
       this.toastService.showSuccess('Property added successfully');
       return property;
     }));
@@ -89,8 +88,7 @@ export class PropertyService {
 
   updateProperty(property: IProperty): Observable<IProperty> {
     return this.http.put<IProperty>(`${environment.backEndUrl}/properties/${property.id}`, property).pipe(map(() => {
-      this.getProperties();
-      this.getOwnerProperties(property.ownerEmail);
+      this.getOwnerProperties(this.authService.profile!.email);
       this.toastService.showSuccess('Property updated successfully');
       return property;
     }));
@@ -98,7 +96,6 @@ export class PropertyService {
 
   deleteProperty(propertyId: number): Observable<boolean> {
     return this.http.delete(`${environment.backEndUrl}/properties/${propertyId}`).pipe(map(() => {
-      this.getProperties();
       this.getOwnerProperties(this.authService.profile!.email);
       this.toastService.showSuccess('Property deleted successfully');
       return true;
