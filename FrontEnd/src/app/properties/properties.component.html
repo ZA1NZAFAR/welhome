@@ -14,7 +14,7 @@
             class="small-photo"
             (click)="this.currentImageIndex = i">
       </div>
-      <button id="next-btn" (click)="nextImage()"><i class="fas fa-exchange-alt"></i></button>
+      <button id="next-btn" (click)="nextImage()"><fa-icon [icon]="faExchangeAlt"></fa-icon></button>
     </div>
 
     <div class="left-div">
@@ -59,7 +59,7 @@
 
         <div class="btn-container" *ngIf="this.userIsLoggedIn;">
           <div class="btn-container">
-            <button class="reservation-btn" (click)="this.reserveProperty()" [disabled]="!this.reservationGroup.valid"><i class="fas fa-check"></i></button>
+            <button class="reservation-btn" (click)="this.reserveProperty()" [disabled]="!this.reservationGroup.valid"><fa-icon [icon]="faCheck"></fa-icon></button>
           </div>
         </div>
         <div class="btn-container" *ngIf="!this.userIsLoggedIn;">
@@ -81,7 +81,7 @@
 
             <!-- Boucle pour afficher le nombre d'étoiles correspondant à la note -->
             <div class="review-rating">
-              <i *ngFor="let star of getRatingStars(review.rating)" [class]="star"></i>
+              <fa-icon *ngFor="let star of getRatingStars(review.rating)" [icon]="star"></fa-icon>
             </div>
             
 

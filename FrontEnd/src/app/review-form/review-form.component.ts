@@ -5,6 +5,7 @@ import { ReviewService } from '../core/review/review.service';
 import { IReview } from '../core/review/review.model';
 import {AuthService} from "../core/auth/auth.service";
 import { IProperty } from '../core/property/property.model';
+import { faStar } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'app-review-form',
@@ -12,6 +13,7 @@ import { IProperty } from '../core/property/property.model';
   styleUrls: ['./review-form.component.scss']
 })
 export class ReviewFormComponent implements OnInit {
+  faStar = faStar;
   @Input() property: IProperty;
   @Input() review: IReview;
   reviewForm: FormGroup;
