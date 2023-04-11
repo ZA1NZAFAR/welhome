@@ -33,6 +33,7 @@ export class ReviewFormComponent implements OnInit {
     if (this.review) {
       this.reviewForm.patchValue(this.review);
     }
+    this.setRating(this.reviewForm.controls['rating'].value);
   }
   setRating(rating: number): void {
     this.rating = rating;
@@ -66,21 +67,4 @@ export class ReviewFormComponent implements OnInit {
     }
     
   }
-
-
-
-  handleImageUpload(event: Event) {
-    const target = event.target as HTMLInputElement;
-    const file: File = (target.files as FileList)[0];
-
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    console.log(reader);
-    reader.onload = () => {
-      this.reviewForm.patchValue({
-        image: reader.result
-      });
-    };
-  }
-
 }

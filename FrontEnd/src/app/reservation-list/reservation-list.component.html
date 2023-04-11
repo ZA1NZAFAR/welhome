@@ -19,7 +19,8 @@
             class="p-2"
             [reservation]='reservation'
             [property]='this.getProperty(reservation.propertyId)'
-            [status]="this.getStatus(reservation)">
+            [status]="this.getStatus(reservation)"
+            [review]="this.reviewMap.get(reservation.id)">
           </app-reservation-card>
         </ng-template>
       </div>

@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable, Subject, Subscription, catchError, map } f
 import { ToastService } from 'src/app/utils/toast/toast.service'
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../auth/auth.service';
+import { IQuery } from '../query.model';
 
 @Injectable({
   providedIn: 'root'
@@ -62,8 +63,9 @@ export class PropertyService {
       this.ownerPropertySubscription.unsubscribe();
     }
     this.ownerPropertyLoadingSubject.next(true);
-    this.ownerPropertySubscription = this.http.get<IProperty[]>(`${environment.backEndUrl}/properties/property?owner_email=${ownerEmail}`)
-      .subscribe((properties) => {
+    this.ownerPropertySubscription = this.http.get<IQuery>(`${environment.backEndUrl}/queries/owner_booked_properties?owner_email=${ownerEmail}`)
+      .subscribe((queryResults) => {
+        const properties = queryResults.properties;
         this.ownerPropertySubject.next(properties);
         this.ownerPropertyLoadingSubject.next(false);
     });
