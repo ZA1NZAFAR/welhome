@@ -46,7 +46,7 @@ export class PropertyFormComponent implements OnInit {
       constructionDate: new FormControl(''),
       imageUrl1: new FormControl(''),
       imageUrl2: new FormControl(''),
-      imageUrl3: new FormControl(''),
+      imageUrl3: new FormControl('')
     });
 
     if (this.selectedProperty) {
