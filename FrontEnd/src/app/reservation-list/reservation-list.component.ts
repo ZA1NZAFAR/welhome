@@ -7,6 +7,8 @@ import { IProperty } from '../core/property/property.model'
 import { ContextService } from '../core/context/context.service';
 import { Observable, Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
+import { ReviewService } from '../core/review/review.service';
+import { IReview } from '../core/review/review.model';
 
 @Component({
   selector: 'app-reservation-list',
@@ -16,8 +18,11 @@ import { FormControl } from '@angular/forms';
 export class ReservationListComponent implements OnInit, OnDestroy {
   reservations: IReservation[] = [];
   propertyMap: Map<number, IProperty> = new Map();
+  reviewMap: Map<number, IReview> = new Map();
   private propertySubscription: Subscription;
   private reservationSubscription: Subscription;
+
+  private reviewSub$: Subscription;
 
   filterControl: FormControl;
 
@@ -28,7 +33,8 @@ export class ReservationListComponent implements OnInit, OnDestroy {
     private reservationService: ReservationService,
     private propertyService: PropertyService,
     private authService: AuthService,
-    private contextService: ContextService
+    private contextService: ContextService,
+    private reviewService: ReviewService
   ) {
 
   }
@@ -102,13 +108,25 @@ export class ReservationListComponent implements OnInit, OnDestroy {
     this.filterControl = new FormControl(['Confirmed', 'Pending', 'Rejected', 'Cancelled', 'Completed']);
     const userEmail = this.authService.profile!.email;
     this.ownerPropertyLoadingObservable$ = this.propertyService.getOwnerProperties(userEmail).getOwnerPropertyLoadingObservable();
-    this.reservationLoadingObservable$ = this.reservationService.getReservations().getReservationLoadingObservable();
+    const reservationObservable = this.contextService.isRenter ? this.reservationService.getReservations().getReservationObservable() : this.reservationService.getOwnerReservations().getOwnerReservationObservable();
+    this.reservationLoadingObservable$ = this.reservationService.getReservationLoadingObservable();
 
-    this.reservationSubscription = this.reservationService.getReservations()
-      .getReservationObservable()
-      .subscribe((reservations) => {
-        this.reservations = reservations;
+    this.reservationSubscription = reservationObservable.subscribe((reservation) => {
+      this.reservations = reservation;
+    });
+
+    this.reviewSub$ = this.reviewService.getReviews().subscribe(reviews => {
+      this.reviewMap.clear();
+      reviews.forEach(review => {
+        const email = review.reviewerEmail;
+        const reservation = this.reservations.find(reservation => reservation.renterEmail === email);
+        if (reservation) {
+          this.reviewMap.set(reservation.id, review);
+        }
       });
+    });
+
+
 
     const propertyObservable = this.contextService.isRenter ? this.propertyService.getProperties().getPropertyObservable() : this.propertyService.getOwnerProperties(userEmail).getOwnerPropertyObservable();
     this.propertySubscription = propertyObservable.subscribe((properties) => {
@@ -117,6 +135,8 @@ export class ReservationListComponent implements OnInit, OnDestroy {
         this.propertyMap.set(property.id, property);
       });
     });
+
+
   }
 
   ngOnDestroy(): void {

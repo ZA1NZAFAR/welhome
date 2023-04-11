@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  authUrl: 'http://localhost:3001',
+  authUrl: 'http://localhost:3001', //'https://backend.zain.ovh',
   backEndUrl: 'http://zain.ovh:9092/api' //'http://localhost:9092',
 };
 

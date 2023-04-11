@@ -6,6 +6,7 @@ import { ToastService } from 'src/app/utils/toast/toast.service'
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../auth/auth.service';
 import { ContextService } from '../context/context.service';
+import { IQuery } from '../query.model';
 
 @Injectable({
   providedIn: 'root'
@@ -68,8 +69,10 @@ export class ReservationService {
         this.ownerReservationsSubscription.unsubscribe();
       }
       this.ownerReservationsLoading.next(true);
-      this.ownerReservationsSubscription = this.http.get<IReservation[]>(`${environment.backEndUrl}/reservations?owner_email=${this.authService.profile!.email}`)
-        .subscribe((reservations) => {
+      this.ownerReservationsSubscription = this.http.get<IQuery>(`${environment.backEndUrl}/queries/owner_booked_properties?owner_email=${this.authService.profile!.email}`)
+        .subscribe((queryResults) => {
+          let reservations = queryResults.bookings;
+
           if (propertyId > 0) {
             reservations = reservations.filter(reservation => reservation.propertyId === propertyId);
           }

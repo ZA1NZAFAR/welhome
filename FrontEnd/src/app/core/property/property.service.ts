@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable, Subject, Subscription, catchError, map } f
 import { ToastService } from 'src/app/utils/toast/toast.service'
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../auth/auth.service';
+import { IQuery } from '../query.model';
 
 @Injectable({
   providedIn: 'root'
@@ -62,8 +63,9 @@ export class PropertyService {
       this.ownerPropertySubscription.unsubscribe();
     }
     this.ownerPropertyLoadingSubject.next(true);
-    this.ownerPropertySubscription = this.http.get<IProperty[]>(`${environment.backEndUrl}/properties/property?owner_email=${ownerEmail}`)
-      .subscribe((properties) => {
+    this.ownerPropertySubscription = this.http.get<IQuery>(`${environment.backEndUrl}/queries/owner_booked_properties?owner_email=${ownerEmail}`)
+      .subscribe((queryResults) => {
+        const properties = queryResults.properties;
         this.ownerPropertySubject.next(properties);
         this.ownerPropertyLoadingSubject.next(false);
     });
@@ -78,8 +80,7 @@ export class PropertyService {
   }
   addProperty(property: IProperty): Observable<IProperty> {
     return this.http.post<IProperty>(`${environment.backEndUrl}/properties`, property).pipe(map((property) => {
-      this.getProperties();
-      this.getOwnerProperties(property.ownerEmail);
+      this.getOwnerProperties(this.authService.profile!.email);
       this.toastService.showSuccess('Property added successfully');
       return property;
     }));
@@ -87,8 +88,7 @@ export class PropertyService {
 
   updateProperty(property: IProperty): Observable<IProperty> {
     return this.http.put<IProperty>(`${environment.backEndUrl}/properties/${property.id}`, property).pipe(map(() => {
-      this.getProperties();
-      this.getOwnerProperties(property.ownerEmail);
+      this.getOwnerProperties(this.authService.profile!.email);
       this.toastService.showSuccess('Property updated successfully');
       return property;
     }));
@@ -96,7 +96,6 @@ export class PropertyService {
 
   deleteProperty(propertyId: number): Observable<boolean> {
     return this.http.delete(`${environment.backEndUrl}/properties/${propertyId}`).pipe(map(() => {
-      this.getProperties();
       this.getOwnerProperties(this.authService.profile!.email);
       this.toastService.showSuccess('Property deleted successfully');
       return true;

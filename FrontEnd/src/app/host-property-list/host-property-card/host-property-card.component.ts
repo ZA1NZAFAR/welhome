@@ -1,10 +1,9 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { IProperty } from 'src/app/core/property/property.model'
 import { PropertyService } from 'src/app/core/property/property.service'
-import { ReviewService } from 'src/app/core/review/review.service';
+import { IReview } from 'src/app/core/review/review.model';
 import { PropertyFormComponent } from 'src/app/property-form/property-form.component';
 
 @Component({
@@ -12,37 +11,29 @@ import { PropertyFormComponent } from 'src/app/property-form/property-form.compo
   templateUrl: './host-property-card.component.html',
   styleUrls: ['./host-property-card.component.scss']
 })
-export class HostPropertyCardComponent implements OnInit, OnDestroy {
+export class HostPropertyCardComponent implements OnInit {
 
   @Input() property: IProperty;
+  @Input() reviews: IReview[] | undefined;
 
   rating: string;
-
-  private reviewSubsription: Subscription;
 
   constructor(
     private propertyService: PropertyService,
     private modalService: NgbModal,
-    private authService: AuthService,
-    private reviewService: ReviewService
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
-    this.reviewSubsription = this.reviewService.getPropertyReviews(this.property.id).subscribe((reviews) => {
-      if (reviews.length > 0) {
-        let total = 0;
-        reviews.forEach((review) => {
+    if (this.reviews && this.reviews.length > 0) {
+      let total = 0;
+        this.reviews.forEach((review) => {
           total += review.rating;
         });
-        this.rating = `${(total / reviews.length).toFixed(1)} (${reviews.length})`;
-      } else {
-        this.rating = 'No reviews yet';
-      }
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.reviewSubsription.unsubscribe();
+        this.rating = `${(total / this.reviews.length).toFixed(1)} (${this.reviews.length})`;
+    } else {
+      this.rating = 'No reviews yet';
+    }
   }
   openEditForm() {
     const modal = this.modalService.open(PropertyFormComponent);

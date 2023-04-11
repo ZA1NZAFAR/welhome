@@ -1,9 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { IProperty } from 'src/app/core/property/property.model'
-import { PropertyService } from 'src/app/core/property/property.service'
 import { IReservation } from 'src/app/core/reservation/reservation.model';
 import { ReservationService } from 'src/app/core/reservation/reservation.service'
-import { ActivatedRoute, Router } from '@angular/router';
+import {  Router } from '@angular/router';
 import { ReviewService } from 'src/app/core/review/review.service';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { ContextService } from 'src/app/core/context/context.service';
@@ -21,13 +20,12 @@ export class ReservationCardComponent implements OnInit {
   @Input() property: IProperty;
   @Input() status: string = 'Error';
 
-  review: IReview;
+  @Input() review: IReview | undefined;
 
   constructor(
     private modalService: NgbModal,
     private reservationService: ReservationService,
     private router: Router,
-    private reviewService: ReviewService,
     private authService: AuthService,
     private contextService: ContextService
   ) { }
@@ -35,13 +33,6 @@ export class ReservationCardComponent implements OnInit {
 
   ngOnInit() {
     const email = this.contextService.isRenter ? this.authService.profile!.email : this.reservation.renterEmail;
-    const reviewSub$ = this.reviewService.getPropertyReviews(this.property.id).subscribe(reviews => {
-      const review = reviews.find(r => r.reviewerEmail === email);
-      if (review) {
-        this.review = review;
-      }
-      reviewSub$.unsubscribe();
-    });
   }
 
   get canReview(): boolean {

@@ -15,7 +15,6 @@ import { ToastComponent } from './utils/toast/toast.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { AuthInterceptor } from './core/auth/auth.interceptor';
 import { ErrorInterceptor } from './core/error/error.interceptor';
-import {ReviewFormComponent} from "./review-form/review-form.component";
 import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({

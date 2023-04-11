@@ -19,7 +19,7 @@
         <button *ngIf="this.canConfirm" type="button" class="btn col-12 btn-info" (click)="this.submitConfirm()">
           Confirm
         </button>
-        <button *ngIf="this.canReject" type="button" class="btn col-12 btn-danger" (click)="this.submitReject">
+        <button *ngIf="this.canReject" type="button" class="btn col-12 btn-danger" (click)="this.submitReject()">
           Cancel
         </button>
         <button *ngIf="this.canReview" class="btn col-12 btn-primary" (click)="this.openReviewForm()">

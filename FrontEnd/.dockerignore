@@ -6,3 +6,5 @@ node_modules/
 docker-compose.yml
 Dockerfile
 .Dockerignore
+mockBackend*
+karma.conf.js
