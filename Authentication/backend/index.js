@@ -89,13 +89,14 @@ app.get('/auth/google/callback', async (req, res) => {
     } else {
       // Send access token to parent window with postMessage
       const accessToken = tokens.access_token;
+      const userEmail = data.email;
       const message = {
         type: 'access_token',
-        data: { accessToken },
+        data: { accessToken, userEmail },
       };
       const parentUrl = new URL(req.headers.referer).origin;
       // res.send(`<script>window.opener.postMessage(${JSON.stringify(message)}, 'https://frontend.zain.ovh/'); window.close();</script>`);
-      res.send(`<script>window.parent.postMessage(${JSON.stringify(message)}, ${parentUrl}'); window.close();</script>`);
+      res.send(`<script>window.parent.postMessage(${JSON.stringify(message)}, '${parentUrl}');</script>`);
     }
   } catch (error) {
     console.error(error);
@@ -159,6 +160,7 @@ app.get('/auth/refresh-token', async (req, res) => {
 
 
 // frontend calls this endpoint with the access token in the header of the request to check token's validity
+
 app.post('/checkToken', async (req, res) => {
   const authHeader = req.headers.authorization;
 
@@ -171,17 +173,20 @@ app.post('/checkToken', async (req, res) => {
   const token = authHeader.split(' ')[1];
 
   try {
-    // Verify the token signature and decode its payload
-    const decodedToken = jwt.verify(token, secretKey);
+    // Verify the token using Google's token validation endpoint
+    const { data } = await axios.post('https://oauth2.googleapis.com/tokeninfo', {
+      access_token: token,
+    });
 
-    // // Check if the token belongs to the right user (you could check this against your database)
-    // if (decodedToken.userId !== req.user.id) {
-    //   return res.status(401).json({ message: 'Unauthorized' });
-    // }
+    // Check the audience (aud claim) to ensure it matches your client ID
+    const clientId = "203530020577-ngl05517r4rdn6fv8nudhgaod7p8itrt.apps.googleusercontent.com"; // Replace with your Google Client ID
+    if (data.aud !== clientId) {
+      return res.status(401).json({ message: 'Invalid audience' });
+    }
 
-    // Check if the token is still valid (i.e., has not expired)
-    if (decodedToken.exp < Date.now() / 1000) {
-      return res.status(401).json({ message: 'Token has expired' });
+    // Check the issuer (iss claim) to ensure it's from a trusted authorization server
+    if (data.iss !== 'accounts.google.com' && data.iss !== 'https://accounts.google.com') {
+      return res.status(401).json({ message: 'Invalid issuer' });
     }
 
     // Token is valid
@@ -191,6 +196,7 @@ app.post('/checkToken', async (req, res) => {
     return res.status(401).json({ message: 'Token is invalid' });
   }
 });
+
   
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {

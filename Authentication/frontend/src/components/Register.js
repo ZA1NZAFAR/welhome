@@ -115,8 +115,8 @@ const Register = (props) => {
       if (response.ok) {
         // Send the access token to the main window using postMessage
         // Try one or the other if it doesn't work
-        window.opener.postMessage({ type: 'access_token', data: { accessToken } }, "https://backend.zain.ovh/auth/google/callback");
-        //window.parent.postMessage({ type: 'access_token', data: { accessToken } }, "https://backend.zain.ovh/auth/google/callback");
+        window.opener.postMessage({ type: 'access_token', data: { accessToken, email } }, "https://backend.zain.ovh/auth/google/callback");
+        //window.parent.postMessage({ type: 'access_token', data: { accessToken, email } }, "https://backend.zain.ovh/auth/google/callback");
         
         // Close the popup window
         window.close();
