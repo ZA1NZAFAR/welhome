@@ -38,7 +38,9 @@ export class HostPropertyListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const userEmail = this.authService.profile!.email;
     this.ownerPropertyLoadingObservable$ = this.propertyService.getOwnerPropertyLoadingObservable();
-    this.getOwnerPropertiesSub$ = this.propertyService.getOwnerProperties(userEmail).getOwnerPropertyObservable().subscribe((properties) => {
+    this.propertyService.getOwnerProperties(userEmail);
+    this.getOwnerPropertiesSub$ = this.propertyService.getOwnerPropertyObservable().subscribe((properties) => {
+      console.log(properties);
       this.propertyMap.clear();
       properties.forEach((property: IProperty) => {
         if (property.ownerEmail === userEmail) {

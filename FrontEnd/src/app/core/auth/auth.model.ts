@@ -1,5 +1,3 @@
-import { JwtPayload } from 'jwt-decode'
-
 export interface IProfile {
   email: string;
   firstName?: string;
@@ -9,8 +7,6 @@ export interface IProfile {
   gender?: 'Male' | 'Female' | 'Non-Binary'
   registrationDate?: Date;
 }
-
-export type ITokenPayload = IProfile & JwtPayload;
 
 /**
  * CREATE TABLE profile

@@ -14,6 +14,8 @@ import {IReview} from "../core/review/review.model";
 import {ReviewService} from "../core/review/review.service";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ReviewModalComponent } from './review-modal/review-modal.component';
+import { IconDefinition, faStar } from '@fortawesome/free-regular-svg-icons';
+import { faStar as faSolidStar, faStarHalfAlt, faCheck, faExchangeAlt } from '@fortawesome/free-solid-svg-icons';
 
 class DateErrorMatcher implements ErrorStateMatcher {
   isErrorState(control: AbstractControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -27,6 +29,8 @@ class DateErrorMatcher implements ErrorStateMatcher {
   providers:[ { provide: MAT_DATE_LOCALE, useValue: 'fr' } ]
 })
 export class PropertiesComponent implements OnInit, OnDestroy {
+  faCheck = faCheck;
+  faExchangeAlt = faExchangeAlt;
   propertyData: IProperty;
   reviewData: IReview[] = [];
 
@@ -98,13 +102,13 @@ export class PropertiesComponent implements OnInit, OnDestroy {
     });
     this.userEmail = this.authService.profile?.email || '';
   }
-  getRatingStars(rating: number): string[] {
+  getRatingStars(rating: number): IconDefinition[] {
     const fullStars = Math.floor(rating);
     const halfStar = rating % 1 >= 0.5 ? 1 : 0;
     const emptyStars = 5 - fullStars - halfStar;
-    return Array(fullStars).fill('fas fa-star')
-      .concat(Array(halfStar).fill('fas fa-star-half-alt'))
-      .concat(Array(emptyStars).fill('far fa-star'));
+    return Array(fullStars).fill(faSolidStar)
+      .concat(Array(halfStar).fill(faStarHalfAlt))
+      .concat(Array(emptyStars).fill(faStar));
   }
 
   validateDate(): ValidatorFn {

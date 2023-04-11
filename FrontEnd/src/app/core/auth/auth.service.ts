@@ -1,7 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
-import { Router } from '@angular/router'
-import jwtDecode, { JwtPayload } from 'jwt-decode';
-import { IProfile, ITokenPayload } from './auth.model'
+import { Router } from '@angular/router';
+import { IProfile } from './auth.model';
 import { environment } from 'src/environments/environment';
 import { ToastService } from 'src/app/utils/toast/toast.service'
 import { ContextService } from '../context/context.service';
@@ -36,11 +35,6 @@ export class AuthService implements OnInit {
       "exp": 1716239022
     }
    */
-  private _token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InphaW4uemFmYXJAZ21haWwuY29tIiwiZmlyc3RfbmFtZSI6IlphaW4iLCJsYXN0X25hbWUiOiJaYWZhciIsImJpcnRoX2RhdGUiOiIwMS8wMS8yMDAwIiwicGhvbmVfbnVtYmVyIjoiMDEyMzQ1Njc4OSIsImdlbmRlciI6Ik1hbGUiLCJpYXQiOjE2NzUyMzkwMjIsImV4cCI6MTcxNjIzOTAyMn0.IW6M5wQBx9iaYlMp1463W8KUMrn965H75mNVuX7Xptk';
-  private async _mockLogin(): Promise<string> {
-    return this._token;
-  }
-
   private get _email(): string {
     return localStorage.getItem('email') || '';
   };
@@ -105,6 +99,7 @@ export class AuthService implements OnInit {
     this.toast.showInfo('Logged out');
     this.contextService.setContext('RENTER')
     localStorage.removeItem('token');
+    localStorage.removeItem('email');
     this.router.navigate(['/']);
   }
 

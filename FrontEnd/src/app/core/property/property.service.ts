@@ -65,6 +65,7 @@ export class PropertyService {
     this.ownerPropertyLoadingSubject.next(true);
     this.ownerPropertySubscription = this.http.get<IQuery>(`${environment.backEndUrl}/queries/owner_booked_properties?owner_email=${ownerEmail}`)
       .subscribe((queryResults) => {
+        console.log(queryResults);
         const properties = queryResults.properties;
         this.ownerPropertySubject.next(properties);
         this.ownerPropertyLoadingSubject.next(false);
