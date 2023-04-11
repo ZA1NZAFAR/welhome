@@ -47,7 +47,7 @@ export class HostPropertyCardComponent implements OnInit, OnDestroy {
   openEditForm() {
     const modal = this.modalService.open(PropertyFormComponent);
     modal.componentInstance.selectedProperty = this.property;
-    modal.componentInstance.owner_email = this.authService.profile!.email;
+    modal.componentInstance.ownerEmail = this.authService.profile!.email;
   }
 
 

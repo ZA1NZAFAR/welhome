@@ -34,9 +34,9 @@ export class ReservationCardComponent implements OnInit {
 
 
   ngOnInit() {
-    const email = this.contextService.isRenter ? this.authService.profile!.email : this.reservation.renter_email;
+    const email = this.contextService.isRenter ? this.authService.profile!.email : this.reservation.renterEmail;
     const reviewSub$ = this.reviewService.getPropertyReviews(this.property.id).subscribe(reviews => {
-      const review = reviews.find(r => r.reviewer_email === email);
+      const review = reviews.find(r => r.reviewerEmail === email);
       if (review) {
         this.review = review;
       }
@@ -94,8 +94,8 @@ export class ReservationCardComponent implements OnInit {
     if (!this.canConfirm) {
       return;
     }
-    this.reservation.confirmed_owner = true;
-    this.reservation.confirmed_renter = true;
+    this.reservation.confirmedOwner = true;
+    this.reservation.confirmedRenter = true;
     this.reservationService.updateReservation(this.reservation).subscribe();
   }
 
@@ -104,11 +104,11 @@ export class ReservationCardComponent implements OnInit {
       return;
     }
     if (this.contextService.isRenter) {
-      this.reservation.confirmed_renter = false;
-      this.reservation.confirmed_owner = true;
+      this.reservation.confirmedRenter = false;
+      this.reservation.confirmedOwner = true;
     } else {
-      this.reservation.confirmed_renter = true;
-      this.reservation.confirmed_owner = false;
+      this.reservation.confirmedRenter = true;
+      this.reservation.confirmedOwner = false;
     }
     this.reservationService.updateReservation(this.reservation).subscribe();
   }

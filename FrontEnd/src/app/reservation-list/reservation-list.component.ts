@@ -42,19 +42,19 @@ export class ReservationListComponent implements OnInit, OnDestroy {
   }
 
   getStatus(reservation: IReservation): string {
-    if (!reservation.confirmed_owner && reservation.confirmed_renter) {
+    if (!reservation.confirmedOwner && reservation.confirmedRenter) {
       return 'Rejected';
     }
-    if (!reservation.confirmed_renter && reservation.confirmed_owner) {
+    if (!reservation.confirmedRenter && reservation.confirmedOwner) {
       return 'Cancelled';
     }
-    if (new Date(reservation.end_date) < new Date()) {
-      if (reservation.confirmed_renter && reservation.confirmed_owner) {
+    if (new Date(reservation.endDate) < new Date()) {
+      if (reservation.confirmedRenter && reservation.confirmedOwner) {
         return 'Completed';
       }
       return 'Rejected';
     }
-    if (reservation.confirmed_renter && reservation.confirmed_owner) {
+    if (reservation.confirmedRenter && reservation.confirmedOwner) {
       return 'Confirmed';
     }
     return 'Pending';

@@ -71,7 +71,7 @@ export class ReservationService {
       this.ownerReservationsSubscription = this.http.get<IReservation[]>(`${environment.backEndUrl}/reservations?owner_email=${this.authService.profile!.email}`)
         .subscribe((reservations) => {
           if (propertyId > 0) {
-            reservations = reservations.filter(reservation => reservation.property_id === propertyId);
+            reservations = reservations.filter(reservation => reservation.propertyId === propertyId);
           }
           this.ownerReservations.next(reservations);
           this.ownerReservationsLoading.next(false);

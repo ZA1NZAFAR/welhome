@@ -13,14 +13,14 @@ import { PropertyService } from 'src/app/core/property/property.service';
 })
 export class PropertyFormComponent implements OnInit {
   propertyGroup: FormGroup;
-  @Input() owner_email: string;
+  @Input() ownerEmail: string;
 
   @Input() selectedProperty: IProperty;
 
   imageIsFile = {
-    image_url: false,
-    image_url2: false,
-    image_url3: false
+    imageUrl1: false,
+    imageUrl2: false,
+    imageUrl3: false
   };
 
   constructor(
@@ -34,19 +34,19 @@ export class PropertyFormComponent implements OnInit {
     this.propertyGroup = new FormGroup({
       title: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required]),
-      property_category: new FormControl('House', [Validators.required, this.categoryValidator]),
+      propertyCategory: new FormControl('House', [Validators.required, this.categoryValidator]),
       address: new FormControl('', [Validators.required]),
       city: new FormControl('', [Validators.required]),
       state: new FormControl(''),
       country: new FormControl('', [Validators.required]),
       price: new FormControl('', [Validators.required, Validators.min(0)]),
-      surface_area: new FormControl('', [Validators.required, Validators.min(0)]),
+      surfaceArea: new FormControl('', [Validators.required, Validators.min(0)]),
       floors: new FormControl('', [Validators.required]),
       capacity: new FormControl('', [Validators.required, Validators.min(0)]),
-      construction_date: new FormControl(''),
-      image_url: new FormControl(''),
-      image_url2: new FormControl(''),
-      image_url3: new FormControl(''),
+      constructionDate: new FormControl(''),
+      imageUrl1: new FormControl(''),
+      imageUrl2: new FormControl(''),
+      imageUrl3: new FormControl(''),
     });
 
     if (this.selectedProperty) {
@@ -67,11 +67,14 @@ export class PropertyFormComponent implements OnInit {
 
   submitForm() {
     if (this.propertyGroup.valid) {
+      const constructionDate = new Date(this.propertyGroup.controls['constructionDate'].value).toISOString();
       const property: IProperty = {
         ...this.propertyGroup.value,
-        owner_email: this.owner_email,
+        constructionDate,
+        ownerEmail: this.ownerEmail,
         id: this.selectedProperty?.id
       };
+      console.log(property);
       if (this.selectedProperty) {
         this.propertyService.updateProperty(property).subscribe(() => {
           this.activeModal.close();
@@ -84,7 +87,7 @@ export class PropertyFormComponent implements OnInit {
     }
   }
 
-  handleImageUpload(event: Event, control: 'image_url' | 'image_url2' | 'image_url3') {
+  handleImageUpload(event: Event, control: 'imageUrl1' | 'imageUrl2' | 'imageUrl3') {
     const target = event.target as HTMLInputElement;
     const file: File = (target.files as FileList)[0];
 
@@ -96,7 +99,7 @@ export class PropertyFormComponent implements OnInit {
     };
   }
 
-  toggleUploadImage(control: 'image_url' | 'image_url2' | 'image_url3') {
+  toggleUploadImage(control: 'imageUrl1' | 'imageUrl2' | 'imageUrl3') {
     this.propertyGroup.controls[control].setValue('');
     this.imageIsFile[control] = !this.imageIsFile[control];
   }

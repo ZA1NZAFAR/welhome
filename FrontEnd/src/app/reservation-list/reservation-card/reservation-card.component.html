@@ -1,15 +1,15 @@
 <div class="reservation-card">
   <div class="row">
   <div class="col-md-3">
-    <img src="{{ this.property.image_url }}" alt="Reservation image" class="img-thumbnail photo-thumbnail">
+    <img src="{{ this.property.imageUrl1 }}" alt="Reservation image" class="img-thumbnail photo-thumbnail">
   </div>
 
   <div class="col-md-7 infos">
     <h1>{{ this.property.title }}</h1>
     <p><strong>Location:</strong> {{ this.property.city }}</p>
-    <p><strong>Area:</strong> {{ this.property.surface_area }} m²</p>
-    <p><strong>Arrival:</strong> {{ this.reservation.start_date | date: 'dd/MM/yyyy' }} </p>
-    <p><strong>Departure:</strong> {{ this.reservation.end_date | date: 'dd/MM/yyyy' }} </p>
+    <p><strong>Area:</strong> {{ this.property.surfaceArea }} m²</p>
+    <p><strong>Arrival:</strong> {{ this.reservation.startDate | date: 'dd/MM/yyyy' }} </p>
+    <p><strong>Departure:</strong> {{ this.reservation.endDate | date: 'dd/MM/yyyy' }} </p>
     <p><strong>Status: </strong><span [ngClass]="this.textClass">{{ this.status }}</span></p>
     <p><strong>{{ this.ratingDescription }}:</strong> {{ this.ratingText }}</p>
   </div>
