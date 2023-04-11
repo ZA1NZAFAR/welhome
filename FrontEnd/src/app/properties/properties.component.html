@@ -37,15 +37,18 @@
           <form class="col-lg-6" [formGroup]="this.reservationGroup">
             <mat-form-field appearance="fill">
               <mat-label>Enter a date range</mat-label>
-              <mat-date-range-input [rangePicker]="picker">
-                <input matStartDate placeholder="Start date" required formControlName="start_date">
-                <input matEndDate placeholder="End date" required formControlName="end_date">
+              <mat-date-range-input [min]="this.minStartDate" [rangePicker]="picker">
+                <input matStartDate [errorStateMatcher]="this.errorDateMatcher" placeholder="Start date" required formControlName="start_date">
+                <input matEndDate [errorStateMatcher]="this.errorDateMatcher" placeholder="End date" required formControlName="end_date">
               </mat-date-range-input>
-              <mat-error *ngIf="this.dateRequiredError">
+              <mat-error *ngIf="this.reservationGroup.hasError('required');">
                 Date is required
               </mat-error>
-              <mat-error *ngIf="this.dateMinimumError">
-                Date must be after today
+              <mat-error *ngIf="this.reservationGroup.hasError('dayMinimum');">
+                The duration must be at least one day
+              </mat-error>
+              <mat-error *ngIf="this.reservationGroup.hasError('invalidDate');">
+                The duration must be at most 30 days
               </mat-error>
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-date-range-picker #picker></mat-date-range-picker>

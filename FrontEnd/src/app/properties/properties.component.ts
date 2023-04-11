@@ -5,8 +5,8 @@ import { IProperty } from 'src/app/core/property/property.model';
 import { PropertyService } from 'src/app/core/property/property.service';
 import { Location } from '@angular/common';
 import { AuthService } from '../core/auth/auth.service'
-import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
+import { AbstractControl, FormControl, FormGroup, FormGroupDirective, NgForm, ValidatorFn, Validators } from '@angular/forms';
+import { DateAdapter, ErrorStateMatcher, MAT_DATE_LOCALE } from '@angular/material/core';
 import { ReservationService } from '../core/reservation/reservation.service';
 import { IReservation } from '../core/reservation/reservation.model';
 import { ContextService } from '../core/context/context.service';
@@ -14,6 +14,12 @@ import {IReview} from "../core/review/review.model";
 import {ReviewService} from "../core/review/review.service";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ReviewModalComponent } from './review-modal/review-modal.component';
+
+class DateErrorMatcher implements ErrorStateMatcher {
+  isErrorState(control: AbstractControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    return !!control && control.touched && !!form && (form.hasError('dayMinimum') || form.hasError('required') || form.hasError('invalidDate'));
+  }
+}
 @Component({
   selector: 'app-properties',
   templateUrl: './properties.component.html',
@@ -24,6 +30,8 @@ export class PropertiesComponent implements OnInit, OnDestroy {
   propertyData: IProperty;
   reviewData: IReview[] = [];
 
+  minStartDate: Date;
+
   user_email: string;
   getPropertySub$: Subscription;
   paramsSub$: Subscription;
@@ -31,6 +39,8 @@ export class PropertiesComponent implements OnInit, OnDestroy {
   images: string[] = [];
 
   reservationGroup: FormGroup;
+
+  errorDateMatcher: DateErrorMatcher;
 
 
   constructor(
@@ -43,15 +53,19 @@ export class PropertiesComponent implements OnInit, OnDestroy {
     private adapter: DateAdapter<any>,
     private contextService: ContextService,
     private modalService: NgbModal
-  ) {}
+  ) {
+    this.minStartDate = new Date();
+    this.minStartDate.setDate(this.minStartDate.getDate() + 2);
+  }
 
   ngOnInit(): void {
     this.adapter.setLocale('fr');
     this.images = [];
+    this.errorDateMatcher = new DateErrorMatcher();
     this.reservationGroup = new FormGroup({
-      start_date: new FormControl('', [Validators.required, this.validateDate()]),
-      end_date: new FormControl('', [Validators.required, this.validateDate()])
-    });
+      start_date: new FormControl('', [Validators.required]),
+      end_date: new FormControl('', [Validators.required])
+    }, { validators: [this.validateDate()]});
     this.paramsSub$ = this.route.paramMap.subscribe(params => {
       const id = Number(params.get('id'));
       if (id === null) {
@@ -93,22 +107,24 @@ export class PropertiesComponent implements OnInit, OnDestroy {
       .concat(Array(emptyStars).fill('far fa-star'));
   }
 
-  get dateRequiredError(): boolean {
-    return this.reservationGroup.controls['start_date'].hasError('required') ||
-           this.reservationGroup.controls['end_date'].hasError('required');
-  }
-
-  get dateMinimumError(): boolean {
-    return !this.dateRequiredError && (
-      this.reservationGroup.controls['start_date'].hasError('dateMinimum') || 
-      this.reservationGroup.controls['end_date'].hasError('dateMinimum'));
-  }
-
   validateDate(): ValidatorFn {
     return (control: AbstractControl) => {
-      const date = control.value;
-      if (date !== null && date !== undefined && date < Date.now()) {
-        return { dateMinimum: true };
+      if (!this.reservationGroup) {
+        return null;
+      }
+      const startDate = this.reservationGroup.value.start_date;
+      const endDate = this.reservationGroup.value.end_date;
+      if (!startDate || !endDate) {
+        return { required: true };
+      }
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      if (isNaN(start.getTime()) || isNaN(end.getTime())){
+        return { invalidDate: true };
+      }
+      const days = (end.getTime() - start.getTime()) / (1000 * 3600 * 24);
+      if (days < 1) {
+        return { dayMinimum: true };
       }
       return null;
     };
