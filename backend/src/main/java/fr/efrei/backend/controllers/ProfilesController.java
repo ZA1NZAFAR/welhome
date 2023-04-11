@@ -32,7 +32,7 @@ public class ProfilesController {
         listGenerator = new ResponseGenerator<>();
         generator = new ResponseGenerator<>();
     }
-
+    
     @GetMapping
     @Operation(summary = "This endpoint allows to retrieve all user profiles")
     public ResponseEntity<List<Profile>> getUsers() {

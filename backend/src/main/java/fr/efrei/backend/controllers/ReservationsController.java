@@ -13,6 +13,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -51,9 +52,14 @@ public class ReservationsController {
     @PostMapping
     @Operation(summary = "This endpoint allows to create a new booking for a specific renter")
     @ApiResponse(responseCode = "201", description = "Creates a booking")
-    public ResponseEntity<Reservation> postReservation(@RequestBody Reservation reservation) {
-        ResponseEntity<Reservation> result = generator.buildRequest(URL, HttpMethod.POST, reservation, new ParameterizedTypeReference<Reservation>() {});
-        return result;
+    public ResponseEntity<Reservation> postReservation(HttpServletRequest request, @RequestBody Reservation reservation) {
+        String accessToken = request.getHeader("Authorization");
+        if (TokenValidationUtil.isValidToken(accessToken)) {
+            ResponseEntity<Reservation> result = generator.buildRequest(URL, HttpMethod.POST, reservation, new ParameterizedTypeReference<Reservation>() {});
+            return result;
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
     @PutMapping("/{id}")
