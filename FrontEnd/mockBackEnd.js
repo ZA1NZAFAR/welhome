@@ -9,7 +9,7 @@ server.use(middlewares);
 server.get('/api/reservations', (req, res, next) => {
   const { owner_email } = req.query;
   if (owner_email) {
-    const filtered = serverRouter.db.get('properties').filter({ ownerEmail }).value();
+    const filtered = serverRouter.db.get('properties').filter({ ownerEmail: owner_email }).value();
     const propertyIds = filtered.map(property => property.id);
     const reservations = serverRouter.db.get('reservations').filter(reservation => propertyIds.includes(reservation.propertyId)).value();
     console.log(reservations);
@@ -22,7 +22,7 @@ server.get('/api/reservations', (req, res, next) => {
 server.get('/api/queries/owner_booked_properties', (req, res, next) => {
   const { owner_email } = req.query;
   if (owner_email) {
-    const filtered = serverRouter.db.get('properties').filter({ owner_email }).value();
+    const filtered = serverRouter.db.get('properties').filter({ ownerEmail: owner_email }).value();
     const propertyIds = filtered.map(property => property.id);
     const reservations = serverRouter.db.get('reservations').filter(reservation => propertyIds.includes(reservation.propertyId)).value();
     const result = {
@@ -32,6 +32,7 @@ server.get('/api/queries/owner_booked_properties', (req, res, next) => {
         bookings: reservations
       }
     }
+    console.log(result);
     res.status(200).send(result);
   } else {
     res.status(400).send({ error: 'owner_email is required' });
