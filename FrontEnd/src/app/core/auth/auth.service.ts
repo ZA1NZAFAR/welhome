@@ -40,7 +40,7 @@ export class AuthService implements OnInit {
     return this._token;
   }
 
-  private _payload: ITokenPayload | null = null;
+  private _email: string;
 
   constructor(
     private router: Router,
@@ -62,11 +62,6 @@ export class AuthService implements OnInit {
   }
 
   login(): void {
-    if (!environment.production) {
-      localStorage.setItem('token', this._token);
-      this.toast.showSuccess('Logged in');
-      return;
-    }
     const loginWindow = window.open(`${environment.authUrl}/auth/google`, 'Authentication', 'height=800,width=600');
     console.log('loginWindow', loginWindow)
     if (loginWindow !== null) {
@@ -78,9 +73,13 @@ export class AuthService implements OnInit {
         }
         console.log('data', event.data)
         const data = event.data.data;
-        if (data.accessToken !== undefined) {
+        if (data.accessToken !== undefined && data.email !== undefined) {
           localStorage.setItem('token', data.accessToken);
           this.toast.showSuccess('Logged in');
+          this._email = data.email;
+        }
+        else {
+          this.toast.showError('Login failed');
         }
         loginWindow.close();
       }, { once: false });
@@ -89,16 +88,11 @@ export class AuthService implements OnInit {
   }
 
   get profile(): IProfile | null {
-    if (!this._payload) {
+    if (!this._email) {
       return null;
     }
     return {
-      email: this._payload.email,
-      first_name: this._payload.first_name,
-      last_name: this._payload.last_name,
-      birth_date: new Date(this._payload.birth_date),
-      phone_number: this._payload.phone_number,
-      gender: this._payload.gender
+      email: this._email
     }
   }
 
