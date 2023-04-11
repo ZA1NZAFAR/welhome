@@ -62,6 +62,15 @@
       "confirmedOwner": false,
       "confirmedRenter": false,
       "id": 6
+    },
+    {
+      "startDate": "2023-04-12T22:00:00.000Z",
+      "endDate": "2023-04-14T22:00:00.000Z",
+      "renterEmail": "afk.beto@gmail.com",
+      "propertyId": 2,
+      "confirmedOwner": true,
+      "confirmedRenter": false,
+      "id": 7
     }
   ],
   "properties": [
@@ -138,7 +147,7 @@
     {
       "title": "Best mansion",
       "description": "Best mansion",
-      "propertyCategory": "House",
+      "propertyCategory": "Apartment",
       "address": "1, rue de Rivoli",
       "city": "Paris",
       "state": "Île-de-France",
@@ -196,6 +205,15 @@
       "propertyId": 3,
       "reviewerEmail": "zain.zafar@gmail.com",
       "id": 5
+    }
+  ],
+  "profiles": [
+    {
+      "email": "afk.beto@gmail.com",
+      "firstName": "Beto",
+      "lastName": "AFK",
+      "phoneNumber": "123456789",
+      "gender": "Male"
     }
   ]
 }

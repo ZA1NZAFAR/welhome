@@ -10,19 +10,19 @@
       <label for="rating">Rating:</label>
       <div class="rating">
     <span (click)="setRating(1)" [ngClass]="{'selected': rating >= 1}">
-      <i class="bi bi-star"></i>
+      <fa-icon [icon]="faStar"></fa-icon>
     </span>
         <span (click)="setRating(2)" [ngClass]="{'selected': rating >= 2}">
-      <i class="bi bi-star"></i>
+          <fa-icon [icon]="faStar"></fa-icon>
     </span>
         <span (click)="setRating(3)" [ngClass]="{'selected': rating >= 3}">
-      <i class="bi bi-star"></i>
+          <fa-icon [icon]="faStar"></fa-icon>
     </span>
         <span (click)="setRating(4)" [ngClass]="{'selected': rating >= 4}">
-      <i class="bi bi-star"></i>
+          <fa-icon [icon]="faStar"></fa-icon>
     </span>
         <span (click)="setRating(5)" [ngClass]="{'selected': rating >= 5}">
-      <i class="bi bi-star"></i>
+          <fa-icon [icon]="faStar"></fa-icon>
     </span>
       </div>
       <input type="hidden" id="rating" formControlName="rating" [value]="rating">
