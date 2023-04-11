@@ -15,7 +15,13 @@ export class ReservationService {
   private reservationLoadingSubject: BehaviorSubject<boolean>;
   private reservationObservable: Observable<IReservation[]>;
   private reservationLoadingObservable: Observable<boolean>;
-  private reservationSubsrciption: Subscription;
+  private reservationSubscription: Subscription;
+
+  private ownerReservations: Subject<IReservation[]>;
+  private ownerReservationsLoading: BehaviorSubject<boolean>;
+  private ownerReservationsObservable: Observable<IReservation[]>;
+  private ownerReservationsLoadingObservable: Observable<boolean>;
+  private ownerReservationsSubscription: Subscription;
 
   constructor(    
     private http: HttpClient,
@@ -27,15 +33,18 @@ export class ReservationService {
       this.reservationLoadingSubject = new BehaviorSubject<boolean>(false);
       this.reservationObservable = this.reservationSubject.asObservable();
       this.reservationLoadingObservable = this.reservationLoadingSubject.asObservable();
+      this.ownerReservations = new Subject<IReservation[]>();
+      this.ownerReservationsLoading = new BehaviorSubject<boolean>(false);
+      this.ownerReservationsObservable = this.ownerReservations.asObservable();
+      this.ownerReservationsLoadingObservable = this.ownerReservationsLoading.asObservable();
     }
   
     getReservations(): ReservationService {
-      const renter_email = this.contextService.isRenter ? this.authService.profile!.email : undefined;
-      if (this.reservationSubsrciption) {
-        this.reservationSubsrciption.unsubscribe();
+      if (this.reservationSubscription) {
+        this.reservationSubscription.unsubscribe();
       }
       this.reservationLoadingSubject.next(true);
-      this.reservationSubsrciption = this.http.get<IReservation[]>(`${environment.backEndUrl}/reservations${ renter_email ? `/renter_email/${renter_email}` : ''}`)
+      this.reservationSubscription = this.http.get<IReservation[]>(`${environment.backEndUrl}/reservations/renter_email/${this.authService.profile!.email}`)
         .subscribe((reservations) => {
           this.reservationSubject.next(reservations);
           this.reservationLoadingSubject.next(false);
@@ -54,6 +63,30 @@ export class ReservationService {
       return this.reservationLoadingSubject.asObservable();
     }
 
+    getOwnerReservations(propertyId: number = 0): ReservationService {
+      if (this.ownerReservationsSubscription) {
+        this.ownerReservationsSubscription.unsubscribe();
+      }
+      this.ownerReservationsLoading.next(true);
+      this.ownerReservationsSubscription = this.http.get<IReservation[]>(`${environment.backEndUrl}/reservations?owner_email=${this.authService.profile!.email}`)
+        .subscribe((reservations) => {
+          if (propertyId > 0) {
+            reservations = reservations.filter(reservation => reservation.property_id === propertyId);
+          }
+          this.ownerReservations.next(reservations);
+          this.ownerReservationsLoading.next(false);
+        });
+      return this;
+    }
+
+    getOwnerReservationObservable(): Observable<IReservation[]> {
+      return this.ownerReservationsObservable;
+    }
+    getOwnerReservationLoadingObservable(): Observable<boolean> {
+      return this.ownerReservationsLoadingObservable;
+    }
+
+
     addReservation(reservation: IReservation): Observable<IReservation> {
       return this.http.post<IReservation>(`${environment.backEndUrl}/reservations`, reservation)
         .pipe(
@@ -70,6 +103,7 @@ export class ReservationService {
         .pipe(
           map((reservation) => {
             this.getReservations();
+            this.getOwnerReservations();
             this.toastService.showSuccess('Reservation updated successfully');
             return reservation;
           })
@@ -81,6 +115,7 @@ export class ReservationService {
         .pipe(
           map((reservation) => {
             this.getReservations();
+            this.getOwnerReservations();
             this.toastService.showSuccess('Reservation deleted successfully');
             return reservation;
           })
