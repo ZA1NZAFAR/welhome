@@ -18,6 +18,9 @@ public class RequestInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        if (request.getHeader(AUTHORIZATION) == null)
+            throw HttpClientErrorException.Unauthorized.create(HttpStatus.UNAUTHORIZED, null, null, null, null);
+
         log.info("Request intercepted. Authorization header: " + request.getHeader(AUTHORIZATION));
 
         if (!AccessTokenValidator.isTokenValid(URL, request.getHeader(AUTHORIZATION).split("\\s")[1]))
