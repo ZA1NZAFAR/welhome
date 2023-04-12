@@ -2,13 +2,9 @@ package fr.efrei.backend.utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
-import java.net.http.HttpResponse;
-import java.util.Optional;
 
 @Component
 public class AccessTokenValidator {
@@ -24,13 +20,12 @@ public class AccessTokenValidator {
     }
 
     public static boolean isTokenValid(String url, String accessToken) {
-        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(null, getRequestHeaderBearer(accessToken)), String.class);
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>("{}", getRequestHeaderBearer(accessToken)), String.class);
         final String message = "Token is valid";
 
         // Parse response JSON data
         try {
             JSONObject jsonObject = new JSONObject(response.getBody());
-            System.out.println(jsonObject);
             System.out.println(jsonObject.get("message"));
             return jsonObject.get("message").equals(message);
         } catch (JSONException exception) {
