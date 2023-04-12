@@ -62,7 +62,7 @@ export class HostPropertyListComponent implements OnInit, OnDestroy {
   }
 
   openAddForm() {
-    const modal = this.modalService.open(PropertyFormComponent, { centered: true, size: 'lg' });
+    const modal = this.modalService.open(PropertyFormComponent, { size: 'xl' });
     modal.componentInstance.ownerEmail = this.authService.profile?.email;
   }
 }

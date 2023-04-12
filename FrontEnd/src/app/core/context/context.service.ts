@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ReservationService } from '../reservation/reservation.service';
 
 const CONTEXTS = ['OWNER', 'RENTER'];
 
@@ -6,7 +7,9 @@ const CONTEXTS = ['OWNER', 'RENTER'];
   providedIn: 'root'
 })
 export class ContextService {
-  constructor() {
+  constructor(
+    private reservationService: ReservationService,
+  ) {
     const context = this.getContext();
     if (!context || !CONTEXTS.includes(context)) {
       this.setContext('RENTER');
@@ -24,8 +27,10 @@ export class ContextService {
   changeContext() {
     if (this.getContext() === 'RENTER') {
       this.setContext('OWNER');
+      this.reservationService.getOwnerReservations();
     } else {
       this.setContext('RENTER');
+      this.reservationService.getReservations();
     }
   }
 

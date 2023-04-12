@@ -49,7 +49,7 @@ export class AuthService implements OnInit {
     setInterval(this.refreshToken, 5 * 60 * 1000);
   }
   refreshToken() {
-      this.http.get<IRefreshToken>('http://localhost:3001/auth/refresh-token').subscribe((data) => {
+      this.http.get<IRefreshToken>(`${environment.authUrl}/auth/refresh-token`).subscribe((data) => {
         localStorage.setItem('token', data.accessToken);
         localStorage.setItem('email', data.email);
       });
@@ -68,8 +68,8 @@ export class AuthService implements OnInit {
           return;
         }
         const data = event.data.data;
-        if (data.accessToken !== undefined && data.email !== undefined) {
-          localStorage.setItem('token', data.accessToken);
+        if (data.access_token !== undefined && data.email !== undefined) {
+          localStorage.setItem('token', data.access_token);
           localStorage.setItem('email', data.email);
           this.toast.showSuccess('Logged in');
         }
