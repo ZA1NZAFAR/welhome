@@ -1,0 +1,17 @@
+version: '1.0'
+services:
+  mailing-service:
+    image: mailing-service:2
+    container_name: mailing-service
+    pull_policy: always
+    ports:
+      - 3005:3005
+    environment:
+      USER: noreply.welhome.reservations@gmail.com
+      PASSWORD: mdvoyybdndhhffwu
+      PORT: 3005
+      AUTH_API: https://backend.zain.ovh/checkToken
+    build:
+      context: .
+      dockerfile: Dockerfile
+      no_cache: true

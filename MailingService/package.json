@@ -2,11 +2,11 @@
   "name": "mailingservice",
   "version": "1.0.0",
   "description": "Mailing Service for WelHome app",
-  "main": "app/index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "test",
-    "start": "node",
-    "dev": "nodemon app/index.js"
+    "start": "node dist/index.js",
+    "dev": "nodemon --esm index.ts",
+    "build": "tsc index.ts --outDir dist"
   },
   "keywords": [
     "mail"
@@ -14,7 +14,13 @@
   "author": "Viet, Meryem",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^2.0.21"
+    "@types/body-parser": "^1.19.2",
+    "@types/express": "^4.17.17",
+    "@types/nodemailer": "^6.4.7",
+    "nodemon": "^2.0.21",
+    "ts-loader": "^9.4.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
   },
   "dependencies": {
     "body-parser": "^1.20.2",
