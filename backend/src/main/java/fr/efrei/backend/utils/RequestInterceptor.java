@@ -11,7 +11,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 public class RequestInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("Request intercepted: " + request.getHeader("Authorization"));
+        log.info("Request intercepted. Authorization header: " + request.getHeader("Authorization"));
         return true;
     }
 }
