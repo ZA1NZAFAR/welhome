@@ -46,9 +46,16 @@ export class ReservationService {
       }
       this.reservationLoadingSubject.next(true);
       this.reservationSubscription = this.http.get<IReservation[]>(`${environment.backEndUrl}/reservations/renter_email/${this.authService.profile!.email}`)
-        .subscribe((reservations) => {
-          this.reservationSubject.next(reservations);
-          this.reservationLoadingSubject.next(false);
+        .subscribe({
+          next: (reservations) => {
+            this.reservationSubject.next(reservations);
+          },
+          error: (error) => {
+            this.reservationSubject.next([]);
+          },
+          complete: () => {
+            this.reservationLoadingSubject.next(false);
+          }
         });
       return this;
     }
@@ -70,15 +77,21 @@ export class ReservationService {
       }
       this.ownerReservationsLoading.next(true);
       this.ownerReservationsSubscription = this.http.get<IQuery>(`${environment.backEndUrl}/queries/owner_booked_properties?owner_email=${this.authService.profile!.email}`)
-        .subscribe((queryResults) => {
+      .subscribe({
+        next: (queryResults) => {
           let reservations = queryResults.bookings;
 
           if (propertyId > 0) {
             reservations = reservations.filter(reservation => reservation.propertyId === propertyId);
           }
           this.ownerReservations.next(reservations);
+        },
+        error: (error) => {
+          this.ownerReservations.next([]);
+        },
+        complete: () => {
           this.ownerReservationsLoading.next(false);
-        });
+        }});
       return this;
     }
 
