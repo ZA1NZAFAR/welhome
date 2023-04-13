@@ -1,0 +1,17 @@
+version: '1.0'
+services:
+  mailing-service:
+    image: mailing-service:${IMAGE_TAG-latest}
+    container_name: mailing-service
+    pull_policy: always
+    ports:
+      - ${PORT}:${PORT}
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+      no_cache: true
+      args:
+      - PORT=${PORT}
+      - DOMAIN=${DOMAIN}        

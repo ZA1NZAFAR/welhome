@@ -1,0 +1,148 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Mailing Service",
+    "description": "Mailing Service for Welhome Application"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:9095/"
+    }
+  ],
+  "paths": {
+    "/mail": {
+      "post": {
+        "tags": [
+          "Mail"
+        ],
+        "summary": "Send a mail to some recipients",
+        "description": "Send a mail to some recipients",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Email sent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Mail"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Mail": {
+        "type": "object",
+        "properties": {
+          "subject": {
+            "type": "string",
+            "example": "Hello, world!"
+          },
+          "htmlBody": {
+            "type": "string",
+            "example": "This is the body of the email<br>You can use <b>html</b> tags here"
+          },
+          "recipients": {
+            "type": "array",
+            "example": [
+              "john.doe@gmail.com",
+              "jane.del@gmail.com"
+            ],
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "xml": {
+          "name": "Mail"
+        }
+      },
+      "Message": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Mail sent"
+          }
+        },
+        "xml": {
+          "name": "Message"
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Error message"
+          }
+        },
+        "xml": {
+          "name": "Error"
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "oAuth2"
+      }
+    }
+  }
+}
