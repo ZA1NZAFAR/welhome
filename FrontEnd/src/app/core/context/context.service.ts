@@ -7,9 +7,7 @@ const CONTEXTS = ['OWNER', 'RENTER'];
   providedIn: 'root'
 })
 export class ContextService {
-  constructor(
-    private reservationService: ReservationService,
-  ) {
+  constructor() {
     const context = this.getContext();
     if (!context || !CONTEXTS.includes(context)) {
       this.setContext('RENTER');
@@ -27,10 +25,8 @@ export class ContextService {
   changeContext() {
     if (this.getContext() === 'RENTER') {
       this.setContext('OWNER');
-      this.reservationService.getOwnerReservations();
     } else {
       this.setContext('RENTER');
-      this.reservationService.getReservations();
     }
   }
 
