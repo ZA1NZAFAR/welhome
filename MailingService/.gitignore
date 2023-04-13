@@ -43,8 +43,4 @@ typings
 .DS_Store
 Thumbs.db
 
-
-Authentication/
-FrontEnd/
-
-MailingService/.env
+.env
