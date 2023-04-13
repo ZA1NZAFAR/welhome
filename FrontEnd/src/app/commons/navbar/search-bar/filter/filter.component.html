@@ -1,0 +1,29 @@
+<div class="modal-header">
+  <h4 class="modal-title">Filter</h4>
+  <button type="button" class="close" aria-label="Close" (click)="dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body container">
+  <form [formGroup]="filterGroup" class="row gy-3">
+    <div class="d-flex justify-content-between align-items-center col-lg-12">
+      <mat-label>Price Range</mat-label>
+      <mat-slider min="0" max="3000" discrete [displayWith]="showPrice">
+        <input value="0" matSliderStartThumb formControlName="minPrice">
+        <input value="3000" matSliderEndThumb formControlName="maxPrice">
+      </mat-slider>
+    </div>
+    <div class="d-flex justify-content-between align-items-center col-lg-12">
+      <mat-label>Category</mat-label>
+      <mat-button-toggle-group appearance="legacy" formControlName="category" name="fontStyle" aria-label="Font Style" multiple>
+        <mat-button-toggle value="House">House</mat-button-toggle>
+        <mat-button-toggle value="Apartment">Apartment</mat-button-toggle>
+        <mat-button-toggle value="Room">Room</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+    <div class="d-flex justify-content-end align-items-center col-lg-12">
+      <button class="m-2" mat-raised-button color="accent">Clear</button>
+      <button class="m-2" mat-raised-button color="primary">Apply</button>
+    </div>
+  </form>
+</div>
