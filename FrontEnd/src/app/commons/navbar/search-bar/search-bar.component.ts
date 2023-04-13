@@ -23,6 +23,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.propertyService.getProperties();
     this.propertySubscription = this.propertyService.getPropertyObservable().subscribe((data) => {
         this.cities = data.map(p => p.city);
       }

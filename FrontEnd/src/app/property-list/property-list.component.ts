@@ -21,7 +21,7 @@ export class PropertyListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.propertyLoadingObservable$ = this.propertyService.getPropertyLoadingObservable();
-    this.propertySubscription = this.propertyService.getProperties().getPropertyObservable().subscribe((properties: IProperty[]) => {
+    this.propertySubscription = this.propertyService.getPropertyObservable().subscribe((properties: IProperty[]) => {
       this.properties = properties;
     });
   }

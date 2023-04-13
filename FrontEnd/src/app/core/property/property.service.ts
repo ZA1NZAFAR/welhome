@@ -6,6 +6,7 @@ import { ToastService } from 'src/app/utils/toast/toast.service'
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../auth/auth.service';
 import { IQuery } from '../query.model';
+import { FilterService } from '../filter/filter.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,8 @@ export class PropertyService {
   constructor(
     private http: HttpClient,
     private toastService: ToastService,
-    private authService: AuthService
+    private authService: AuthService,
+    private filterService: FilterService
   ) {
     this.propertySubject = new Subject<IProperty[]>();
     this.propertyLoadingSubject = new BehaviorSubject<boolean>(false);
