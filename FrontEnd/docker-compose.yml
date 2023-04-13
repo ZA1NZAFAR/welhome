@@ -1,22 +1,12 @@
 version: '1.0'
 services:
   front-end:
-    image: ${DOCKER_REGISTRY-}front-end
     pull_policy: always
     build:
       context: .
       dockerfile: Dockerfile
       no_cache: true
-    networks:
-      front:
-        ipv4_address: 172.18.0.2
+    image: front-end:3
+    container_name: front-end
     ports:
       - 3003:80
-
-networks:
-  front:
-    driver: bridge
-    ipam:
-     config:
-       - subnet: 172.18.0.0/24
-         gateway: 172.18.0.1

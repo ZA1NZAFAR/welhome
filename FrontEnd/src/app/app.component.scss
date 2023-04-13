@@ -8,3 +8,11 @@
 .main-body {
   flex: 1;
 }
+
+.sticky-top {
+  z-index: 700 !important;
+}
+
+.sticky-bottom {
+  z-index: 700 !important;
+}

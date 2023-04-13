@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ReservationService } from '../reservation/reservation.service';
 
 const CONTEXTS = ['OWNER', 'RENTER'];
 

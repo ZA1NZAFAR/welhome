@@ -1,10 +1,25 @@
 <!--p>search-bar WWworks!</p-->
-<input type="text" placeholder="Find...">
-<button type="submit">Search</button>
-<!--input type="text" [(ngModel)]="texteRecherche"-->
+<!--input type="text" placeholder="Rechercher...">
+<button type="submit">Rechercher</button>
+<input type="text" [(ngModel)]="texteRecherche"-->
 <!--button (click)="rechercher()">Rechercher</button-->
 
 
 
 
 
+
+
+<form id="search-form">
+    <label for="search-input">Recherche:</label>
+    <div class="input-group">
+      <input type="text" id="search-input" name="search" placeholder="Find your destination!..." autocomplete="on" list="search-suggestions">
+      <datalist id="search-suggestions">
+        <option value="Paris">
+        <option value="Toulouse">
+        <option value="Lyon">
+      </datalist>
+      <button type="submit"> Search<i class="fas fa-search"></i></button>
+    </div>
+  </form>
+  

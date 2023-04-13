@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { ContextService } from 'src/app/core/context/context.service'
 
@@ -13,8 +14,13 @@ export class NavbarComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private contextService: ContextService,
-    private router: Router
+    private router: Router,
+    private offcanvasService: NgbOffcanvas
   ) { }
+
+  open(content: any) {
+		this.offcanvasService.open(content, { ariaLabelledBy: 'offcanvas-basic-title', position: 'top' });
+	}
 
   ngOnInit(): void {
     this.authService.startupToken();
@@ -30,6 +36,14 @@ export class NavbarComponent implements OnInit {
 
   logout(): void {
     this.authService.logout();
+  }
+  getColor(url: string) {
+    const currentUrl = this.router.url === '/' ? '/properties' : this.router.url;
+    if (currentUrl === url) {
+      return 'primary';
+    } else {
+      return 'light';
+    }
   }
 
   get changeContextText(): string {
