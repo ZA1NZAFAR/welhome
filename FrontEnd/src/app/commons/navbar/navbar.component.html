@@ -11,6 +11,7 @@
         <button type="button" mat-raised-button [color]="this.getColor('/properties')" routerLink="/properties" routerLinkActive="active" ariaCurrentWhenActive="page">All Properties</button>
         <button type="button" mat-raised-button [color]="this.getColor('/myreservations')" routerLink="/myreservations" routerLinkActive="active" ariaCurrentWhenActive="page" *ngIf="this.isLoggedIn">My Reservations</button>
         <button type="button" mat-raised-button [color]="this.getColor('/myproperties')" routerLink="/myproperties" routerLinkActive="active" ariaCurrentWhenActive="page" *ngIf="this.isLoggedIn && this.isOwner">My Properties</button>
+        <app-search-bar></app-search-bar>
       </div>
       <button class="ms-auto end-button" type="button" mat-mini-fab color="primary" matTooltip="Login"
         (click)="this.login()" *ngIf="!this.isLoggedIn; else loggedIn">
@@ -39,6 +40,7 @@
         <button type="button" mat-raised-button [color]="this.getColor('/properties')" routerLink="/properties" routerLinkActive="active" ariaCurrentWhenActive="page">All Properties</button>
         <button type="button" mat-raised-button [color]="this.getColor('/myreservations')" routerLink="/myreservations" routerLinkActive="active" ariaCurrentWhenActive="page" *ngIf="this.isLoggedIn">My Reservations</button>
         <button type="button" mat-raised-button [color]="this.getColor('/myproperties')" routerLink="/myproperties" routerLinkActive="active" ariaCurrentWhenActive="page" *ngIf="this.isLoggedIn && this.isOwner">My Properties</button>
+        <app-search-bar></app-search-bar>
       </div>
       <button class="ms-auto end-button" type="button" mat-mini-fab color="primary"  matTooltip="Login"
         (click)="this.login()" *ngIf="!this.isLoggedIn; else loggedIn">

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FooterComponent } from './commons/footer/footer.component';
 import { NavbarComponent } from './commons/navbar/navbar.component';
 import { PropertyListModule } from './property-list/property-list.module';
@@ -15,17 +15,13 @@ import { ToastComponent } from './utils/toast/toast.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { AuthInterceptor } from './core/auth/auth.interceptor';
 import { ErrorInterceptor } from './core/error/error.interceptor';
-import { MatIconModule } from '@angular/material/icon';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { MatButtonModule } from '@angular/material/button';
-import { MatMenuModule } from '@angular/material/menu'; 
-import { MatTooltipModule } from '@angular/material/tooltip'; 
+import { NavbarModule } from './commons/navbar/navbar.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     FooterComponent,
-    NavbarComponent,
     ToastComponent
   ],
   imports: [
@@ -38,13 +34,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     ReservationListModule,
     HttpClientModule,
     PropertiesModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatIconModule,
     FontAwesomeModule,
-    MatButtonModule,
-    MatMenuModule,
-    MatTooltipModule
+    NavbarModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
