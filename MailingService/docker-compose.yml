@@ -1,7 +1,7 @@
 version: '1.0'
 services:
   mailing-service:
-    image: mailing-service:2
+    image: mailing-service:${IMAGE_TAG-latest}
     container_name: mailing-service
     pull_policy: always
     ports:
