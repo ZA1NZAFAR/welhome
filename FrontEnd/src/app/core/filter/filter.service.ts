@@ -53,5 +53,6 @@ export class FilterService {
     this._maxPrice = 3000;
     this._category = ['House', 'Apartment', 'Room'];
     this._city = '';
+    this._country = '';
   }
 }

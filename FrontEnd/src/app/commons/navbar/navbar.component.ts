@@ -85,8 +85,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     const modalRef = this.modalService.open(FilterComponent);
     modalRef.result.then((result) => {
       if (result === 'clear') {
-        this.selectionControl.setValue(`${this.filterService.city}, ${this.filterService.country}`);
+        this.selectionControl.setValue('');
       }
+      this.propertyService.getProperties();
     });
   }
 
