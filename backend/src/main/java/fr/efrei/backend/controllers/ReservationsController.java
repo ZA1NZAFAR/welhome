@@ -7,16 +7,18 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.PostConstruct;
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -56,18 +58,35 @@ public class ReservationsController {
     @PostMapping
     @Operation(summary = "This endpoint allows to create a new booking for a specific renter")
     @ApiResponse(responseCode = "201", description = "Creates a booking")
-    public ResponseEntity<Reservation> postReservation(@RequestBody Reservation reservation) throws JSONException {
+    public ResponseEntity<Reservation> postReservation(@RequestBody Reservation reservation, @RequestHeader("Authorization") String bearerToken) throws JSONException {
         ResponseEntity<Reservation> result = generator.buildRequest(URL, HttpMethod.POST, reservation, new ParameterizedTypeReference<Reservation>() {});
 
-        PropertiesController propertiesController = new PropertiesController();
-        ResponseEntity<Property> property = propertiesController.getProperty(String.valueOf(reservation.getPropertyId()));
-        ResponseGenerator responseGenerator = new ResponseGenerator();
+        // Retrieve property for which reservation is placed
+        ResponseEntity<Property> property = new ResponseGenerator<Property>().buildRequest(URL.substring(0, URL.lastIndexOf("/")) + "/properties/" + reservation.getPropertyId(), HttpMethod.GET, new ParameterizedTypeReference<Property>() {});
 
-        Map<String, String> requestBody = new HashMap<>();
-        requestBody.put("recipients", reservation.getRenterEmail());
-        requestBody.put("subject", "Property booked");
-        requestBody.put("htmlBody", "The property " + property.getBody().getTitle() + " has been booked from " + reservation.getStartDate() + " to " + reservation.getEndDate() + " successfully.");
-        responseGenerator.buildRequest(MAILING_SERVICE_URL, HttpMethod.POST, requestBody, new ParameterizedTypeReference<String>(){});
+        // Build request body
+        JSONObject body = new JSONObject();
+        body.put("subject", "Property has been booked");
+        body.put("htmlBody", "<p>The property <b>" + property.getBody().getTitle() + "</b> has been successfully booked from <b>" + reservation.getStartDate() + "</b> to <b>" + reservation.getEndDate() + "</b>.</p>");
+        JSONArray recipientsArray = new JSONArray();
+        recipientsArray.put(property.getBody().getOwnerEmail());
+        recipientsArray.put(reservation.getRenterEmail());
+        body.put("recipients", recipientsArray);
+
+        if (bearerToken == null)
+            throw HttpClientErrorException.Unauthorized.create(HttpStatus.UNAUTHORIZED, null, null, null, null);
+
+        // Build request object, configure headers
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(bearerToken.split("\\s") [1]);
+        // Send request to mailing service
+        ResponseEntity<String> mailResult = restTemplate.exchange(MAILING_SERVICE_URL, HttpMethod.POST, new HttpEntity<String>(body.toString(), headers), String.class);
+
+        // Parse response
+        if (mailResult.getBody() != null)
+            System.out.println("Sending reservation email. Status: " + new JSONObject(mailResult.getBody()).get("message"));
 
         return result;
     }
