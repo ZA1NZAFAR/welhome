@@ -63,18 +63,15 @@ public class ReservationsController {
         PropertiesController propertiesController = new PropertiesController();
         ResponseEntity<Property> property = propertiesController.getProperty(String.valueOf(reservation.getPropertyId()));
 
-        RestTemplate restTemplate = new RestTemplate();
+        //RestTemplate restTemplate = new RestTemplate();
+        ResponseGenerator responseGenerator = new ResponseGenerator();
         String url = "http://zain.ovh:9094/mail";
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
 
         Map<String, String> requestBody = new HashMap<>();
         requestBody.put("recipients", reservation.getRenterEmail());
         requestBody.put("subject", "Property booked");
         requestBody.put("htmlBody", "The property " + property.getBody().getTitle() + " has been booked from " + reservation.getStartDate() + " to " + reservation.getEndDate() + " successfully.");
-
-        HttpEntity<Map<String, String>> request = new HttpEntity<>(requestBody, headers);
-        restTemplate.exchange(url, HttpMethod.POST, request, String.class);
+        responseGenerator.buildRequest(url,HttpMethod.POST,requestBody,new ParameterizedTypeReference<Reservation>(){});
 
         return result;
     }
