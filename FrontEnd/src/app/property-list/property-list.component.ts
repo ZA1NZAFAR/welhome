@@ -16,10 +16,9 @@ export class PropertyListComponent implements OnInit, OnDestroy {
 
   propertyLoadingObservable$: Observable<boolean>;
   length: number = 0;
-
-  pageSize = 10;
   pageIndex = 0;
   pageSizeOptions = [10, 20, 30];
+  pageSize = this.pageSizeOptions[0];
 
   pageEvent: PageEvent;
 

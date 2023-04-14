@@ -5,7 +5,7 @@
   </div>
   <ng-template #loaded>
     <div class='d-flex flex-column mb-3'>
-      <div class='p-2' *ngFor='let property of properties;'>
+      <div class='p-2' *ngFor='let property of propertyShow;'>
         <app-host-property-card
           [property]='property'
           [reviews]="this.reviewMap.get(property.id)">
@@ -13,4 +13,14 @@
       </div>
     </div>
   </ng-template>
+  <mat-paginator #paginator
+    class="demo-paginator"
+    (page)="handlePageEvent($event)"
+    [length]="length"
+    [pageSize]="pageSize"
+    [showFirstLastButtons]="true"
+    [pageSizeOptions]="pageSizeOptions"
+    [pageIndex]="pageIndex"
+    aria-label="Select page">
+  </mat-paginator>
 </div>
