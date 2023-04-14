@@ -14,11 +14,22 @@
   </div>
   <ng-template #loaded>
     <div class="d-flex flex-wrap">
-      <ng-container *ngFor="let property of properties; index as i">
+      <ng-container *ngFor="let property of propertyShow; index as i">
         <div class="mr-3 bloc-left">
           <app-property-card [property]="property"></app-property-card>
         </div>
       </ng-container>
     </div>
   </ng-template>
+  
+  <mat-paginator #paginator
+    class="demo-paginator"
+    (page)="handlePageEvent($event)"
+    [length]="length"
+    [pageSize]="pageSize"
+    [showFirstLastButtons]="true"
+    [pageSizeOptions]="pageSizeOptions"
+    [pageIndex]="pageIndex"
+    aria-label="Select page">
+  </mat-paginator>
 </div>
