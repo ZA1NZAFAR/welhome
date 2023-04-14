@@ -244,7 +244,6 @@ public class PropertiesController {
         return result;
     }
 
-    @ExceptionHandler
     @GetMapping("/with_images")
     @Operation(summary = "This endpoint allows to find out properties containing specified number of images")
     @ApiResponse(responseCode = "200", description = "Properties have been found")
