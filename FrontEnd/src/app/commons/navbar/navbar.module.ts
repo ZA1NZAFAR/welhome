@@ -12,6 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { AppRoutingModule } from 'src/app/app-routing.module';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
     MatTooltipModule,
     FormsModule,
     ReactiveFormsModule,
-    NgbModalModule
+    NgbModalModule,
+    AppRoutingModule
   ],
   exports: [ NavbarComponent ],
   providers: [ ]
