@@ -7,7 +7,7 @@ import { ContextService } from '../context/context.service';
 import { HttpClient } from '@angular/common/http';
 
 interface IRefreshToken {
-  accessToken: string;
+  access_token: string;
   email: string;
 }
 
@@ -49,10 +49,18 @@ export class AuthService implements OnInit {
     setInterval(this.refreshToken, 5 * 60 * 1000);
   }
   refreshToken() {
-      this.http.get<IRefreshToken>(`${environment.authUrl}/auth/refresh-token`).subscribe((data) => {
-        localStorage.setItem('token', data.accessToken);
-        localStorage.setItem('email', data.email);
-      });
+    this.http.get<IRefreshToken>(`${environment.authUrl}/auth/refresh-token`).subscribe({
+      next: (data) => {
+        localStorage.setItem('token', data.access_token);
+      },
+      error: (err) => {
+        this.logout();
+        this.toast.showError('Session invalid');
+      },
+      complete: () => {
+        this.router.navigate([this.router.url])
+      }
+    });
   }
   
   startupToken(): void {
