@@ -12,7 +12,7 @@
     <div class="spinner-border" role="status"></div>
   </div>
   <ng-template #loaded>
-    <div class="d-flex flex-column mb-3">
+    <div class="d-flex flex-column m-3">
       <div *ngFor="let reservation of this.reservationShow; index as i">
         <ng-template [ngIf]="this.propertyExists(reservation.propertyId) && this.filterReservation(reservation)">
           <app-reservation-card
