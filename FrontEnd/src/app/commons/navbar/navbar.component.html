@@ -1,66 +1,52 @@
-<nav class="navbar navbar-expand-lg secondary">
-  <a class="navbar-brand" href="/">
-    <img class="img-fluid" src="assets/logo.png" alt="Logo" width="100" height="100">
-  </a>
-  <button class="navbar-toggler end-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvasLg" aria-controls="navbarOffcanvasLg" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon" (click)="open(content)"></span>
-  </button>
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="navbarOffcanvasLg" aria-labelledby="navbarOffcanvasLgLabel">
-    <div class="d-flex">
-      <div class="d-flex container justify-content-center align-items-center">
-        <button type="button" mat-raised-button [color]="this.getColor('/properties')" routerLink="/properties" routerLinkActive="active" ariaCurrentWhenActive="page">All Properties</button>
-        <button type="button" mat-raised-button [color]="this.getColor('/myreservations')" routerLink="/myreservations" routerLinkActive="active" ariaCurrentWhenActive="page" *ngIf="this.isLoggedIn">My Reservations</button>
-        <button type="button" mat-raised-button [color]="this.getColor('/myproperties')" routerLink="/myproperties" routerLinkActive="active" ariaCurrentWhenActive="page" *ngIf="this.isLoggedIn && this.isOwner">My Properties</button>
-        <app-search-bar></app-search-bar>
-      </div>
-      <button class="ms-auto end-button" type="button" mat-mini-fab color="primary" matTooltip="Login"
-        (click)="this.login()" *ngIf="!this.isLoggedIn; else loggedIn">
-        <mat-icon>login</mat-icon>
-      </button>
-      <ng-template #loggedIn>
-        <button class="ms-auto end-button" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-          <mat-icon>account_circle</mat-icon>
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+	<div class="container-fluid">
+		<a class="navbar-brand" [routerLink]="'.'">
+      <img class="img-fluid" src="assets/logo.png" alt="Logo" width="100" height="100">
+    </a>
+    <button class="navbar-toggler" type="button" (click)="isCollapsed = !isCollapsed">&#9776;</button>
+    <div [ngbCollapse]="isCollapsed" class="collapse navbar-collapse">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a [className]="this.setActiveClass('/properties')" aria-current="page" routerLink="/properties"  (click)="isCollapsed = true">All Properties</a>
+        </li>
+        <li class="nav-item">
+          <a [className]="this.setActiveClass('/myreservations')" routerLink="./myreservations"  (click)="isCollapsed = true" *ngIf="this.isLoggedIn">My Reservations</a>
+        </li>
+        <li class="nav-item">
+          <a [className]="this.setActiveClass('/myreservations')" routerLink="./myproperties" (click)="isCollapsed = true" *ngIf="this.isLoggedIn && this.isOwner">My Properties</a>
+        </li>
+      </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control" list="datalistOptions" id="exampleDataList" [formControl]="selectionControl" placeholder="Choose your destination">
+        <datalist id="datalistOptions">
+          <option *ngFor="let destination of this.destinations" [value]="destination">{{ destination }}</option>
+        </datalist>
+        <button class="btn btn-outline-success" (click)="this.applyFilter()">
+          <mat-icon>search</mat-icon>
         </button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="this.logout()">
-            <mat-icon color="warn">logout</mat-icon>
-            <span>Logout</span>
-          </button>
-          <button mat-menu-item (click)="this.changeContext()">
-            <mat-icon>switch_account</mat-icon>
-            <span>{{ this.changeContextText }}</span>
-          </button>
-        </mat-menu>
+        <button class="btn btn-outline-success" (click)="openFilterModal()">
+          <mat-icon>filter_alt</mat-icon>
+        </button>
+      </form>
+      <button class="btn btn-outline-success" type="submit" matTooltip="Login" (click)="this.login()" *ngIf="!this.isLoggedIn; else loggedIn"><mat-icon>login</mat-icon></button>
+      <ng-template #loggedIn>
+        <li class="nav-item" ngbDropdown display="dynamic">
+          <a ngbDropdownToggle aria-labelledby="dropdownBasic1" class="btn btn-outline-success" id="dropdownBasic1">
+            <mat-icon>account_circle</mat-icon>
+          </a>
+          <ul ngbDropdownMenu aria-labelledby="dropdownBasic1">
+            <li><a ngbDropdownItem (click)="this.logout()">
+              <mat-icon color="warn">logout</mat-icon>
+              <span>Logout</span>
+            </a></li>
+            <li><a ngbDropdownItem (click)="this.changeContext()">
+              <mat-icon>switch_account</mat-icon>
+              <span>{{ this.changeContextText }}</span>
+            </a></li>
+          </ul>
+        </li>
       </ng-template>
+      
     </div>
   </div>
-  <ng-template #content let-offcanvas>
-    <div class="offcanvas-body d-flex align-items-center">
-      <div class="d-flex container justify-content-center align-items-center">
-        <button type="button" mat-raised-button [color]="this.getColor('/properties')" routerLink="/properties" routerLinkActive="active" ariaCurrentWhenActive="page">All Properties</button>
-        <button type="button" mat-raised-button [color]="this.getColor('/myreservations')" routerLink="/myreservations" routerLinkActive="active" ariaCurrentWhenActive="page" *ngIf="this.isLoggedIn">My Reservations</button>
-        <button type="button" mat-raised-button [color]="this.getColor('/myproperties')" routerLink="/myproperties" routerLinkActive="active" ariaCurrentWhenActive="page" *ngIf="this.isLoggedIn && this.isOwner">My Properties</button>
-        <app-search-bar></app-search-bar>
-      </div>
-      <button class="ms-auto end-button" type="button" mat-mini-fab color="primary"  matTooltip="Login"
-        (click)="this.login()" *ngIf="!this.isLoggedIn; else loggedIn">
-        <mat-icon>login</mat-icon>
-      </button>
-      <ng-template #loggedIn>
-        <button class="ms-auto end-button" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-          <mat-icon>account_circle</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="this.logout()">
-            <mat-icon color="warn">logout</mat-icon>
-            <span>Logout</span>
-          </button>
-          <button mat-menu-item (click)="this.changeContext()">
-            <mat-icon>switch_account</mat-icon>
-            <span>{{ this.changeContextText }}</span>
-          </button>
-        </mat-menu>
-      </ng-template>
-    </div>
-  </ng-template>
 </nav>

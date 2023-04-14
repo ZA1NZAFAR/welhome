@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AuthService } from '../core/auth/auth.service';
 import { IProperty } from '../core/property/property.model';
 import { PropertyService } from '../core/property/property.service';
 import { Observable, Subscription } from 'rxjs';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-property-list',
@@ -13,7 +13,7 @@ export class PropertyListComponent implements OnInit, OnDestroy {
   properties: IProperty[] = [];
 
   propertyLoadingObservable$: Observable<boolean>;
-
+  pageEvent: PageEvent;
   propertySubscription: Subscription;
   constructor(
     private propertyService: PropertyService
@@ -21,12 +21,16 @@ export class PropertyListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.propertyLoadingObservable$ = this.propertyService.getPropertyLoadingObservable();
-    this.propertySubscription = this.propertyService.getPropertyObservable().subscribe((properties: IProperty[]) => {
+    this.propertySubscription = this.propertyService.getProperties().getPropertyObservable().subscribe((properties: IProperty[]) => {
       this.properties = properties;
     });
   }
 
   ngOnDestroy(): void {
     if (this.propertySubscription) this.propertySubscription.unsubscribe();
+  }
+
+  handlePageEvent(event: PageEvent) {
+    this.pageEvent = event;
   }
 }

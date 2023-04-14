@@ -12,7 +12,6 @@ import { FilterService } from '../filter/filter.service';
   providedIn: 'root'
 })
 export class PropertyService {
-
   private propertySubject: Subject<IProperty[]>;
   private propertyLoadingSubject: BehaviorSubject<boolean>;
   private propertyObservable: Observable<IProperty[]>;
@@ -41,12 +40,56 @@ export class PropertyService {
     this.ownerPropertyLoadingObservable = this.ownerPropertyLoadingSubject.asObservable();
   }
 
+  constructQuery(): string {
+    let query = '';
+    const { minPrice, maxPrice, category, city, country } = this.filterService;
+    
+    if (minPrice) {
+      query += `min_price=${minPrice}`;
+    }
+    if (maxPrice < 3000) {
+      if (query.length > 0) {
+        query += '&';
+      }
+      query += `max_price=${maxPrice}`;
+    }
+    if (category && category.length < 3) {
+      if (query.length > 0) {
+        query += '&';
+      }
+      query += `category=${category.join(',')}`;
+    }
+    if (city) {
+      if (query.length > 0) {
+        query += '&';
+      }
+      query += `city=${city}`;
+    }
+    if (country) {
+      if (query.length > 0) {
+        query += '&';
+      }
+      query += `country=${country}`;
+    }
+    return query;
+  }
+
+  getDestinations(): Observable<Set<string>> {
+    return this.http.get<IProperty[]>(`${environment.backEndUrl}/properties`).pipe(map((properties) => {
+      const destination = new Set<string>();
+      properties.forEach((property) => {
+        destination.add(`${property.city}, ${property.country}`)
+      });
+      return destination;
+    }));
+  }
+
   getProperties(): PropertyService {
     if (this.propertySubscription) {
       this.propertySubscription.unsubscribe();
     }
     this.propertyLoadingSubject.next(true);
-    this.propertySubscription = this.http.get<IProperty[]>(`${environment.backEndUrl}/properties/property`).subscribe((properties) => {
+    this.propertySubscription = this.http.get<IProperty[]>(`${environment.backEndUrl}/properties/property?${this.constructQuery()}`).subscribe((properties) => {
       this.propertySubject.next(properties);
       this.propertyLoadingSubject.next(false);
     });

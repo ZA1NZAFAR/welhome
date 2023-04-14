@@ -1,20 +1,3 @@
-.navbar {
-  background-color: #e7dfd8;
-}
-
-.navbar-brand {
-  padding-left: var(--bs-navbar-brand-padding-y);
-  margin-left: var(--bs-navbar-brand-margin-end);
-}
-
-::ng-deep .offcanvas.offcanvas-top{
-  max-height:120px !important;
-  background-color: #e7dfd8;
-}
-
-::ng-deep .cdk-overlay-container {
-  z-index: 1500 !important;
-}
-.end-button {
-  margin-right: var(--bs-navbar-brand-margin-end);
+li {
+  list-style-type: none;
 }
