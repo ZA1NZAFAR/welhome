@@ -184,8 +184,7 @@ export class PropertiesComponent implements OnInit, OnDestroy {
         renterEmail: this.userEmail,
         propertyId: this.propertyData.id,
         confirmedOwner: false,
-        confirmedRenter: false,
-        totalPrice: this.totalPrice
+        confirmedRenter: false
       }
       this.reservationService.addReservation(reservation).subscribe(() => {
         this.reservationGroup.reset();
