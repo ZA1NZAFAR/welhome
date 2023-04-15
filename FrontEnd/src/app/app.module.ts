@@ -18,12 +18,14 @@ import { ErrorInterceptor } from './core/error/error.interceptor';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NavbarModule } from './commons/navbar/navbar.module';
 import { AboutUsComponent } from './commons/footer/about-us/about-us.component';
+import { PolicyComponent } from './commons/footer/policy/policy.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FooterComponent,
-    ToastComponent
+    ToastComponent,
+    PolicyComponent
   ],
   imports: [
     BrowserModule,
