@@ -63,6 +63,8 @@ public class ReservationsController {
 
         // Retrieve property for which reservation is placed
         ResponseEntity<Property> property = new ResponseGenerator<Property>().buildRequest(URL.substring(0, URL.lastIndexOf("/")) + "/properties/" + reservation.getPropertyId(), HttpMethod.GET, new ParameterizedTypeReference<Property>() {});
+        System.out.println("Retrieving property. Sending GET request to: " + URL.substring(0, URL.lastIndexOf("/")) + "/properties/" + reservation.getPropertyId());
+        System.out.println("Concerned property: " + property.getBody());
 
         // Build request body
         JSONObject body = new JSONObject();
