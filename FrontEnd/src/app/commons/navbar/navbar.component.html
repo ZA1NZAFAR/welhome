@@ -14,7 +14,7 @@
               <button type="button" [className]="this.setActiveClass('/properties')" mat-raised-button routerLink="/properties" (click)="isCollapsed = true" *ngIf="this.isLoggedIn">All Properties</button>
               <button type="button" [className]="this.setActiveClass('/myreservations')" mat-raised-button routerLink="/myreservations" (click)="isCollapsed = true" *ngIf="this.isLoggedIn">My Reservations</button>
               <button type="button" [className]="this.setActiveClass('/myproperties')" mat-raised-button routerLink="/myproperties" (click)="isCollapsed = true" *ngIf="this.isLoggedIn && this.isOwner">My Properties</button>
-              <input class="form-control-rounded SearchBar" list="datalistOptions" id="search-input" name="search" [formControl]="selectionControl" placeholder="To where? " autocomplete="on" list="search-suggestions">
+              <input class="form-control-rounded SearchBar" list="datalistOptions" id="search-input" name="search" [formControl]="selectionControl" placeholder="To where? ">
               <datalist id="datalistOptions">
                 <option *ngFor="let destination of this.destinations" [value]="destination">{{ destination }}</option>
               </datalist>
