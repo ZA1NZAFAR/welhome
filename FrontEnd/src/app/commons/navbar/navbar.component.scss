@@ -46,10 +46,6 @@ button.LoginForme {
   cursor: pointer;
 
 }
-.end-button {
-  position: absolute;
-  right: 5vw;
-}
 .btn-scale {
   width: fit-content
 }
@@ -75,11 +71,6 @@ button.LoginForme {
     .SearchBar {
       flex-grow: 1;
     }
-  }
-  .end-button {
-    position: absolute;
-    right: -0.5vw;
-    top: 12.9vh;
   }
 }
 
