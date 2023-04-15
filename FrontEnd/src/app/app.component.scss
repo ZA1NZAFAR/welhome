@@ -3,7 +3,7 @@
   margin:0;
   display:flex;
   flex-direction:column;
-  height: 100vh;
+  height: 100%;
 }
 
 .sticky-top {
@@ -12,4 +12,8 @@
 
 .sticky-bottom {
   z-index: 700 !important;
+}
+
+.router-outlet-app {
+  min-height: 100vh;
 }
