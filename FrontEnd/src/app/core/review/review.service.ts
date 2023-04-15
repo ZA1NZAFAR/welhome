@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ToastService } from 'src/app/utils/toast/toast.service';
 import { AuthService } from '../auth/auth.service';
-import { Observable, catchError, map } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { IReview } from './review.model';
 

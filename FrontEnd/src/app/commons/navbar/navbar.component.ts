@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgbModal, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { ContextService } from 'src/app/core/context/context.service'
 import { FilterService } from 'src/app/core/filter/filter.service';
