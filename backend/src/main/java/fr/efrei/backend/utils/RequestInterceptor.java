@@ -10,6 +10,8 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -18,7 +20,6 @@ public class RequestInterceptor implements HandlerInterceptor {
     private String URL;
     private static final String AUTHORIZATION = "Authorization";
     private static final Map<String, String> WHITELIST = Map.ofEntries(
-            Map.entry("/api/properties/property", "GET"),
             Map.entry("/api/properties", "GET"),
             Map.entry("/api/reviews", "GET")
     );
@@ -26,7 +27,7 @@ public class RequestInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // Waiving the authentication requirement: handling exclusions of certain endpoints with specific HTTP method type
-        if (WHITELIST.containsKey(request.getServletPath()) && WHITELIST.get(request.getServletPath()).equals(request.getMethod()))
+        if (WHITELIST.entrySet().stream().anyMatch(entry -> request.getServletPath().startsWith(entry.getKey()) && entry.getValue().equals(request.getMethod())))
             return true;
 
         if (request.getHeader(AUTHORIZATION) != null)
