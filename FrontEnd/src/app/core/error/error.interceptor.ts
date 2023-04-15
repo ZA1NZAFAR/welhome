@@ -28,7 +28,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           this.toastService.showError('You are not authorized to perform this action');
           break;
         case 404:
-          this.toastService.showError('Resource not found');
+          console.log('Not found', error);
           break;
         case 500:
           this.toastService.showError('Internal server error');

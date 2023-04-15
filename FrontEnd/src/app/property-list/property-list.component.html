@@ -3,12 +3,14 @@
     <div class="spinner-border" role="status"></div>
   </div>
   <ng-template #loaded>
-    <div class="d-flex flex-wrap justify-content-evenly m-3">
-      <ng-container *ngFor="let property of propertyShow; index as i">
-        <div class="mr-3 bloc-left">
-          <app-property-card [property]="property"></app-property-card>
-        </div>
-      </ng-container>
+    <div class="m-auto">
+      <div class="d-flex flex-wrap justify-content-start">
+        <ng-container *ngFor="let property of propertyShow; index as i">
+          <div class="mr-3 bloc-left">
+            <app-property-card [property]="property"></app-property-card>
+          </div>
+        </ng-container>
+      </div>
     </div>
   </ng-template>
   
