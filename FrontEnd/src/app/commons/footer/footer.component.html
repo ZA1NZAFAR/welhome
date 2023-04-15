@@ -1,66 +1,14 @@
-<footer class="fixed-bottom bg-light">
+<footer class="bg-light">
   <a href="#" class="back-to-top"></a>
   <div class="footer-container">
     <div class="left">
       <img class="img-fluid" src="assets/logo.png" alt="Logo" width="100">
     </div>
-    <div class="right">
-      <h2>Team Names:</h2>
-      <ul>
-        <li style="display: inline-block;">Ratiba KADI</li>
-        <li style="display: inline-block;">Kerim HUDAYBERDIYEV</li>
-        <li style="display: inline-block;">Viet NGUYEN</li>
-        <br>
-        <li style="display: inline-block;">Euphraim LUZOLO</li>
-        <li style="display: inline-block;">Zain ZAFAR</li>
-        <li style="display: inline-block;">Meryem KOSE</li>
-        <br>
-        <li style="display: inline-block;">Malak ZEMRANI</li>
-        <li style="display: inline-block;">Shayma KHELLADI</li>
-        <li style="display: inline-block;">Ousseynou SAKHO</li>
-        <br>
-      </ul>
-      
-      
-    </div>
-    <div class="contacts">
-      <h2> Contact:</h2>
-      <ul>
-        <li>contact@welhome.com</li>
-        
-        <li>+ 44 7 58 03 44 65</li>
-      
-        <li>15th Oxford Street, Oxford, England</li>
-        <br>
-      </ul>
-    </div>
     <div class="language">
-      <div class="bloc footer-schedule">
-        <h3>TimeSheet</h3>
-        <ul class="schedule-list">
-          <li>✔️ Mon 10-19</li>
-          <li>✔️ Tue 10-19</li>
-          <li>✔️ Wen 10-19</li>
-          <li>✔️ Thu 10-19</li>
-          <li>✔️ Fri 10-19</li>
-          <li>❌ Sat closed</li>
-          <li>❌ Sun closed</li>
-        </ul>
-      </div>
-      <div class="footer-container">
-        ...
-        <div class="social-media">
-          <a href="#"><i class="fab fa-facebook"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
-        </div>
-      </div>
-
       <ul>
         <li><a href="#">Home</a></li>
-        <li><a href="#">About us</a></li>
-        <li><a href="#">Privacy Policy</a></li>
-        <li><a href="#">Details</a></li>
+        <li><a (click)="openModal()">About us</a></li>
+        <li><a>Privacy Policy</a></li>
         <li>
           <select>
             <option value="fr">Français</option>
