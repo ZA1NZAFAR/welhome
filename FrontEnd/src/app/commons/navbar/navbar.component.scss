@@ -1,5 +1,5 @@
 .navbar {
-  background-color: #e7dfd8;
+ /* background-color: #e7dfd8;*/
 }
 
 .navbar-brand {
@@ -17,4 +17,30 @@
 }
 .end-button {
   margin-right: var(--bs-navbar-brand-margin-end);
+}
+.Login button{
+  width:50px; 
+  height: 38px;
+  border-radius: 6px;
+  border: 1px solid #cccccc;
+  font-size: 14px;
+  background-color: white;
+  
+}
+
+.Login {
+  position:absolute;
+  margin-left: 70vw;
+}
+
+
+button.LoginForme {
+  
+  background-color: white;
+
+  height: 38px;
+  border-radius: 6px;
+  border: 1px solid #cccccc;
+  font-size: 15px;
+  cursor: pointer;
 }

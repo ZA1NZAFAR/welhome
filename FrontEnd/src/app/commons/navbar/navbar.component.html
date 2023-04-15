@@ -1,66 +1,80 @@
-<nav class="navbar navbar-expand-lg secondary">
-  <a class="navbar-brand" href="/">
-    <img class="img-fluid" src="assets/logo.png" alt="Logo" width="100" height="100">
-  </a>
-  <button class="navbar-toggler end-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvasLg" aria-controls="navbarOffcanvasLg" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon" (click)="open(content)"></span>
-  </button>
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="navbarOffcanvasLg" aria-labelledby="navbarOffcanvasLgLabel">
-    <div class="d-flex">
-      <div class="d-flex container justify-content-center align-items-center">
-        <button type="button" mat-raised-button [color]="this.getColor('/properties')" routerLink="/properties" routerLinkActive="active" ariaCurrentWhenActive="page">All Properties</button>
-        <button type="button" mat-raised-button [color]="this.getColor('/myreservations')" routerLink="/myreservations" routerLinkActive="active" ariaCurrentWhenActive="page" *ngIf="this.isLoggedIn">My Reservations</button>
-        <button type="button" mat-raised-button [color]="this.getColor('/myproperties')" routerLink="/myproperties" routerLinkActive="active" ariaCurrentWhenActive="page" *ngIf="this.isLoggedIn && this.isOwner">My Properties</button>
-        <app-search-bar></app-search-bar>
-      </div>
-      <button class="ms-auto end-button" type="button" mat-mini-fab color="primary" matTooltip="Login"
-        (click)="this.login()" *ngIf="!this.isLoggedIn; else loggedIn">
-        <mat-icon>login</mat-icon>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">
+      <img class="img-fluid" src="assets/logo.png" alt="Logo" width="200" height="200"> 
+    </a> 
+    <button class="navbar-toggler end-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvasLg" aria-controls="navbarOffcanvasLg" aria-label="Toggle navigation">
+     <span class="navbar-toggler-icon" (click)="open(content)"></span>
+    </button>
+   <div class="collapse navbar-collapse">
+     <ul class="navbar-nav">
+   <li class="nav-item">
+    <button type="button" class ="nav-link btn-outline-none" mat-raised-button routerLink="/properties" routerLinkActive="active" ariaCurrentWhenActive="page" *ngIf="this.isLoggedIn">All Properties</button>
+  </li>
+  <li class="nav-item">
+    <button type="button" class ="nav-link btn-outline-none" mat-raised-button [color]="this.getColor('/myreservations')" routerLink="/myreservations" routerLinkActive="active" ariaCurrentWhenActive="page" *ngIf="this.isLoggedIn">My Reservations</button>
+  </li>
+    <li class="nav-item">
+      <button type="button" class ="nav-link btn-outline-none" mat-raised-button [color]="this.getColor('/myproperties')" routerLink="/myproperties" routerLinkActive="active" ariaCurrentWhenActive="page" *ngIf="this.isLoggedIn && this.isOwner">My Properties</button>
+    </li>
+    <li class="nav-item">
+      <app-search-bar></app-search-bar>
+    </li>
+    <li class="Login">
+      <button class="ms-auto end-button" type="button" mat-mini-fab matTooltip="Login"
+      (click)="this.login()" *ngIf="!this.isLoggedIn; else loggedIn">
+      Login
+    </button>
+    <ng-template #loggedIn>
+      <button class="ms-auto end-button" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+        <mat-icon>account_circle</mat-icon>
       </button>
-      <ng-template #loggedIn>
-        <button class="ms-auto end-button" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-          <mat-icon>account_circle</mat-icon>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="this.logout()">
+          <mat-icon color="warn">logout</mat-icon>
+          <span>Logout</span>
         </button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="this.logout()">
-            <mat-icon color="warn">logout</mat-icon>
-            <span>Logout</span>
-          </button>
-          <button mat-menu-item (click)="this.changeContext()">
-            <mat-icon>switch_account</mat-icon>
-            <span>{{ this.changeContextText }}</span>
-          </button>
-        </mat-menu>
-      </ng-template>
-    </div>
+        <button mat-menu-item (click)="this.changeContext()">
+          <mat-icon>switch_account</mat-icon>
+          <span>{{ this.changeContextText }}</span>
+        </button>
+      </mat-menu>
+    </ng-template>
+    </li>
+    </ul>
   </div>
-  <ng-template #content let-offcanvas>
-    <div class="offcanvas-body d-flex align-items-center">
-      <div class="d-flex container justify-content-center align-items-center">
-        <button type="button" mat-raised-button [color]="this.getColor('/properties')" routerLink="/properties" routerLinkActive="active" ariaCurrentWhenActive="page">All Properties</button>
-        <button type="button" mat-raised-button [color]="this.getColor('/myreservations')" routerLink="/myreservations" routerLinkActive="active" ariaCurrentWhenActive="page" *ngIf="this.isLoggedIn">My Reservations</button>
-        <button type="button" mat-raised-button [color]="this.getColor('/myproperties')" routerLink="/myproperties" routerLinkActive="active" ariaCurrentWhenActive="page" *ngIf="this.isLoggedIn && this.isOwner">My Properties</button>
-        <app-search-bar></app-search-bar>
-      </div>
-      <button class="ms-auto end-button" type="button" mat-mini-fab color="primary"  matTooltip="Login"
-        (click)="this.login()" *ngIf="!this.isLoggedIn; else loggedIn">
-        <mat-icon>login</mat-icon>
-      </button>
-      <ng-template #loggedIn>
-        <button class="ms-auto end-button" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-          <mat-icon>account_circle</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="this.logout()">
-            <mat-icon color="warn">logout</mat-icon>
-            <span>Logout</span>
-          </button>
-          <button mat-menu-item (click)="this.changeContext()">
-            <mat-icon>switch_account</mat-icon>
-            <span>{{ this.changeContextText }}</span>
-          </button>
-        </mat-menu>
-      </ng-template>
+</div>
+<ng-template #content let-offcanvas>
+  <div class="offcanvas-body d-flex align-items-center">
+    <div class="d-flex container justify-content-center align-items-center">
+      <button type="button" mat-raised-button [color]="this.getColor('/properties')" routerLink="/properties" routerLinkActive="active" ariaCurrentWhenActive="page" *ngIf="this.isLoggedIn">All Properties</button>
+      <button type="button" mat-raised-button [color]="this.getColor('/myreservations')" routerLink="/myreservations" routerLinkActive="active" ariaCurrentWhenActive="page" *ngIf="this.isLoggedIn">My Reservations</button>
+      <button type="button" mat-raised-button [color]="this.getColor('/myproperties')" routerLink="/myproperties" routerLinkActive="active" ariaCurrentWhenActive="page" *ngIf="this.isLoggedIn && this.isOwner">My Properties</button>
+      <app-search-bar></app-search-bar>
     </div>
-  </ng-template>
+    <div classe="Login">
+      <button class="ms-auto end-button LoginForme" type="button" mat-mini-fab matTooltip="Login"
+  (click)="this.login()" *ngIf="!this.isLoggedIn; else loggedIn">
+  Login
+</button>
+
+    </div>
+    
+    <ng-template #loggedIn>
+      <button class="ms-auto end-button" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="this.logout()">
+          <mat-icon color="warn">logout</mat-icon>
+          <span>Logout</span>
+        </button>
+        <button mat-menu-item (click)="this.changeContext()">
+          <mat-icon>switch_account</mat-icon>
+          <span>{{ this.changeContextText }}</span>
+        </button>
+      </mat-menu>
+    </ng-template>
+  </div>
+</ng-template>
 </nav>
