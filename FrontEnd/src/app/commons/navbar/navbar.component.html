@@ -21,6 +21,9 @@
               <button (click)="this.applyFilter()">Search</button>
               <button (click)="openFilterModal()">Filter</button>
             </div>
+            <div class="text-danger error-text" *ngIf="!this.selectionControl.valid">
+              Please choose a valid destination in the suggestions.
+            </div>
           </form>    
         </li>
         <li class="Login end-button">
