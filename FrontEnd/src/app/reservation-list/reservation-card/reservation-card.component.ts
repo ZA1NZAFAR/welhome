@@ -2,8 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { IProperty } from 'src/app/core/property/property.model'
 import { IReservation } from 'src/app/core/reservation/reservation.model';
 import { ReservationService } from 'src/app/core/reservation/reservation.service'
-import {  Router } from '@angular/router';
-import { ReviewService } from 'src/app/core/review/review.service';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { ContextService } from 'src/app/core/context/context.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
