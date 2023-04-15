@@ -6,6 +6,7 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { PropertyFormModule } from '../property-form/property-form.module'
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     NgbModalModule,
     PropertyFormModule,
     MatIconModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatButtonModule
   ]
 })
 export class HostPropertyListModule { }

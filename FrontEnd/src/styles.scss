@@ -33,7 +33,11 @@ $FrontEnd-theme: mat.define-light-theme((
 // that you are using.
 @include mat.all-component-themes($FrontEnd-theme);
 
-html, body { height: 100%; }
+html, body { 
+  min-height: 100vh;
+  height: auto;
+  margin: 0;
+}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';

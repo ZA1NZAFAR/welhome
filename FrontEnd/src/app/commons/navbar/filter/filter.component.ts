@@ -1,10 +1,7 @@
-import { Component, Input, OnInit, TemplateRef } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FilterService } from 'src/app/core/filter/filter.service';
-import { IProperty, PropertyCategory, propertyCategory } from 'src/app/core/property/property.model';
-import { PropertyService } from 'src/app/core/property/property.service';
-
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
