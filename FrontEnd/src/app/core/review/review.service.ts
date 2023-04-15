@@ -18,10 +18,7 @@ export class ReviewService {
   ) {
   }
   getPropertyReviews(propertyId: number): Observable<IReview[]> {
-    return this.getReviews().pipe(map((reviews) => {
-        return reviews.filter((review) => review.propertyId === propertyId);
-      }
-    ));
+    return this.http.get<IReview[]>(`${environment.backEndUrl}/reviews/property_id/${propertyId}`);
   }
 
   getReviews(): Observable<IReview[]> {
