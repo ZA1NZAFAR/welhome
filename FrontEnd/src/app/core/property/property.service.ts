@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IProperty } from './property.model';
-import { BehaviorSubject, Observable, Subject, Subscription, catchError, map } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, Subscription, map } from 'rxjs';
 import { ToastService } from 'src/app/utils/toast/toast.service'
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../auth/auth.service';

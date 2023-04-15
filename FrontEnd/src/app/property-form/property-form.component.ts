@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { IProperty, propertyCategory } from 'src/app/core/property/property.model';
+import { IProperty } from 'src/app/core/property/property.model';
 import * as _moment from 'moment';
 import { PropertyService } from 'src/app/core/property/property.service';
 @Component({
@@ -34,7 +34,7 @@ export class PropertyFormComponent implements OnInit {
     this.propertyGroup = new FormGroup({
       title: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required]),
-      propertyCategory: new FormControl('House', [Validators.required, this.categoryValidator]),
+      propertyCategory: new FormControl('House', [Validators.required]),
       address: new FormControl('', [Validators.required]),
       city: new FormControl('', [Validators.required]),
       state: new FormControl(''),
@@ -52,13 +52,6 @@ export class PropertyFormComponent implements OnInit {
     if (this.selectedProperty) {
       this.propertyGroup.patchValue(this.selectedProperty);
     }
-  }
-
-  categoryValidator(control: FormControl) {
-    if (propertyCategory.includes(control.value)) {
-      return null;
-    }
-    return { category: true };
   }
 
   closeModal() {

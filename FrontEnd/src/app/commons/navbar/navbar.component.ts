@@ -6,7 +6,7 @@ import { ContextService } from 'src/app/core/context/context.service'
 import { FilterService } from 'src/app/core/filter/filter.service';
 import { PropertyService } from 'src/app/core/property/property.service';
 import { FilterComponent } from './filter/filter.component';
-import { FormControl } from '@angular/forms';
+import { AbstractControl, FormControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -27,19 +27,27 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private router: Router,
     private modalService: NgbModal,
     private filterService: FilterService,
-    private propertyService: PropertyService,
-    private offcanvasService: NgbOffcanvas
+    private propertyService: PropertyService
   ) { }
 
 
   ngOnInit(): void {
     this.authService.startupToken();
     const destination = this.filterService.city.length ? `${this.filterService.city}, ${this.filterService.country}` : '';
-    this.selectionControl = new FormControl(destination);
+    this.selectionControl = new FormControl(destination, [ this.destinationValidator() ]);
     this.propertyService.getProperties();
     this.countrySubscription = this.propertyService.getDestinations().subscribe((destinations: Set<string>) => {
       this.destinations = destinations;
     });
+  }
+
+  destinationValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control || !control.value || (control.value && this.destinations.has(control.value))) {
+        return null;
+      }
+      return { invalidDestination: true };
+    }
   }
 
   ngOnDestroy(): void {
@@ -89,12 +97,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   applyFilter() {
-    const destination = this.selectionControl.value;
-    const [city, country] = destination.includes(', ') ? destination.split(', ') : ['', ''];
-    this.filterService.city = city;
-    this.filterService.country = country;
-    this.propertyService.getProperties();
-    this.router.navigate(['/properties']);
+    if (!!this.selectionControl.value && !!this.selectionControl.valid) {
+      const destination = this.selectionControl.value;
+      const [city, country] = destination.split(', ');
+      this.filterService.city = city;
+      this.filterService.country = country;
+      this.propertyService.getProperties();
+      this.router.navigate(['/properties']);
+    }
   }
-
 }
