@@ -179,10 +179,13 @@ export class PropertiesComponent implements OnInit, OnDestroy {
     if (this.reservationGroup.valid) {
       const reservation: IReservation = {
         ...this.reservationGroup.value,
+        startDate: new Date(this.reservationGroup.value.startDate),
+        endDate: new Date(this.reservationGroup.value.endDate),
         renterEmail: this.userEmail,
         propertyId: this.propertyData.id,
         confirmedOwner: false,
-        confirmedRenter: false
+        confirmedRenter: false,
+        totalPrice: this.totalPrice
       }
       this.reservationService.addReservation(reservation).subscribe(() => {
         this.reservationGroup.reset();

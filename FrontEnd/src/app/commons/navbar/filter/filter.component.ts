@@ -38,4 +38,8 @@ export class FilterComponent implements OnInit {
     this.activeModal.close();
   }
 
+  clearFilter() {
+    this.filterService.clearFilter();
+    this.activeModal.close('clear');
+  }
 }

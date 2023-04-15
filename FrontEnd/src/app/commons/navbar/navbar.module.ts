@@ -6,18 +6,19 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { NavbarComponent } from './navbar.component';
-import { SearchBarComponent } from './search-bar/search-bar.component';
-import { FilterComponent } from './search-bar/filter/filter.component';
+import { FilterComponent } from './filter/filter.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
-import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { AppRoutingModule } from 'src/app/app-routing.module';
+import { MatSelectModule } from '@angular/material/select';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
     NavbarComponent,
-    SearchBarComponent,
-    FilterComponent,
+    FilterComponent
   ],
   imports: [
     CommonModule,
@@ -32,7 +33,11 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
     MatTooltipModule,
     FormsModule,
     ReactiveFormsModule,
-    NgbModalModule
+    NgbModalModule,
+    AppRoutingModule,
+    MatSelectModule,
+    NgbCollapseModule,
+    NgbDropdownModule
   ],
   exports: [ NavbarComponent ],
   providers: [ ]

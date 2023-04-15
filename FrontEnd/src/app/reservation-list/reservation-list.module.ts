@@ -6,6 +6,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ReviewFormModule } from '../review-form/review-form.module';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { ReviewFormModule } from '../review-form/review-form.module';
     MatButtonToggleModule,
     MatButtonModule,
     ReactiveFormsModule,
-    ReviewFormModule
+    ReviewFormModule,
+    MatPaginatorModule
   ]
 })
 export class ReservationListModule { }

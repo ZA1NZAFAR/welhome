@@ -5,6 +5,7 @@ import { HostPropertyCardComponent } from './host-property-card/host-property-ca
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { PropertyFormModule } from '../property-form/property-form.module'
 import { MatIconModule } from '@angular/material/icon';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { MatIconModule } from '@angular/material/icon';
     CommonModule,
     NgbModalModule,
     PropertyFormModule,
-    MatIconModule
+    MatIconModule,
+    MatPaginatorModule
   ]
 })
 export class HostPropertyListModule { }

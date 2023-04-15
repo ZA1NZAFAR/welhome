@@ -20,9 +20,21 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(catchError((error: HttpErrorResponse) => {
-      this.toastService.showError(error.message)
-      if (error.status === 401) {
-        this.authService.logout();
+      switch (error.status) {
+        case 401:
+          this.authService.refreshToken();
+          break;
+        case 403:
+          this.toastService.showError('You are not authorized to perform this action');
+          break;
+        case 404:
+          this.toastService.showError('Resource not found');
+          break;
+        case 500:
+          this.toastService.showError('Internal server error');
+          break;
+        default:
+          this.toastService.showError('Unknown error occurred');
       }
       throw error;
     }));

@@ -7,6 +7,7 @@ import { Observable, Subscription } from 'rxjs';
 import { PropertyFormComponent } from '../property-form/property-form.component'
 import { ReviewService } from '../core/review/review.service';
 import { IReview } from '../core/review/review.model';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-host-property-list',
@@ -16,6 +17,15 @@ import { IReview } from '../core/review/review.model';
 export class HostPropertyListComponent implements OnInit, OnDestroy {
   propertyMap: Map<number, IProperty> = new Map();
   properties: IProperty[] = [];
+  propertyShow: IProperty[] = [];
+
+  length: number = 0;
+
+  pageIndex = 0;
+  pageSizeOptions = [5, 10, 15];
+  pageSize = this.pageSizeOptions[0];
+
+  pageEvent: PageEvent;
 
   reviewMap: Map<number, IReview[]> = new Map();
 
@@ -48,6 +58,8 @@ export class HostPropertyListComponent implements OnInit, OnDestroy {
         }
       });
       this.properties = Array.from(this.propertyMap.values());
+      this.length = this.properties.length;
+      this.propertyShow = this.properties.slice(this.pageIndex * this.pageSize, (this.pageIndex + 1) * this.pageSize);
     });
     this.reviewSub$ = this.reviewService.getReviews().subscribe((reviews) => {
       this.reviewMap.clear();
@@ -64,5 +76,13 @@ export class HostPropertyListComponent implements OnInit, OnDestroy {
   openAddForm() {
     const modal = this.modalService.open(PropertyFormComponent, { size: 'xl' });
     modal.componentInstance.ownerEmail = this.authService.profile?.email;
+  }
+
+  handlePageEvent(event: PageEvent) {
+    this.pageEvent = event;
+    this.length = event.length;
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+    this.propertyShow = this.properties.slice(this.pageIndex * this.pageSize, (this.pageIndex + 1) * this.pageSize);
   }
 }

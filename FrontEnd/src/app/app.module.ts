@@ -17,6 +17,7 @@ import { AuthInterceptor } from './core/auth/auth.interceptor';
 import { ErrorInterceptor } from './core/error/error.interceptor';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NavbarModule } from './commons/navbar/navbar.module';
+import { AboutUsComponent } from './commons/footer/about-us/about-us.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { NavbarModule } from './commons/navbar/navbar.module';
     HttpClientModule,
     PropertiesModule,
     FontAwesomeModule,
-    NavbarModule
+    NavbarModule,
+    AboutUsComponent
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

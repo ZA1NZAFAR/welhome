@@ -9,6 +9,7 @@ import { Observable, Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { ReviewService } from '../core/review/review.service';
 import { IReview } from '../core/review/review.model';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-reservation-list',
@@ -17,6 +18,7 @@ import { IReview } from '../core/review/review.model';
 })
 export class ReservationListComponent implements OnInit, OnDestroy {
   reservations: IReservation[] = [];
+  reservationShow: IReservation[] = [];
   propertyMap: Map<number, IProperty> = new Map();
   reviewMap: Map<number, IReview> = new Map();
   private propertySubscription: Subscription;
@@ -28,6 +30,14 @@ export class ReservationListComponent implements OnInit, OnDestroy {
 
   ownerPropertyLoadingObservable$: Observable<boolean>;
   reservationLoadingObservable$: Observable<boolean>;
+
+  length: number = 0;
+
+  pageIndex = 0;
+  pageSizeOptions = [5, 10, 15];
+  pageSize = this.pageSizeOptions[0];
+
+  pageEvent: PageEvent;
 
   constructor(
     private reservationService: ReservationService,
@@ -113,6 +123,8 @@ export class ReservationListComponent implements OnInit, OnDestroy {
 
     this.reservationSubscription = reservationObservable.subscribe((reservation) => {
       this.reservations = reservation;
+      this.length = reservation.length;
+      this.reservationShow = reservation.slice(this.pageIndex * this.pageSize, (this.pageIndex + 1) * this.pageSize);
     });
 
     this.reviewSub$ = this.reviewService.getReviews().subscribe(reviews => {
@@ -126,8 +138,6 @@ export class ReservationListComponent implements OnInit, OnDestroy {
       });
     });
 
-
-
     const propertyObservable = this.contextService.isRenter ? this.propertyService.getProperties().getPropertyObservable() : this.propertyService.getOwnerProperties(userEmail).getOwnerPropertyObservable();
     this.propertySubscription = propertyObservable.subscribe((properties) => {
       this.propertyMap.clear();
@@ -135,8 +145,13 @@ export class ReservationListComponent implements OnInit, OnDestroy {
         this.propertyMap.set(property.id, property);
       });
     });
-
-
+  }
+  handlePageEvent(event: PageEvent) {
+    this.pageEvent = event;
+    this.length = event.length;
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+    this.reservationShow = this.reservations.slice(this.pageIndex * this.pageSize, (this.pageIndex + 1) * this.pageSize);
   }
 
   ngOnDestroy(): void {
