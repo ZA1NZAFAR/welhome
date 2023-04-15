@@ -1,14 +1,4 @@
 <div class="m-auto">
-
-  <!--
-  <div class="d-flex flex-wrap">
-    <div *ngFor="let property of properties; index as i" class="mr-3  bloc-left">
-      <app-property-card
-        [property]="property">
-      </app-property-card>
-    </div>
-  </div>
--->
   <div *ngIf="this.propertyLoadingObservable$ | async; else loaded">
     <div class="spinner-border" role="status"></div>
   </div>

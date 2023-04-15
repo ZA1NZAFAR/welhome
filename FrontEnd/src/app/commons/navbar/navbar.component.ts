@@ -31,9 +31,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private offcanvasService: NgbOffcanvas
   ) { }
 
-  open(content: any) {
-		this.offcanvasService.open(content, { ariaLabelledBy: 'offcanvas-basic-title', position: 'top' });
-	}
 
   ngOnInit(): void {
     this.authService.startupToken();
@@ -78,7 +75,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   setActiveClass(path: string): string {
-    return (path === '/properties' && this.router.url === '/') || this.router.url.includes(path) ? 'nav-link active' : 'nav-link';
+    return (path === '/properties' && this.router.url === '/') || this.router.url.includes(path) ? 'nav-link btn-scale btn-outline-none active' : 'nav-link btn-scale btn-outline-none';
   }
 
   openFilterModal() {

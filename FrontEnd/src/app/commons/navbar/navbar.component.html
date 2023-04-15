@@ -1,52 +1,52 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
-	<div class="container-fluid">
-		<a class="navbar-brand" [routerLink]="'.'">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" [routerLink]="'.'">
       <img class="img-fluid" src="assets/logo.png" alt="Logo" width="100" height="100">
-    </a>
-    <button class="navbar-toggler" type="button" (click)="isCollapsed = !isCollapsed">&#9776;</button>
+    </a> 
+    <button class="navbar-toggler" type="button">
+     <span class="navbar-toggler-icon" (click)="isCollapsed = !isCollapsed"></span>
+    </button>
     <div [ngbCollapse]="isCollapsed" class="collapse navbar-collapse">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a [className]="this.setActiveClass('/properties')" aria-current="page" routerLink="/properties"  (click)="isCollapsed = true">All Properties</a>
+      <ul class="navbar-nav">
+        <li class="nav-item expand">
+          <form id="search-form">
+            <div class="d-flex flex-wrap input-group Boutton">
+              <button type="button" [className]="this.setActiveClass('/properties')" mat-raised-button routerLink="/properties" (click)="isCollapsed = true" *ngIf="this.isLoggedIn">All Properties</button>
+              <button type="button" [className]="this.setActiveClass('/myreservations')" mat-raised-button routerLink="/myreservations" (click)="isCollapsed = true" *ngIf="this.isLoggedIn">My Reservations</button>
+              <button type="button" [className]="this.setActiveClass('/myproperties')" mat-raised-button routerLink="/myproperties" (click)="isCollapsed = true" *ngIf="this.isLoggedIn && this.isOwner">My Properties</button>
+              <input class="form-control-rounded SearchBar" list="datalistOptions" id="search-input" name="search" [formControl]="selectionControl" placeholder="To where? " autocomplete="on" list="search-suggestions">
+              <datalist id="datalistOptions">
+                <option *ngFor="let destination of this.destinations" [value]="destination">{{ destination }}</option>
+              </datalist>
+              <button (click)="this.applyFilter()">Search</button>
+              <button (click)="openFilterModal()">Filter</button>
+            </div>
+          </form>    
         </li>
-        <li class="nav-item">
-          <a [className]="this.setActiveClass('/myreservations')" routerLink="./myreservations"  (click)="isCollapsed = true" *ngIf="this.isLoggedIn">My Reservations</a>
-        </li>
-        <li class="nav-item">
-          <a [className]="this.setActiveClass('/myreservations')" routerLink="./myproperties" (click)="isCollapsed = true" *ngIf="this.isLoggedIn && this.isOwner">My Properties</a>
+        <li class="Login end-button">
+          <button class="ms-auto nav-item" type="button" mat-mini-fab matTooltip="Login"
+          (click)="this.login()" *ngIf="!this.isLoggedIn; else loggedIn">
+          Login
+        </button>
+        <ng-template #loggedIn>
+          <li ngbDropdown display="dynamic">
+            <button class="nav-item" ngbDropdownToggle class="ms-auto end-button" mat-icon-button aria-labelledby="dropdownBasic1" id="dropdownBasic1">
+              <mat-icon>account_circle</mat-icon>
+            </button>
+            <ul ngbDropdownMenu aria-labelledby="dropdownBasic1">
+              <li><a ngbDropdownItem class="d-flex align-items-center py-2" (click)="this.logout()">
+                <mat-icon color="warn">logout</mat-icon>
+                <span>Logout</span>
+              </a></li>
+              <li><a ngbDropdownItem class="d-flex align-items-center py-2" (click)="this.changeContext()">
+                <mat-icon>switch_account</mat-icon>
+                <span>{{ this.changeContextText }}</span>
+              </a></li>
+            </ul>
+          </li>
+        </ng-template>
         </li>
       </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control" list="datalistOptions" id="exampleDataList" [formControl]="selectionControl" placeholder="Choose your destination">
-        <datalist id="datalistOptions">
-          <option *ngFor="let destination of this.destinations" [value]="destination">{{ destination }}</option>
-        </datalist>
-        <button class="btn btn-outline-success" (click)="this.applyFilter()">
-          <mat-icon>search</mat-icon>
-        </button>
-        <button class="btn btn-outline-success" (click)="openFilterModal()">
-          <mat-icon>filter_alt</mat-icon>
-        </button>
-      </form>
-      <button class="btn btn-outline-success" type="submit" matTooltip="Login" (click)="this.login()" *ngIf="!this.isLoggedIn; else loggedIn"><mat-icon>login</mat-icon></button>
-      <ng-template #loggedIn>
-        <li class="nav-item" ngbDropdown display="dynamic">
-          <a ngbDropdownToggle aria-labelledby="dropdownBasic1" class="btn btn-outline-success" id="dropdownBasic1">
-            <mat-icon>account_circle</mat-icon>
-          </a>
-          <ul ngbDropdownMenu aria-labelledby="dropdownBasic1">
-            <li><a ngbDropdownItem (click)="this.logout()">
-              <mat-icon color="warn">logout</mat-icon>
-              <span>Logout</span>
-            </a></li>
-            <li><a ngbDropdownItem (click)="this.changeContext()">
-              <mat-icon>switch_account</mat-icon>
-              <span>{{ this.changeContextText }}</span>
-            </a></li>
-          </ul>
-        </li>
-      </ng-template>
-      
     </div>
   </div>
 </nav>
