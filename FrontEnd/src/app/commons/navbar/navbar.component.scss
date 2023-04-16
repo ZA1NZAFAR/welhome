@@ -1,0 +1,83 @@
+.navbar-brand {
+  padding-left: var(--bs-navbar-brand-padding-y);
+  margin-left: var(--bs-navbar-brand-margin-end);
+}
+
+.end-button {
+  margin-right: var(--bs-navbar-brand-margin-end);
+}
+.Login button{
+  width:50px; 
+  height: 38px;
+  border-radius: 6px;
+  border: 1px solid #cccccc;
+  font-size: 14px;
+  background-color: white;
+  
+}
+
+.error-text {
+  position:fixed;
+}
+
+
+button.LoginForme {
+  
+  background-color: white;
+
+  height: 38px;
+  border-radius: 6px;
+  border: 1px solid #cccccc;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.SearchBar {
+  width: 20vw;
+  height: 38px;
+  border-radius: 6px;
+  border: 1px solid #f7eeee;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.Boutton button {
+ 
+  height: 38px;
+  border-radius: 6px;
+  border: 1px solid #cccccc;
+  font-size: 15px;
+  cursor: pointer;
+
+}
+.btn-scale {
+  width: fit-content
+}
+@media screen and (max-width: 700px) {
+  .SearchBar {
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .btn-scale {
+    width: 100%;
+  }
+  .expand {
+    margin-left: 10px;
+    width: 100%;
+  }
+}
+@media screen and (max-width: 992px) {
+  .expand {
+    margin-left: 10px;
+    width: 90%;
+    .SearchBar {
+      flex-grow: 1;
+    }
+  }
+}
+
+li {
+  list-style-type: none;
+}

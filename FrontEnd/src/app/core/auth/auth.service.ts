@@ -1,8 +1,15 @@
 import { Injectable, OnInit } from '@angular/core';
-import { Router } from '@angular/router'
-import jwtDecode, { JwtPayload } from 'jwt-decode';
-import { IProfile, ITokenPayload } from './auth.model'
+import { Router } from '@angular/router';
+import { IProfile } from './auth.model';
 import { environment } from 'src/environments/environment';
+import { ToastService } from 'src/app/utils/toast/toast.service'
+import { ContextService } from '../context/context.service';
+import { HttpClient } from '@angular/common/http';
+
+interface IRefreshToken {
+  access_token: string;
+  email: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -28,101 +35,83 @@ export class AuthService implements OnInit {
       "exp": 1716239022
     }
    */
-  private _token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InphaW4uemFmYXJAZ21haWwuY29tIiwiZmlyc3RfbmFtZSI6IlphaW4iLCJsYXN0X25hbWUiOiJaYWZhciIsImJpcnRoX2RhdGUiOiIwMS8wMS8yMDAwIiwicGhvbmVfbnVtYmVyIjoiMDEyMzQ1Njc4OSIsImdlbmRlciI6Ik1hbGUiLCJpYXQiOjE2NzUyMzkwMjIsImV4cCI6MTcxNjIzOTAyMn0.IW6M5wQBx9iaYlMp1463W8KUMrn965H75mNVuX7Xptk';
-  private async _mockLogin(): Promise<string> {
-    return this._token;
-  }
-
-  private _payload: ITokenPayload | null = null;
+  private get _email(): string {
+    return localStorage.getItem('email') || '';
+  };
 
   constructor(
-    private router: Router
+    private router: Router,
+    private toast: ToastService,
+    private contextService: ContextService,
+    private http: HttpClient
   ) { }
-  ngOnInit(): void {
+  ngOnInit( ): void {
+    setInterval(this.refreshToken, 5 * 60 * 1000);
   }
-
+  refreshToken() {
+    this.http.get<IRefreshToken>(`${environment.authUrl}/auth/refresh-token`).subscribe({
+      next: (data) => {
+        localStorage.setItem('token', data.access_token);
+      },
+      error: (err) => {
+        this.logout();
+        this.toast.showError('Session invalid');
+      },
+      complete: () => {
+        this.router.navigate([this.router.url])
+      }
+    });
+  }
+  
   startupToken(): void {
     const token = localStorage.getItem('token');
-    console.log(token);
-    if (token) {
-      this._payload = jwtDecode<ITokenPayload>(token);
-    }
   }
 
   login(): void {
-    if (!environment.production) {
-      localStorage.setItem('token', this._token);
-      this._payload = jwtDecode<ITokenPayload>(this._token);
-      return;
-    }
-    const loginWindow = window.open(environment.authUrl, 'Authentication', 'location=yes,height=300,width=300,scrollbars=yes,status=yes');
+    const loginWindow = window.open(`${environment.authUrl}/auth/google`, 'Authentication', 'height=800,width=600');
     if (loginWindow !== null) {
-      loginWindow.focus();
+      //loginWindow.focus();
       window.addEventListener('message', event => {
-        const data = event.data;
-        if (data.token !== undefined) {
-          try {
-            this._payload = jwtDecode<ITokenPayload>(data.token);
-            if (!this.isValid(this._payload)) {
-              throw new Error('Invalid token');
-            }
-            localStorage.setItem('token', data.token);
-          } catch (err) {
-            this.logout();
-            console.error(err);
-          }
-          loginWindow.close();
+        if (event.source !== loginWindow) {
+          return;
         }
-      });
+        const data = event.data.data;
+        if (data.access_token !== undefined && data.email !== undefined) {
+          localStorage.setItem('token', data.access_token);
+          localStorage.setItem('email', data.email);
+          this.toast.showSuccess('Logged in');
+        }
+        else {
+          this.toast.showError('Login failed');
+        }
+        loginWindow.close();
+      }, { once: false });
     }
     
   }
 
   get profile(): IProfile | null {
-    if (!this._payload) {
+    if (!this._email) {
       return null;
     }
     return {
-      email: this._payload.email,
-      first_name: this._payload.first_name,
-      last_name: this._payload.last_name,
-      birth_date: new Date(this._payload.birth_date),
-      phone_number: this._payload.phone_number,
-      gender: this._payload.gender
+      email: this._email
     }
   }
 
+  get token(): string | null {
+    return localStorage.getItem('token');
+  }
+
   logout(): void {
+    this.toast.showInfo('Logged out');
+    this.contextService.setContext('RENTER')
     localStorage.removeItem('token');
-    this._payload = null;
+    localStorage.removeItem('email');
     this.router.navigate(['/']);
   }
 
   get isLoggedIn(): boolean {
-    return !!this._payload;
-  }
-
-
-  get isExpired(): boolean {
-    if (!this.isValid(this._payload)) {
-      return true;
-    }
-    this.logout();
-    return false;
-  }
-
-  isValid(payload: ITokenPayload | null): boolean {
-    if (!payload) {
-      return false
-    }
-    if (!payload.iat || !payload.exp) {
-      return false
-    }
-    const tokenIssuedDateIsValid = payload.iat < Date.now() / 1000;
-    const tokenIsNotExpired = payload.exp > Date.now() / 1000;
-    if (!tokenIssuedDateIsValid || !tokenIsNotExpired) {
-      return false
-    }
-    return true;
+    return !!this.token;
   }
 }

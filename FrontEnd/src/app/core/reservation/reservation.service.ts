@@ -1,64 +1,140 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IReservation } from './reservation.model';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { mockProperties } from '../property/property.service';
-import { mockGuests } from '../guest/guest.service';
+import { BehaviorSubject, Observable, Subject, Subscription, map } from 'rxjs';
+import { ToastService } from 'src/app/utils/toast/toast.service'
+import { environment } from 'src/environments/environment';
+import { AuthService } from '../auth/auth.service';
+import { ContextService } from '../context/context.service';
+import { IQuery } from '../query.model';
 
-
-
-
-const mockReservations: IReservation[] = [
-{
-  property: mockProperties.find((property) => property.id === 1),
-  guest: mockGuests.find((guest) => guest.id === 1),
-  state : 'Terminé',
-  nbr_person : 2,
-  check_in : new Date(2023, 3, 15),
-  check_out : new Date(2023, 3, 18) ,
-  total_price : 250
-},
-
-{
-  property: mockProperties.find((property) => property.id === 2),
-  guest: mockGuests.find((guest) => guest.id === 1),
-  state : 'Validé',
-  nbr_person : 2,
-  check_in : new Date(2023, 3, 15),
-  check_out : new Date(2023, 3, 18) ,
-  total_price : 250
-},
-
-{
-  property: mockProperties.find((property) => property.id === 3),
-  guest: mockGuests.find((guest) => guest.id === 1),
-  state : 'Annulé',
-  nbr_person : 2,
-  check_in : new Date(2023, 3, 15),
-  check_out : new Date(2023, 3, 18) ,
-  total_price : 250
-},
-
-]
 @Injectable({
   providedIn: 'root'
 })
 export class ReservationService {
-  private reservations: IReservation[] = mockReservations;
-  private reservationSubject: BehaviorSubject<IReservation[]> = new BehaviorSubject<IReservation[]>([]);
+  private reservationSubject: Subject<IReservation[]>;
+  private reservationLoadingSubject: BehaviorSubject<boolean>;
+  private reservationObservable: Observable<IReservation[]>;
+  private reservationLoadingObservable: Observable<boolean>;
+  private reservationSubscription: Subscription;
+
+  private ownerReservations: Subject<IReservation[]>;
+  private ownerReservationsLoading: BehaviorSubject<boolean>;
+  private ownerReservationsObservable: Observable<IReservation[]>;
+  private ownerReservationsLoadingObservable: Observable<boolean>;
+  private ownerReservationsSubscription: Subscription;
 
   constructor(    
-    private http: HttpClient
-    ) { }
-
-    /* for test */
-
-    private getMockReservation(): BehaviorSubject<IReservation[]> {
-      this.reservationSubject.next(this.reservations);
-      return this.reservationSubject;
+    private http: HttpClient,
+    private toastService: ToastService,
+    private authService: AuthService,
+    private contextService: ContextService
+    ) {
+      this.reservationSubject = new Subject<IReservation[]>();
+      this.reservationLoadingSubject = new BehaviorSubject<boolean>(false);
+      this.reservationObservable = this.reservationSubject.asObservable();
+      this.reservationLoadingObservable = this.reservationLoadingSubject.asObservable();
+      this.ownerReservations = new Subject<IReservation[]>();
+      this.ownerReservationsLoading = new BehaviorSubject<boolean>(false);
+      this.ownerReservationsObservable = this.ownerReservations.asObservable();
+      this.ownerReservationsLoadingObservable = this.ownerReservationsLoading.asObservable();
     }
   
-    getProperties(): BehaviorSubject<IReservation[]> {
-      return this.getMockReservation(); // should use http client to get data from server
+    getReservations(): ReservationService {
+      if (this.reservationSubscription) {
+        this.reservationSubscription.unsubscribe();
+      }
+      this.reservationLoadingSubject.next(true);
+      this.reservationSubscription = this.http.get<IReservation[]>(`${environment.backEndUrl}/reservations/renter_email/${this.authService.profile!.email}`)
+        .subscribe({
+          next: (reservations) => {
+            this.reservationSubject.next(reservations);
+          },
+          error: (error) => {
+            this.reservationSubject.next([]);
+          },
+          complete: () => {
+            this.reservationLoadingSubject.next(false);
+          }
+        });
+      return this;
+    }
+
+    getReservationObservable(): Observable<IReservation[]> {
+      return this.reservationObservable;
+    }
+    getReservationLoadingObservable(): Observable<boolean> {
+      return this.reservationLoadingObservable;
+    }
+
+    getReservationLoading(): Observable<boolean> {
+      return this.reservationLoadingSubject.asObservable();
+    }
+
+    getOwnerReservations(propertyId: number = 0): ReservationService {
+      if (this.ownerReservationsSubscription) {
+        this.ownerReservationsSubscription.unsubscribe();
+      }
+      this.ownerReservationsLoading.next(true);
+      this.ownerReservationsSubscription = this.http.get<IQuery>(`${environment.backEndUrl}/queries/owner_booked_properties?owner_email=${this.authService.profile!.email}`)
+      .subscribe({
+        next: (queryResults) => {
+          let reservations = queryResults.bookings;
+
+          if (propertyId > 0) {
+            reservations = reservations.filter(reservation => reservation.propertyId === propertyId);
+          }
+          this.ownerReservations.next(reservations);
+        },
+        error: (error) => {
+          this.ownerReservations.next([]);
+        },
+        complete: () => {
+          this.ownerReservationsLoading.next(false);
+        }});
+      return this;
+    }
+
+    getOwnerReservationObservable(): Observable<IReservation[]> {
+      return this.ownerReservationsObservable;
+    }
+    getOwnerReservationLoadingObservable(): Observable<boolean> {
+      return this.ownerReservationsLoadingObservable;
+    }
+
+
+    addReservation(reservation: IReservation): Observable<IReservation> {
+      return this.http.post<IReservation>(`${environment.backEndUrl}/reservations`, reservation)
+        .pipe(
+          map((reservation) => {
+            this.getReservations();
+            this.toastService.showSuccess('Reservation added successfully');
+            return reservation;
+          })
+        );
+    }
+
+    updateReservation(reservation: IReservation): Observable<IReservation> {
+      return this.http.put<IReservation>(`${environment.backEndUrl}/reservations/${reservation.id}`, reservation)
+        .pipe(
+          map((reservation) => {
+            this.getReservations();
+            this.getOwnerReservations();
+            this.toastService.showSuccess('Reservation updated successfully');
+            return reservation;
+          })
+        );
+    }
+
+    deleteReservation(reservation: IReservation): Observable<IReservation> {
+      return this.http.delete<IReservation>(`${environment.backEndUrl}/reservations/${reservation.id}`)
+        .pipe(
+          map((reservation) => {
+            this.getReservations();
+            this.getOwnerReservations();
+            this.toastService.showSuccess('Reservation deleted successfully');
+            return reservation;
+          })
+        );
     }
 }

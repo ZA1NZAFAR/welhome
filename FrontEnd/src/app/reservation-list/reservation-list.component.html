@@ -1,10 +1,39 @@
 <div>
-    <div class='d-flex flex-column mb-3'>
-      <div class='p-2' *ngFor='let reservation of reservations; index as i'>
-        <app-reservation-card
-          [reservation]='reservation'>
-        </app-reservation-card>
+
+  <mat-button-toggle-group class="button-container" [formControl]="this.filterControl" multiple>
+    <mat-button-toggle value="Confirmed" [className]="this.toggleFilterButtonColor('Confirmed')">Confirmed</mat-button-toggle>
+    <mat-button-toggle value="Cancelled" [className]="this.toggleFilterButtonColor('Cancelled')">Cancelled</mat-button-toggle>
+    <mat-button-toggle value="Rejected" [className]="this.toggleFilterButtonColor('Rejected')">Rejected</mat-button-toggle>
+    <mat-button-toggle value="Completed" [className]="this.toggleFilterButtonColor('Completed')">Completed</mat-button-toggle>
+    <mat-button-toggle value="Pending" [className]="this.toggleFilterButtonColor('Pending')">Pending</mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <div *ngIf="(this.ownerPropertyLoadingObservable$ | async) || (this.reservationLoadingObservable$ | async); else loaded">
+    <div class="spinner-border" role="status"></div>
+  </div>
+  <ng-template #loaded>
+    <div class="d-flex flex-column m-3">
+      <div *ngFor="let reservation of this.reservationShow; index as i">
+        <ng-template [ngIf]="this.propertyExists(reservation.propertyId) && this.filterReservation(reservation)">
+          <app-reservation-card
+            class="p-2"
+            [reservation]='reservation'
+            [property]='this.getProperty(reservation.propertyId)'
+            [status]="this.getStatus(reservation)"
+            [review]="this.reviewMap.get(reservation.id)">
+          </app-reservation-card>
+        </ng-template>
       </div>
     </div>
-  </div>
-  
+  </ng-template>
+  <mat-paginator #paginator
+    class="demo-paginator"
+    (page)="handlePageEvent($event)"
+    [length]="length"
+    [pageSize]="pageSize"
+    [showFirstLastButtons]="true"
+    [pageSizeOptions]="pageSizeOptions"
+    [pageIndex]="pageIndex"
+    aria-label="Select page">
+  </mat-paginator>
+</div>

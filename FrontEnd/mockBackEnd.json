@@ -1,0 +1,219 @@
+{
+  "reservations": [
+    {
+      "id": 1,
+      "propertyId": 1,
+      "startDate": "2023-03-15T09:00:00.594Z",
+      "endDate": "2023-03-18T09:00:00.594Z",
+      "confirmedOwner": true,
+      "confirmedRenter": false,
+      "renterEmail": "xyz@gmail.com"
+    },
+    {
+      "id": 2,
+      "propertyId": 3,
+      "startDate": "2023-03-15T09:00:00.594Z",
+      "endDate": "2023-03-18T09:00:00.594Z",
+      "confirmedOwner": true,
+      "confirmedRenter": true,
+      "renterEmail": "zain.zafar@gmail.com"
+    },
+    {
+      "id": 2,
+      "propertyId": 3,
+      "startDate": "2022-03-15T09:00:00.594Z",
+      "endDate": "2022-03-18T09:00:00.594Z",
+      "confirmedOwner": false,
+      "confirmedRenter": false,
+      "renterEmail": "zain.zafar@gmail.com"
+    },
+    {
+      "id": 3,
+      "propertyId": 2,
+      "startDate": "2023-04-15T09:00:00.594Z",
+      "endDate": "2023-04-18T09:00:00.594Z",
+      "confirmedOwner": true,
+      "confirmedRenter": false,
+      "renterEmail": "zzz@lmao.com"
+    },
+    {
+      "startDate": "2023-04-10T22:00:00.000Z",
+      "endDate": "2023-04-12T22:00:00.000Z",
+      "renterEmail": "zain.zafar@gmail.com",
+      "propertyId": 1,
+      "confirmedOwner": true,
+      "confirmedRenter": false,
+      "id": 4
+    },
+    {
+      "startDate": "2023-04-11T22:00:00.000Z",
+      "endDate": "2023-04-14T22:00:00.000Z",
+      "renterEmail": "",
+      "propertyId": 3,
+      "confirmedOwner": false,
+      "confirmedRenter": false,
+      "id": 5
+    },
+    {
+      "startDate": "2023-04-11T22:00:00.000Z",
+      "endDate": "2023-04-18T22:00:00.000Z",
+      "renterEmail": "zain.zafar@gmail.com",
+      "propertyId": 3,
+      "confirmedOwner": false,
+      "confirmedRenter": false,
+      "id": 6
+    },
+    {
+      "startDate": "2023-04-12T22:00:00.000Z",
+      "endDate": "2023-04-14T22:00:00.000Z",
+      "renterEmail": "afk.beto@gmail.com",
+      "propertyId": 2,
+      "confirmedOwner": true,
+      "confirmedRenter": false,
+      "id": 7
+    }
+  ],
+  "properties": [
+    {
+      "title": "House in Paris",
+      "description": "A beautiful house in Paris",
+      "propertyCategory": "House",
+      "address": "1234 rue de la paix",
+      "city": "Paris",
+      "state": "Ile-de-France",
+      "country": "France",
+      "price": 100,
+      "surfaceArea": 100,
+      "floors": 1,
+      "capacity": 4,
+      "constructionDate": "",
+      "imageUrl1": "https://cdn.pixabay.com/photo/2016/11/18/17/46/house-1836070_960_720.jpg",
+      "imageUrl2": "https://media.istockphoto.com/id/1449364000/fr/photo/petite-chambre-de-style-minimaliste.jpg?s=612x612&w=is&k=20&c=LPjfaAJ5HPVU-CXvoaz14qNg13o8VVSuiQgEcPflu5Q=",
+      "imageUrl3": "https://media.istockphoto.com/id/943709096/fr/photo/salon-int%C3%A9rieur-illustration-3d.jpg?s=1024x1024&w=is&k=20&c=r5sjY84dqpuowRgnGM-di1pmVeK2Kcd6eZIDkn8T3PE=",
+      "ownerEmail": "zain.zafar@gmail.com",
+      "id": 1
+    },
+    {
+      "id": 2,
+      "title": "Room in London",
+      "description": "A beautiful room in London",
+      "ownerEmail": "zain.zafar@gmail.com",
+      "propertyCategory": "Room",
+      "address": "1234 Fake Street",
+      "city": "London",
+      "country": "United Kingdom",
+      "price": 200,
+      "surfaceArea": 100,
+      "floors": 6,
+      "capacity": 3,
+      "imageUrl1": "https://images.unsplash.com/photo-1615874959474-d609969a20ed?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YmVkJTIwcm9vbXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
+    },
+    {
+      "id": 3,
+      "title": "Apartment in Toronto",
+      "description": "A beautiful apartment in Toronto",
+      "ownerEmail": "abc@gmail.com",
+      "propertyCategory": "Apartment",
+      "address": "1234 Fake Street",
+      "city": "Toronto",
+      "state": "Ontario",
+      "country": "Canada",
+      "price": 150,
+      "surfaceArea": 80,
+      "floors": 4,
+      "capacity": 2,
+      "imageUrl1": "https://media.istockphoto.com/id/1165384568/fr/photo/complexe-moderne-europ%C3%A9en-de-b%C3%A2timents-r%C3%A9sidentiels.jpg?s=612x612&w=0&k=20&c=nvoIbiIffCt-nuj47Cc3I261Ke98iMouq_HefNM7Lz0=",
+      "imageUrl2": "https://media.istockphoto.com/id/1195597185/fr/photo/image-g%C3%A9n%C3%A9r%C3%A9e-par-ordinateur-du-salon-rendu-3d.jpg?s=1024x1024&w=is&k=20&c=iVxRtBR_k0CTUYyyivGJRckUC24ol1R_KtWzNx-Ty0U="
+    },
+    {
+      "title": "1",
+      "description": "1",
+      "propertyCategory": "House",
+      "address": "1",
+      "city": "1",
+      "state": "",
+      "country": "1",
+      "price": "1",
+      "surfaceArea": "1",
+      "floors": "1",
+      "capacity": "1",
+      "constructionDate": "",
+      "imageUrl1": "",
+      "imageUrl2": "",
+      "imageUrl3": "",
+      "ownerEmail": "zain.zafar@gmail.com",
+      "id": 4
+    },
+    {
+      "title": "Best mansion",
+      "description": "Best mansion",
+      "propertyCategory": "Apartment",
+      "address": "1, rue de Rivoli",
+      "city": "Paris",
+      "state": "Île-de-France",
+      "country": "France",
+      "price": "3000",
+      "surfaceArea": "1000",
+      "floors": "0",
+      "capacity": "20",
+      "constructionDate": "2023-01-31T23:00:00.000Z",
+      "imageUrl1": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bWFuc2lvbnxlbnwwfHwwfHw%3D&w=1000&q=80",
+      "imageUrl2": "",
+      "imageUrl3": "",
+      "ownerEmail": "afk.beto@gmail.com",
+      "id": 5
+    }
+  ],
+  "reviews": [
+    {
+      "id": 1,
+      "propertyId": 1,
+      "reviewerEmail": "xyz@gmail.com",
+      "reviewText": "This place sucks!",
+      "rating": 1,
+      "publishedDate": "2021-03-19T11:33:00.594Z"
+    },
+    {
+      "id": 2,
+      "propertyId": 2,
+      "reviewerEmail": "abc@gmail.com",
+      "reviewText": "This place is lovely!",
+      "rating": 4.5,
+      "publishedDate": "2021-03-18T09:00:00.594Z"
+    },
+    {
+      "id": 3,
+      "propertyId": 3,
+      "reviewerEmail": "abcdef@gmail.com",
+      "reviewText": "OMG LOVE IT!",
+      "rating": 5,
+      "publishedDate": "2021-03-21:23:04.594Z"
+    },
+    {
+      "id": 4,
+      "propertyId": 3,
+      "reviewerEmail": "zerty@gmail.com",
+      "reviewText": "What ?! AWESOME !",
+      "rating": 3.5,
+      "publishedDate": "2021-03-22:34:04.594Z"
+    },
+    {
+      "rating": "1",
+      "reviewText": "This house sux",
+      "image": "",
+      "publishedDate": "2023-04-10T14:02:12.323Z",
+      "propertyId": 3,
+      "reviewerEmail": "zain.zafar@gmail.com",
+      "id": 5
+    }
+  ],
+  "profiles": [
+    {
+      "email": "afk.beto@gmail.com",
+      "firstName": "Beto",
+      "lastName": "AFK",
+      "phoneNumber": "123456789",
+      "gender": "Male"
+    }
+  ]
+}

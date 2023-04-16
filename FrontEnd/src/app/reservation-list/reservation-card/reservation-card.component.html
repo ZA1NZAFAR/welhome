@@ -1,29 +1,34 @@
-<div class="row border p-3">
+<div class="reservation-card">
+  <div class="row">
   <div class="col-md-3">
-    <img src="{{ reservation.property?.image_url }}" alt="Reservation image" class="img-thumbnail photo-thumbnail">
+    <img src="{{ this.property.imageUrl1 }}" alt="Reservation image" class="img-thumbnail photo-thumbnail">
   </div>
-  
-  <div class="col-md-7">
-    <h3>{{ reservation.property?.title }}</h3>
-    <p><strong>Lieu :</strong> {{ reservation.property?.city }}</p>
-    <p><strong>Surface du logement :</strong> {{ reservation.property?.surface_area }} m²</p>
-    <p><strong>Arrivée :</strong> {{ reservation.check_in | date: 'dd/MM/yyyy' }} </p>
-    <p><strong>Départ :</strong> {{ reservation.check_out | date: 'dd/MM/yyyy' }} </p>
-    <p><strong>Nombre d'occupant :</strong> {{ reservation.nbr_person }}</p>
-    <p><strong>Prix total :</strong> {{ reservation.total_price }} €</p>
-    <div class="col-md-2">
-      <div class="d-flex justify-content-between align-items-center">
-        <div class="btn no-cursor" [ngClass]="getButtonClass()">
-          {{ reservation.state }}
-        </div>
-        <div  class="col-md-3 d-flex align-items-center justify-content-center">
-          <button *ngIf="reservation.state === 'Validé' || reservation.state === 'En cours'" type="button" class="btn btn-danger ml-3 ml-auto">
-            Annuler
-          </button>
-        </div>
-       
+
+  <div class="col-md-7 infos">
+    <h1>{{ this.property.title }}</h1>
+    <p><strong>Location:</strong> {{ this.property.city }}</p>
+    <p><strong>Area:</strong> {{ this.property.surfaceArea }} m²</p>
+    <p><strong>Arrival:</strong> {{ this.reservation.startDate | date: 'dd/MM/yyyy' }} </p>
+    <p><strong>Departure:</strong> {{ this.reservation.endDate | date: 'dd/MM/yyyy' }} </p>
+    <p><strong>Status: </strong><span [ngClass]="this.textClass">{{ this.status }}</span></p>
+    <p><strong>{{ this.ratingDescription }}:</strong> {{ this.ratingText }}</p>
+  </div>
+  <div class="col-md-1">
+    <div class="container overflow-hidden">
+      <div class="row gy-2">
+        <button *ngIf="this.canConfirm" type="button" class="btn col-12 btn-info" (click)="this.submitConfirm()">
+          Confirm
+        </button>
+        <button *ngIf="this.canReject" type="button" class="btn col-12 btn-danger" (click)="this.submitReject()">
+          Cancel
+        </button>
+        <button *ngIf="this.canReview" class="btn col-12 btn-primary" (click)="this.openReviewForm()">
+          Review
+        </button>
+        <button type="button" class="btn col-12 btn-secondary" (click)="this.goToProperty()">
+          Details
+        </button>
       </div>
     </div>
-    
   </div>
 </div>

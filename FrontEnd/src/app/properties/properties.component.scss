@@ -1,39 +1,262 @@
+.property-component {
+  margin: auto;
+}
+.main-div {
+  display: flex;
+  flex-direction: row;
+}
+.left-div{
+  margin-top: 2vh;
+  width: 50%;
+
+}
 .photos {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  max-width: 50vw; /* limite la largeur à 50% de la largeur de l'écran */
+  max-height: 70vh; /* limite la hauteur à 70% de la hauteur de l'écran si nécessaire */
+  margin-top: 5vh;
+  width: 50%;
+
+}
+
+
+
+.main-photo {
+  width: 50vw;
+  height: 70vh;
+  object-fit: contain;
+  margin-bottom: 20px;
+
+}
+
+
+.maisons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  max-width: 500px;
+  max-height: 300px;
+  object-fit: contain;
+
+}
+
+.small-photo {
+  max-width: 100px;
+  cursor: pointer;
+}
+
+#next-btn {
+  margin-top: 20px;
+  font-size: 18px;
+  padding: 10px 20px;
+  background-color: #4c68af;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#next-btn:hover {
+  background-color: #4c68af;
+}
+
+//cadre de reservation
+.reservation-container {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
+  padding: 32px;
+  width: 40vw;
+  max-width: 600px;
+  margin-left: 50px;
+  align-self: flex-start;
+}
+
+.reviews-container {
+  margin-top: 8%;
+}
+.date-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.date-container label {
+  font-size: 16px;
+  font-weight: 400;
+  margin-right: 16px;
+
+}
+
+.date-container input[type="date"] {
+  width: 18%;
+  padding: 12px 16px;
+  border: 1px solid #e4e4e4;
+  border-radius: 4px;
+  margin-right: 3%;
+  font-size: 16px;
+  font-weight: 400;
+  color: #484848;
+  background-color: #fff;
+
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.date-container input[type="date"]:hover,
+.date-container input[type="date"]:focus {
+  outline: none;
+  border-color: #4c68af;
+  box-shadow: 0 0 0 2px rgba(0,132,137,0.2);
+}
+
+.form-container {
+  margin-bottom: 24px;
+}
+
+.btn-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.reservation-btn {
+  background-color: #6abf78;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 16px 32px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+#reservation-btn:hover {
+  background-color: #4caac9;
+}
+
+
+.infos {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  width: 50vw;
+  max-width: 40vw;
+  align-self: flex-start;
+  margin-left: 30px;
+  font-size: 16px;
+  //border: 1px solid #484848;
+
+}
+.infos p {
+  margin-bottom: 20px;
+}
+
+.infos h1 {
+  font-family: 'Circular', sans-serif;
+  font-size: 32px;
+  font-weight: bold;
+  line-height: 40px;
+  margin: 0;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.reservation-container h1 {
+  font-family: 'Circular', sans-serif;
+  font-size: 27px;
+  font-weight: bold;
+  line-height: 40px;
+  margin: 0;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.price {
+  display: inline-block;
+  font-size: 20px;
+  margin-top: 16px;
+  margin-bottom: 24px;
+}
+
+.price-value {
+  font-weight: 600;
+}
+//prix total
+.total-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #e4e4e4;
+}
+
+.total-container h4 {
+  font-size: 20px;
+  font-weight: 400;
+  margin: 0;
+}
+
+.total-container span {
+  font-size: 20px;
+  font-weight: 600;
+  color: #4c68af;
+}
+.reviews-container {
+  margin: 2rem;
+  .reviews-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
   }
-  
-  .main-photo {
-    max-width: 500px;
-    margin-bottom: 20px;
-  }
-  
-  .maisons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-    max-width: 500px;
-  }
-  
-  .small-photo {
-    max-width: 100px;
-    cursor: pointer;
-  }
-  
-  #next-btn {
-    margin-top: 20px;
-    font-size: 18px;
-    padding: 10px 20px;
-    background-color: #4c68af;
-    color: white;
+
+  .title-underline {
     border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    border-top: 2px solid #ccc;
+    width: 10rem;
+    margin-bottom: 1rem;
   }
-  
-  #next-btn:hover {
-    background-color: #4c68af;
+
+  .review {
+    margin-bottom: 2rem;
+
+    .review-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+
+      .review-author {
+        font-weight: bold;
+        margin-right: 1rem;
+      }
+
+      .review-date {
+        color: #777;
+      }
+
+      .review-rating {
+        margin-left: auto;
+        font-size: 1.5rem;
+
+        i {
+          color: #f7d64c;
+          margin-right: 0.5rem;
+        }
+      }
+    }
+
+    .review-text {
+      font-size: 1.2rem;
+      line-height: 1.5;
+    }
   }
-  
+}
+
+

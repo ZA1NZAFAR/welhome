@@ -2,20 +2,21 @@ export interface IProperty {
   id:number,
   title: string,
   description: string,
-  property_catergory: PropertyCategory,
+  propertyCategory: PropertyCategory,
   address: string,
   city: string,
   state?: string,
   country: string,
   price: number,
-  surface_area: number,
+  surfaceArea: number,
   floors: number,
   capacity: number,
-  construction_date?: Date,
-  publish_date?: Date,
-  owner_email: string,
-  image_url?: string
-
+  constructionDate?: Date,
+  publishDate?: Date,
+  ownerEmail: string,
+  imageUrl1?: string,
+  imageUrl2?: string,
+  imageUrl3?: string
 }
 
 export const propertyCategory = ['House', 'Apartment', 'Room'];

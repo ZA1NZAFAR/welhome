@@ -1,0 +1,11 @@
+textarea {
+  height: 50px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+::ng-deep .cdk-overlay-container{
+  z-index:2000;
+}

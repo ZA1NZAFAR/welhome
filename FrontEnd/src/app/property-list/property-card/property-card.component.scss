@@ -1,9 +1,50 @@
 .photo-thumbnail{
     width: 250px;
     height: 250px;
-}
-.photo-thumbnail:hover {
+    margin-bottom: 10px;
+    border-radius: 8px;
+
+
+  }
+  
+  .property img:hover {
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     cursor: pointer;
+  }
+  
+  .property {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .property img {
+    width: 250px;
+    height: 250px;
+  }
+  
+  .property .location {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  
+  .property .surface-area {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  
+  .property .price {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 5px;
+
+  }
+  
+  .property .price .price-text {
+    font-size: 16px;
+    font-weight: normal;
+    margin-bottom: 5px;
 
   }

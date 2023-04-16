@@ -1,56 +1,104 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Titre de la page</title>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<body>
-<div>
-  <div class="photos">
-    <img src="{{ this.propertyData.image_url }}" alt="Property image" class="main-photo">
-    <div class="maisons">
-      <img src="https://media.istockphoto.com/id/1449364000/fr/photo/petite-chambre-de-style-minimaliste.jpg?s=612x612&w=is&k=20&c=LPjfaAJ5HPVU-CXvoaz14qNg13o8VVSuiQgEcPflu5Q=" alt="Maison 1" class="small-photo">
-      <img src="https://media.istockphoto.com/id/943709096/fr/photo/salon-int%C3%A9rieur-illustration-3d.jpg?s=1024x1024&w=is&k=20&c=r5sjY84dqpuowRgnGM-di1pmVeK2Kcd6eZIDkn8T3PE=" alt="Maison 2" class="small-photo">
-      <img src="https://media.istockphoto.com/id/1195597185/fr/photo/image-g%C3%A9n%C3%A9r%C3%A9e-par-ordinateur-du-salon-rendu-3d.jpg?s=1024x1024&w=is&k=20&c=iVxRtBR_k0CTUYyyivGJRckUC24ol1R_KtWzNx-Ty0U=" alt="Maison 3" class="small-photo">
-    </div>
-    <button id="next-btn">Suivant</button>
-
+<div class="property-component">
+  <div *ngIf="!this.propertyData">
+    <div class="spinner-border" role="status"></div>
   </div>
-  <h4> {{this.propertyData.title}}</h4>
-  <p> {{ this.propertyData.description }}</p>
-  <p><strong> Lieu : </strong>{{ this.propertyData.city}}, {{ this.propertyData.country}} </p>
-  <p> <strong> Surface : </strong>{{ this.propertyData.surface_area}}</p>
-  <p> <strong> Nombre d'étage : </strong>{{ this.propertyData.floors}}</p>
-  <p> <strong> Nombre de personne au maximum : </strong>{{ this.propertyData.capacity}}</p>
-  <p> <strong> Prix : </strong>{{ this.propertyData.price}}</p>
+  <div class="main-div" *ngIf="!!this.propertyData">
+    <div class="photos">
+      <div>
+        <img src="{{ this.images[this.currentImageIndex] }}" alt="Property image" class="main-photo">
+      </div>
+      <div class="maisons">
+        <img *ngFor="let image of this.images; let i = index"
+            [src]="image"
+            [alt]="'Maison ' + (i+1)"
+            class="small-photo"
+            (click)="this.currentImageIndex = i">
+      </div>
+      <button id="next-btn" (click)="nextImage()"><fa-icon [icon]="faExchangeAlt"></fa-icon></button>
+    </div>
+
+    <div class="left-div">
+      <div class="infos">
+        <h1> {{this.propertyData.title}}</h1>
+        <p> <strong> Description : </strong>{{ this.propertyData.description }}</p>
+        <p><strong> Location : </strong>{{ this.propertyData.city}}, {{ this.propertyData.country}} </p>
+        <p> <strong> Area : </strong>{{ this.propertyData.surfaceArea}}</p>
+        <p> <strong> Floors : </strong>{{ this.propertyData.floors}}</p>
+        <p> <strong> {{ this.propertyData.propertyCategory }} capacity : </strong>{{ this.propertyData.capacity}}</p>
+      </div>
+
+      <div class="reservation-container" *ngIf="!this.isOwner && this.isRenterContext">
+        <h1> Book</h1>
+        <br>
+        <div class="row form-container">
+          <div class="price col-lg-6">
+            <span class="price-value">{{ this.propertyData.price }} $</span> per night
+          </div>
+          <form class="col-lg-6" [formGroup]="this.reservationGroup">
+            <mat-form-field appearance="fill">
+              <mat-label>Enter a date range</mat-label>
+              <mat-date-range-input [min]="this.minStartDate" [rangePicker]="picker">
+                <input matStartDate [errorStateMatcher]="this.errorDateMatcher" placeholder="Start date" required formControlName="startDate">
+                <input matEndDate [errorStateMatcher]="this.errorDateMatcher" placeholder="End date" required formControlName="endDate">
+              </mat-date-range-input>
+              <mat-error *ngIf="this.reservationGroup.hasError('required');">
+                Date is required
+              </mat-error>
+              <mat-error *ngIf="this.reservationGroup.hasError('dayMinimum');">
+                The duration must be at least one day
+              </mat-error>
+              <mat-error *ngIf="this.reservationGroup.hasError('invalidDate');">
+                The duration must be at most 30 days
+              </mat-error>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+          </form>
+        </div>
+
+
+        <div class="btn-container" *ngIf="this.userIsLoggedIn;">
+          <div class="btn-container">
+            <button class="reservation-btn" (click)="this.reserveProperty()" [disabled]="!this.reservationGroup.valid"><fa-icon [icon]="faCheck"></fa-icon></button>
+          </div>
+        </div>
+        <div class="btn-container" *ngIf="!this.userIsLoggedIn;">
+          <button class="reservation-btn" (click)="this.promptLogin()">Login to book</button>
+        </div>
+        <div class="total-container">
+          <h4>Total ({{ this.days }} day{{ this.days > 1 ? 's' : '' }})</h4>
+          <span>{{this.totalPrice}} $</span>
+        </div>
+      </div>
+      <div *ngIf="reviewData.length" class="reviews-container">
+        <h1 class="reviews-title">Reviews</h1>
+        <hr class="title-underline">
+        <!-- Boucle pour parcourir chaque review -->
+        <div *ngFor="let review of reviewData" class="review">
+          <div class="review-header">
+            <span class="review-author">{{review.reviewerEmail}}</span>
+            <span class="review-date">{{review.publishedDate}}</span>
+
+            <!-- Boucle pour afficher le nombre d'étoiles correspondant à la note -->
+            <div class="review-rating">
+              <fa-icon *ngFor="let star of getRatingStars(review.rating)" [icon]="star"></fa-icon>
+            </div>
+            
+
+          </div>
+          <div class="row">
+            <div class="col">
+              <span class="col review-text">{{review.reviewText}}</span>
+            </div>
+            <div class="col">
+              <img [src]="this.review.image" class="small-photo" (click)="this.openImage(this.review.image)">
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
 
 </div>
-</body>
-<script>
-  $(document).ready(function() {
-    var currentPhoto = 1;
-    var numPhotos = $('.small-photo').length;
 
-    function showPhoto(photoNum) {
-      $('.main-photo').attr('src', $('.small-photo:eq(' + (photoNum-1) + ')').attr('src'));
-      $('.small-photo').removeClass('active');
-      $('.small-photo:eq(' + (photoNum-1) + ')').addClass('active');
-    }
-
-    $('.small-photo').click(function() {
-      currentPhoto = $(this).index() + 1;
-      showPhoto(currentPhoto);
-    });
-
-    $('#next-btn').click(function() {
-      currentPhoto++;
-      if (currentPhoto > numPhotos) {
-        currentPhoto = 1;
-      }
-      showPhoto(currentPhoto);
-    });
-
-    showPhoto(currentPhoto);
-  });
-</script>

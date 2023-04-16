@@ -2,31 +2,25 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HostPropertyListComponent } from './host-property-list.component';
 import { HostPropertyCardComponent } from './host-property-card/host-property-card.component';
-import { PropertyFormComponent } from './property-form/property-form.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatDatepickerModule } from '@angular/material/datepicker'; 
-import { MatNativeDateModule } from '@angular/material/core';
+import { PropertyFormModule } from '../property-form/property-form.module'
+import { MatIconModule } from '@angular/material/icon';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @NgModule({
   declarations: [
     HostPropertyListComponent,
-    HostPropertyCardComponent,
-    PropertyFormComponent
+    HostPropertyCardComponent
   ],
   imports: [
     CommonModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
     NgbModalModule,
-    MatInputModule,
-    MatButtonToggleModule,
-    MatDatepickerModule,
-    MatNativeDateModule
+    PropertyFormModule,
+    MatIconModule,
+    MatPaginatorModule,
+    MatButtonModule
   ]
 })
 export class HostPropertyListModule { }

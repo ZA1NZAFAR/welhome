@@ -1,0 +1,12 @@
+version: '1.0'
+services:
+  front-end:
+    pull_policy: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+      no_cache: true
+    image: front-end:3
+    container_name: front-end
+    ports:
+      - 3003:80
