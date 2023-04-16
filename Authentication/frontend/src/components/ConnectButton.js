@@ -1,15 +1,23 @@
 import { useNavigate } from 'react-router-dom';
 
+const BACKEND_URL = 'http://localhost:3001'
 function ConnectButton() {
   const navigate = useNavigate();
 
   async function refreshToken() {
     try {
-      const response = await fetch('http://localhost:3001/auth/refresh-token');
+      const currentAccessToken = localStorage.getItem('access_token');
+
+      const response = await fetch(`${BACKEND_URL}/auth/refresh-token`, {
+        headers: {
+          'Authorization': `Bearer ${currentAccessToken}`
+        }
+      });
       const data = await response.json();
   
       // Update the access token in local storage
-      localStorage.setItem('accessToken', data.accessToken);
+      localStorage.setItem('access_token', data.access_token);
+      window.parent.console.log('refreshed token:', localStorage.getItem('access_token'));
     } catch (error) {
       console.error('Failed to refresh access token:', error);
     }
@@ -20,7 +28,7 @@ function ConnectButton() {
 
   const handleConnect = async () => {
     try {
-      const popup = window.open(`http://localhost:3001/auth/google`, 'googleLogin', 'height=800,width=600');
+      const popup = window.open(`${BACKEND_URL}/auth/google`, 'googleLogin', 'height=800,width=600');
   
       // Listen for messages from the popup window
       window.addEventListener('message', event => {
@@ -32,9 +40,9 @@ function ConnectButton() {
         // If the message type is 'access_token', set the access token in local storage and redirect to /
         console.log('Received message:', event.data);
         if (event.data.type === 'access_token') {
-          const accessToken = event.data.data.accessToken;
-          localStorage.setItem('access_token', accessToken);
-          console.log('Access token stored in local storage:', accessToken);
+          const access_token = event.data.data.access_token;
+          localStorage.setItem('access_token', access_token);
+          window.parent.console.log('Access token stored in local storage:', access_token);
           navigate('/');
         }
 
