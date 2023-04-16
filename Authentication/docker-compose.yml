@@ -1,0 +1,38 @@
+version: '1.0'
+services:
+  frontend:
+    image: auth-frontend:1
+    pull_policy: always
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      no_cache: true
+      pull: true
+    networks:
+      authNetwork:
+        ipv4_address: 172.19.0.2
+    ports:
+      - 3000:3000
+    
+  
+  backend:
+    image: auth-backend:1
+    pull_policy: always
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      no_cache: true
+      pull: true
+    networks:
+      ipv4_address: 172.19.0.3
+    ports:
+      - 3001:3001
+    
+networks:
+  authNetwork:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 172.19.0.0/24
+         gateway: 172.19.0.1
+
