@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
+const GOOGLE_REDIRECT_URI = 'https://backend.zain.ovh/auth/google/callback'
+const BACKEND_URL = 'https://backend.zain.ovh'
+
 
 const Register = (props) => {
   const styles = {
@@ -82,7 +85,7 @@ const Register = (props) => {
   const email = queryParams.get('email');
   const first_name = queryParams.get('first_name');
   const last_name = queryParams.get('last_name');
-  const accessToken = queryParams.get('access_token');
+  const access_token = queryParams.get('access_token');
 
   const [formData, setFormData] = useState({
     email: email || '',
@@ -101,11 +104,11 @@ const Register = (props) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(`https://backend.zain.ovh/register`, {
+      const response = await fetch(`http://localhost:3001/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`,
+          'Authorization': `Bearer ${access_token}`,
         },
         body: JSON.stringify(formData),
       });
@@ -114,9 +117,7 @@ const Register = (props) => {
       console.log(data)
       if (response.ok) {
         // Send the access token to the main window using postMessage
-        // Try one or the other if it doesn't work
-        window.opener.postMessage({ type: 'access_token', data: { accessToken, email } }, "https://backend.zain.ovh/auth/google/callback");
-        //window.parent.postMessage({ type: 'access_token', data: { accessToken, email } }, "https://backend.zain.ovh/auth/google/callback");
+        window.opener.postMessage({ type: 'access_token', data: { access_token } }, "http://localhost:3000/");
         
         // Close the popup window
         window.close();
@@ -139,6 +140,8 @@ const Register = (props) => {
             type="email"
             name="email"
             value={formData.email}
+            readOnly
+            disabled
             onChange={handleChange}
             required
             style={styles.input}
