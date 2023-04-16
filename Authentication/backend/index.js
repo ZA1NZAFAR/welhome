@@ -3,7 +3,6 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const { OAuth2Client } = require('google-auth-library');
 const axios = require('axios');
-const db = require('./db');
 const jwt = require('jsonwebtoken');
 
 
@@ -14,11 +13,8 @@ const app = express();
 app.use(express.json());
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET);
-const secretKey = process.env.SECRET_KEY;
-app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true,
-}));
+
+app.use(cors('*'));
 
 app.get('/auth/google', (req, res) => {
   const googleAuthURL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_uri=${process.env.GOOGLE_REDIRECT_URI}&response_type=code&scope=profile%20email&access_type=offline`;
@@ -43,8 +39,8 @@ app.get('/auth/google/callback', async (req, res) => {
         // Use the refresh token to get a new access token
         const { data } = await axios.post('https://accounts.google.com/o/oauth2/token', {
           grant_type: 'refresh_token',
-          client_id: process.env.GOOGLE_CLIENT_ID,
-          client_secret: process.env.GOOGLE_CLIENT_SECRET,
+          client_id: clientId,
+          client_secret: secretKey,
           refresh_token: tokens.refresh_token,
         });
 
@@ -67,7 +63,7 @@ app.get('/auth/google/callback', async (req, res) => {
     // Check if user exists in the database
     let userResponse;
     try {
-      userResponse = await axios.get(`${process.env.DATABASE_URL}/profiles/${data.email}`);
+      userResponse = await axios.get(`http://zain.ovh:9090/api/profiles/${data.email}`);
     } catch (error) {
       if (error.response.status === 404) {
         userResponse = { data: null };
@@ -85,16 +81,19 @@ app.get('/auth/google/callback', async (req, res) => {
       );
     } else {
       // Send access token to parent window with postMessage
-      const accessToken = tokens.access_token;
+      const access_token = tokens.access_token;
       const message = {
         type: 'access_token',
-        data: { accessToken },
+        data: { access_token, email: data.email },
       };
-      res.send(`<script>window.opener.postMessage(${JSON.stringify(message)}, '${process.env.REACT_APP_FRONTEND_URL}'); window.close();</script>`);
+      console.log(req.headers.referer);
+      const parentUrl = process.env.REACT_APP_FRONTEND_URL
+
+      res.send(`<script>window.opener.postMessage(${JSON.stringify(message)}, '${parentUrl}'); window.close();</script>`);
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Authentication failed' });
+    res.status(500).json({ error: 'Authentication failed', error: error });
   }
 });
 
@@ -103,7 +102,7 @@ app.post('/register', async (req, res) => {
 
   try {
     // Send a POST request to the /profiles endpoint to create a new profile
-    const result = await axios.post(`${process.env.DATABASE_URL}/profiles`, {
+    const result = await axios.post(`http://zain.ovh:9090/api/profiles`, {
       email,
       firstName,
       lastName,
@@ -122,38 +121,33 @@ app.post('/register', async (req, res) => {
 
 app.get('/auth/refresh-token', async (req, res) => {
   try {
-    // Get the current access token
+    // Extract the access token from the Authorization header
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      return res.status(401).json({ error: 'No access token provided' });
+    }
+    const token = authHeader.split(' ')[1];
+
+    // Verify the access token using the /checkToken endpoint
+    const { data } = await axios.post('http://localhost:3001/checkToken', null, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+
+    if (!data) {
+      // Handle the case when the data object is null or undefined
+      return res.status(500).json({ error: 'Failed to verify access token' });
+    }
+
+    // If the access token is valid, get the current access token and send it to the client
     const { credentials } = googleClient;
     const currentAccessToken = credentials.access_token;
-
-    // Send the access token to the client
-    res.status(200).json({ accessToken: currentAccessToken });
+    res.status(200).json({ access_token: currentAccessToken });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to refresh access token' });
   }
 });
 
-// app.post('/register', async (req, res) => {
-//   const { email, firstName, lastName, birthDate, phoneNumber, gender } = req.body;
-
-//   try {
-//     // Insert a new user record into the 'profiles' table
-//     const result = await db.query(`
-//       INSERT INTO profile(email, first_name, last_name, birth_date, phone_number, gender)
-//       VALUES($1, $2, $3, $4, $5, $6)
-//       RETURNING *
-//     `, [email, firstName, lastName, birthDate, phoneNumber, gender]);
-
-//     res.status(201).json(result.rows[0]);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'Registration failed' });
-//   }
-// });
-
-
-// frontend calls this endpoint with the access token in the header of the request to check token's validity
 app.post('/checkToken', async (req, res) => {
   const authHeader = req.headers.authorization;
 
@@ -166,27 +160,24 @@ app.post('/checkToken', async (req, res) => {
   const token = authHeader.split(' ')[1];
 
   try {
-    // Verify the token signature and decode its payload
-    const decodedToken = jwt.verify(token, secretKey);
+    // Verify the token using Google's token validation endpoint
+    const { data } = await axios.post('https://oauth2.googleapis.com/tokeninfo', {
+      access_token: token,
+    });
 
-    // // Check if the token belongs to the right user (you could check this against your database)
-    // if (decodedToken.userId !== req.user.id) {
-    //   return res.status(401).json({ message: 'Unauthorized' });
-    // }
-
-    // Check if the token is still valid (i.e., has not expired)
-    if (decodedToken.exp < Date.now() / 1000) {
-      return res.status(401).json({ message: 'Token has expired' });
+    // Check the audience (aud claim) to ensure it matches your client ID
+    const clientId = process.env.GOOGLE_CLIENT_ID; // Replace with your Google Client ID
+    if (data.aud !== clientId) {
+      return res.status(401).json({ message: 'Invalid audience' });
     }
 
     // Token is valid
     return res.status(200).json({ message: 'Token is valid' });
   } catch (error) {
     console.error(error);
-    return res.status(401).json({ message: 'Token is invalid' });
+    return res.status(401).json({ message: `Token is invalid:${token}` });
   }
 });
-  
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
