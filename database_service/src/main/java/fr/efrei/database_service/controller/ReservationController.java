@@ -2,6 +2,7 @@ package fr.efrei.database_service.controller;
 
 import fr.efrei.database_service.dto.ReservationDTO;
 import fr.efrei.database_service.entity.ReservationEntity;
+import fr.efrei.database_service.exception.DatabaseExceptions;
 import fr.efrei.database_service.service.ReservationService;
 import fr.efrei.database_service.tools.Mapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,23 +29,29 @@ public class ReservationController {
     public List<ReservationDTO> getAllReservations() {
         return this.reservationService.findAll().stream().map(property -> Mapper.convert(property, ReservationDTO.class)).collect(Collectors.toList());
     }
+
     @PostMapping
     @Operation(summary = "This endPoint will allow to create a new booking for a specific renter ")
-    public ResponseEntity<ReservationDTO> createReservation(@RequestBody ReservationEntity reservation) {
-        ReservationEntity reservationToCreate = reservationService.save(reservation);
-        if (reservationToCreate == null)
+    public ResponseEntity<ReservationDTO> createReservation(@RequestBody ReservationDTO reservation) {
+        ReservationEntity reservationToCreate;
+        try {
+            reservationToCreate = reservationService.save(Mapper.convert(reservation, ReservationEntity.class));
+        } catch (DatabaseExceptions.EntityAlreadyExistsException e) {
             return ResponseEntity.badRequest().build();
-        else
-            return ResponseEntity.ok(Mapper.convert(reservationToCreate, ReservationDTO.class));
+        }
+        return ResponseEntity.ok(Mapper.convert(reservationToCreate, ReservationDTO.class));
     }
+
     @GetMapping("/{reservationId}")
     @Operation(summary = "This endPoint will allow to display one of the bookings by providing the relevant booking id ")
     public ResponseEntity<ReservationDTO> getReservationId(@PathVariable long reservationId) {
-        ReservationEntity reservation = this.reservationService.findById(reservationId);
-        if (reservation == null)
+        ReservationEntity reservation;
+        try {
+            reservation = this.reservationService.findById(reservationId);
+        } catch (DatabaseExceptions.EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
-        else
-            return ResponseEntity.ok(Mapper.convert(reservation, ReservationDTO.class));
+        }
+        return ResponseEntity.ok(Mapper.convert(reservation, ReservationDTO.class));
     }
     @GetMapping("/propertyId/{propertyId}")
     @Operation(summary = "This endPoint will allow to display all bookings with the relevant property id ")
@@ -83,10 +90,16 @@ public class ReservationController {
     }
     @PutMapping("/{reservationId}")
     @Operation(summary = "This endPoint will allow to update a booking by providing the relevant booking id")
-    public ResponseEntity<ReservationDTO> updateReservation(@PathVariable long reservationId, @RequestBody ReservationEntity reservation) {
-        ReservationEntity tmp = reservationService.update(reservationId, reservation);
-        if (tmp == null)
+    public ResponseEntity<ReservationDTO> updateReservation(@PathVariable long reservationId, @RequestBody ReservationDTO reservation) {
+        ReservationEntity tmp;
+        try {
+            tmp = reservationService.update(reservationId, Mapper.convert(reservation, ReservationEntity.class));
+        } catch (DatabaseExceptions.EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
+        } catch (DatabaseExceptions.BadRequestException e) {
+            return ResponseEntity.badRequest().body(reservation);
+        }
+
         return ResponseEntity.ok(Mapper.convert(tmp, ReservationDTO.class));
     }
     @DeleteMapping("/{reservationId}")

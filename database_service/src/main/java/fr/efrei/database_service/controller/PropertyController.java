@@ -2,6 +2,7 @@ package fr.efrei.database_service.controller;
 
 import fr.efrei.database_service.dto.PropertyDTO;
 import fr.efrei.database_service.entity.PropertyEntity;
+import fr.efrei.database_service.exception.DatabaseExceptions;
 import fr.efrei.database_service.service.PropertyService;
 import fr.efrei.database_service.tools.Mapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,37 +25,41 @@ public class PropertyController {
 
     @PostMapping
     @Operation(summary = "This endpoint will create a new property")
-    public ResponseEntity<PropertyDTO> createProperty(@RequestBody PropertyEntity property) {
-        PropertyEntity propertyToCreate = propertyService.save(property);
-        if (propertyToCreate == null) {
+    public ResponseEntity<PropertyDTO> createProperty(@RequestBody PropertyDTO property) {
+        PropertyEntity propertyToCreate;
+        try {
+
+            propertyToCreate = propertyService.save(Mapper.convert(property, PropertyEntity.class));
+        } catch (DatabaseExceptions.EntityAlreadyExistsException e) {
             return ResponseEntity.badRequest().build();
-        } else {
-            return ResponseEntity.ok(Mapper.convert(propertyToCreate, PropertyDTO.class));
         }
+        return ResponseEntity.ok(Mapper.convert(propertyToCreate, PropertyDTO.class));
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "This endpoint will allow to retrieve a property based on id")
-    public ResponseEntity<PropertyDTO> getProperty(@PathVariable Long id){
-        PropertyEntity propertyToGet = propertyService.findById(id);
-        if(propertyToGet == null){
+    public ResponseEntity<PropertyDTO> getProperty(@PathVariable Long id) {
+        PropertyEntity propertyToGet;
+        try {
+            propertyToGet = propertyService.findById(id);
+        } catch (DatabaseExceptions.EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
-        else {
-            return ResponseEntity.ok(Mapper.convert(propertyToGet, PropertyDTO.class));
-        }
+        return ResponseEntity.ok(Mapper.convert(propertyToGet, PropertyDTO.class));
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "This endpoint will allow to update a property based on id")
-    public ResponseEntity<PropertyDTO> updateProperty(@PathVariable Long id, @RequestBody PropertyEntity property){
-        PropertyEntity propertyToUpdate = propertyService.update(id, property);
-        if(propertyToUpdate == null){
+    public ResponseEntity<PropertyDTO> updateProperty(@PathVariable Long id, @RequestBody PropertyDTO propertyDTO) {
+        PropertyEntity propertyToUpdate;
+        try {
+            propertyToUpdate = propertyService.update(id, Mapper.convert(propertyDTO, PropertyEntity.class));
+        } catch (DatabaseExceptions.EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
+        } catch (DatabaseExceptions.BadRequestException e) {
+            return ResponseEntity.badRequest().body(propertyDTO);
         }
-        else {
-            return ResponseEntity.ok(Mapper.convert(propertyToUpdate, PropertyDTO.class));
-        }
+        return ResponseEntity.ok(Mapper.convert(propertyToUpdate, PropertyDTO.class));
     }
 
     @DeleteMapping({"/{id}"})

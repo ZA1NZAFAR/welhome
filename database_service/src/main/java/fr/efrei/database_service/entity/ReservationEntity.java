@@ -30,9 +30,6 @@ public class ReservationEntity {
     @Basic
     @Column(name = "confirmed_renter")
     private boolean confirmedRenter;
-    @Basic
-    @Column(name = "total_price")
-    private Float totalPrice;
 
     public long getId() {
         return id;
@@ -90,24 +87,16 @@ public class ReservationEntity {
         this.confirmedRenter = confirmedRenter;
     }
 
-    public Float getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(Float totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ReservationEntity that = (ReservationEntity) o;
-        return id == that.id && propertyId == that.propertyId && confirmedOwner == that.confirmedOwner && confirmedRenter == that.confirmedRenter && Objects.equals(renterEmail, that.renterEmail) && Objects.equals(startDate, that.startDate) && Objects.equals(endDate, that.endDate) && Objects.equals(totalPrice, that.totalPrice);
+        return id == that.id && propertyId == that.propertyId && confirmedOwner == that.confirmedOwner && confirmedRenter == that.confirmedRenter && Objects.equals(renterEmail, that.renterEmail) && Objects.equals(startDate, that.startDate) && Objects.equals(endDate, that.endDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, propertyId, renterEmail, startDate, endDate, confirmedOwner, confirmedRenter, totalPrice);
+        return Objects.hash(id, propertyId, renterEmail, startDate, endDate, confirmedOwner, confirmedRenter);
     }
 }
