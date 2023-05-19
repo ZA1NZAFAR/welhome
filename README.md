@@ -16,13 +16,14 @@ More info on our [Project Report (FR)](https://github.com/ZA1NZAFAR/welhome/blob
 - [Express](https://expressjs.com/)
 - and many more...
 
-## Contributers
-- [@AFKBETO](www.github.com/AFKBETO)
-- [@Euphra9](www.github.com/Euphra9)
-- [@jessyVy](www.github.com/jessyVy)
-- [@Rimberse](www.github.com/Rimberse)
-- [@mrykse](www.github.com/mrykse)
-- [@MalakZemrani](www.github.com/MalakZemrani)
-- [@KhSh2](www.github.com/KhSh2)
-- [@Ousseyn](www.github.com/Ousseyn)
-- [@RatibaKADI](www.github.com/RatibaKADI)
+## Contributors
+- [@ZA1NZAFAR](https://github.com/za1nzafar)
+- [@AFKBETO](https://www.github.com/AFKBETO)
+- [@Euphra9](https://www.github.com/Euphra9)
+- [@jessyVy](https://www.github.com/jessyVy)
+- [@Rimberse](https://www.github.com/Rimberse)
+- [@mrykse](https://www.github.com/mrykse)
+- [@MalakZemrani](https://www.github.com/MalakZemrani)
+- [@KhSh2](https://www.github.com/KhSh2)
+- [@Ousseyn](https://www.github.com/Ousseyn)
+- [@RatibaKADI](https://www.github.com/RatibaKADI)
